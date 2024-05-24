@@ -32,6 +32,16 @@
     .menu .menu-list {
         flex-direction: column;
     }
+     .home .home-image img {
+        padding: 2rem;
+        border-radius: 50%;
+        transition: transform 0.4s ease, box-shadow 0.3s ease; /* Smooth transition for effects */
+    }
+
+    .home .home-image img:hover {
+        transform: scale(1.1); /* Scale the image up slightly on hover */
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3); /* Add a shadow on hover */
+    }
 
     .portfolio {
         padding: 0;
