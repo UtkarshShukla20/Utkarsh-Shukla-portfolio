@@ -88,6 +88,72 @@
     }
 }
 
+/* SocialLinks section styling */
+.SocialLinks {
+    padding: 50px 0;
+    background-color: #f8f9fa; /* Light gray background */
+    text-align: center;
+}
+
+.SocialLinks h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #333; /* Dark gray text */
+}
+
+.SocialLinks .Social-link-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.SocialLinks-item {
+    margin: 0 20px;
+    margin-bottom: 40px;
+    max-width: 300px;
+}
+
+.SocialLinks-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #007bff; /* Blue color for text */
+}
+
+.SocialLinks-item p {
+    font-size: 1.2rem;
+    color: #555; /* Medium gray text */
+}
+
+.SocialLinks-item a {
+    color: #007bff; /* Blue color for links */
+    text-decoration: none;
+}
+
+/* Hover effect for links */
+.SocialLinks-item a:hover {
+    color: #0056b3; /* Darker blue on hover */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+    .SocialLinks .Social-link-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .SocialLinks-item {
+        margin: 0;
+        margin-bottom: 20px;
+    }
+
+    .SocialLinks-item h3 {
+        font-size: 1.3rem;
+    }
+
+    .SocialLinks-item p {
+        font-size: 1rem;
+    }
+}
 
 
 /* CSS for mobile devices */
