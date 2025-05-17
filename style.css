@@ -42,6 +42,23 @@
         transform: scale(1.1); /* Scale the image up slightly on hover */
         box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3); /* Add a shadow on hover */
     }
+    
+    .resume-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.resume-button:hover {
+    background-color: #0056b3;
+}
+
 
     .portfolio {
         padding: 0;
