@@ -22,6 +22,17 @@
             --accent: #00e5ff; /* Cyan Blue */
             --glass: rgba(0, 229, 255, 0.03);
             --border: rgba(0, 229, 255, 0.15);
+            --mx: 50%;
+            --my: 50%;
+        }
+
+        /* === LIGHT THEME VARIABLES === */
+        body.light-mode {
+            --bg: #f0f5f9;
+            --text: #050a15;
+            --accent: #0077ff;
+            --glass: rgba(0, 119, 255, 0.05);
+            --border: rgba(0, 119, 255, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -32,6 +43,7 @@
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         ::selection { background: var(--accent); color: #000; }
@@ -44,6 +56,40 @@
             -ms-user-select: none;
         }
 
+        /* === TOP CONTROLS (THEME & TOOLS) === */
+        .top-controls {
+            position: fixed;
+            top: 30px;
+            z-index: 10000;
+            display: flex;
+            gap: 15px;
+        }
+        .left-controls { left: 30px; }
+        .right-controls { right: 30px; }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .control-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
+        .control-btn.active { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); border-color: var(--accent); }
+        
+        /* Light mode overrides for controls */
+        body.light-mode .control-btn { background: rgba(0,0,0,0.05); color: #000; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        body.light-mode .control-btn.active { background: var(--accent); color: #fff; }
+
         /* Cinematic Noise Overlay */
         .noise-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -51,19 +97,16 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Ambient Smoke Effect (Stays in background) */
         #smoke-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 0; pointer-events: none; opacity: 0.5;
         }
 
-        /* 🚀 Smooth & Low Power Water-Wave Glitter Effect (NOW WORKS ON FULL PAGE) 🚀 */
         #glitter-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 9997; /* Pulled above all sections so it works everywhere */
-            pointer-events: none; /* Won't block any clicks */
-            mix-blend-mode: screen;
+            z-index: 9997; pointer-events: none; mix-blend-mode: screen;
         }
+        body.light-mode #glitter-canvas { mix-blend-mode: normal; opacity: 0.8; }
 
         /* === CUSTOM CURSOR === */
         .cursor-dot, .cursor-outline {
@@ -71,50 +114,76 @@
             border-radius: 50%; z-index: 9999; pointer-events: none;
         }
 
-        .cursor-dot { width: 6px; height: 6px; background-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        .cursor-dot { width: 6px; height: 6px; background-color: var(--accent); box-shadow: 0 0 10px var(--accent); transition: opacity 0.2s;}
         .cursor-outline { width: 40px; height: 40px; border: 1px solid var(--accent); transition: width 0.2s, height 0.2s, background-color 0.2s; }
+
+        /* Eraser Mode Cursor Adjustments */
+        body.eraser-mode .cursor-outline {
+            width: 200px !important; 
+            height: 200px !important;
+            border: 2px dashed var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+        }
+        body.eraser-mode .cursor-dot { opacity: 0; }
 
         /* === WELCOME SCREEN === */
         .welcome-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(3, 5, 10, 0.98); backdrop-filter: blur(20px);
             z-index: 50; display: flex; align-items: center; justify-content: center;
-            flex-direction: column; overflow: hidden;
+            flex-direction: column; overflow: hidden; transition: background 0.5s ease;
         }
+        body.light-mode .welcome-screen { background: rgba(240, 245, 249, 0.95); }
 
         /* GIANT CUTOUT BEHIND WELCOME TEXT */
         .welcome-cutout {
             position: absolute;
-            bottom: -5%; 
+            bottom: -15%; 
             left: 50%;
             transform: translateX(-50%);
-            height: 90vh; 
+            height: 110vh; /* INCREASED SIZE */
             width: auto;
             z-index: 5; 
             object-fit: contain;
-            opacity: 0.85; 
+            opacity: 0.95; 
             filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.3)); 
             pointer-events: none;
+        }
+
+        /* ERASER LAYER FOR TEXT & ICONS */
+        .eraser-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10; pointer-events: none;
+            transition: -webkit-mask-image 0.2s ease;
+        }
+
+        body.eraser-mode .eraser-layer {
+            /* Creates a transparent hole where the mouse is */
+            -webkit-mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
+            mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
         }
 
         .welcome-text {
             font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem);
             color: var(--text); text-align: center; line-height: 1; 
-            z-index: 10; 
-            text-transform: uppercase;
-            position: relative;
+            text-transform: uppercase; position: relative;
             text-shadow: 0 10px 40px rgba(0,0,0,0.8); 
         }
+        body.light-mode .welcome-text { text-shadow: 0 5px 25px rgba(0,0,0,0.15); }
 
         .welcome-text span {
             color: var(--accent);
             text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000;
             -webkit-text-stroke: 0;
         }
+        body.light-mode .welcome-text span { text-shadow: 0 0 20px rgba(0, 119, 255, 0.4); }
 
         .float-icon {
             position: absolute; font-size: clamp(3rem, 5vw, 6rem);
-            z-index: 15; filter: drop-shadow(0 0 15px currentColor);
+            filter: drop-shadow(0 0 15px currentColor);
         }
 
         .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 2; }
@@ -131,6 +200,7 @@
             font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8;
             color: #ffffff; z-index: 1; text-transform: uppercase; letter-spacing: -2px;
         }
+        body.light-mode .text-utkarsh { color: #d5dde4; }
 
         .hero-image-box {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -138,6 +208,7 @@
             border: 2px solid var(--accent); box-shadow: 0 0 50px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.2);
             overflow: visible; display: flex; align-items: flex-end; justify-content: center; background: transparent;
         }
+        body.light-mode .hero-image-box { box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 2px solid var(--accent); background: #fff;}
 
         .hero-image-box img.holographic-cutout {
             position: absolute; bottom: 0; left: 50%; width: 140%; height: auto;
@@ -150,7 +221,7 @@
             font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8;
             color: var(--accent); z-index: 3; text-transform: uppercase; letter-spacing: -2px;
             text-shadow: 0 10px 40px rgba(0, 229, 255, 0.4);
-            background: linear-gradient(180deg, #00ffff 0%, #0088ff 100%);
+            background: linear-gradient(180deg, var(--accent) 0%, #0088ff 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
@@ -161,7 +232,9 @@
             box-shadow: 0 10px 40px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.5);
             animation: badgeFloat 3s ease-in-out infinite alternate;
         }
-        @keyframes badgeFloat { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); box-shadow: 0 15px 50px rgba(0, 229, 255, 0.8); } }
+        body.light-mode .hero-subtitle-badge { color: #fff; box-shadow: 0 10px 30px rgba(0, 119, 255, 0.4); }
+        
+        @keyframes badgeFloat { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); } }
 
         .scroll-indicator {
             position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px;
@@ -171,6 +244,7 @@
         .scroll-line {
             width: 1px; height: 40px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden;
         }
+        body.light-mode .scroll-line { background: rgba(0,0,0,0.1); }
 
         .scroll-line::after {
             content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
@@ -184,6 +258,7 @@
             min-height: 100vh; padding: 10rem 10vw; display: flex; flex-direction: column; justify-content: center;
             position: relative; z-index: 5; background: linear-gradient(180deg, transparent 0%, #030610 100%);
         }
+        body.light-mode .about-section { background: linear-gradient(180deg, transparent 0%, #d5dde4 100%); }
 
         .section-tag {
             font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--accent); letter-spacing: 3px;
@@ -191,38 +266,42 @@
         }
         .section-tag::before { content: ''; display: inline-block; width: 40px; height: 2px; background: var(--accent); }
 
-        .about-text { font-size: clamp(1.5rem, 3.5vw, 3rem); font-weight: 600; line-height: 1.4; color: #fff; max-width: 1400px; }
+        .about-text { font-size: clamp(1.5rem, 3.5vw, 3rem); font-weight: 600; line-height: 1.4; color: #fff; max-width: 1400px; transition: color 0.5s; }
         .about-text span { color: #445; transition: color 0.5s ease; }
         .about-highlight { color: var(--text) !important; text-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
+        
+        body.light-mode .about-text { color: #111; }
+        body.light-mode .about-text span { color: #99a; }
+        body.light-mode .about-highlight { color: #000 !important; text-shadow: none; }
 
         /* === HORIZONTAL SCROLL TIMELINE === */
         .horizontal-section { overflow: hidden; position: relative; z-index: 5; background: #030610; }
+        body.light-mode .horizontal-section { background: #d5dde4; }
         .horizontal-wrapper { display: flex; width: 400vw; height: 100vh; }
         .panel { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0 5vw; }
 
         .exp-card {
             background: var(--glass); border: 1px solid var(--border); padding: 4rem; border-radius: 24px;
             width: 100%; max-width: 1000px; backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 1.5rem; position: relative; overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); transition: background 0.5s;
         }
+        body.light-mode .exp-card { background: rgba(255,255,255,0.7); box-shadow: 0 10px 40px rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
 
-        .card-top-row {
-            display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;
-        }
-
+        .card-top-row { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
         .exp-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent), transparent); }
         .exp-icon { font-size: 3.5rem; color: var(--accent); margin-bottom: -1rem; text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);}
         .exp-year { color: #556; font-family: 'Anton', sans-serif; font-size: 3.5rem; line-height: 1; }
         .exp-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; color: #fff; }
+        body.light-mode .exp-year { color: #889; }
+        body.light-mode .exp-title { color: #000; }
         .exp-company { font-size: 1.2rem; color: var(--accent); font-weight: 600; font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
         .exp-desc { font-size: 1.15rem; line-height: 1.8; color: #99a; margin-top: 1rem;}
         .exp-desc strong { color: #fff; border-bottom: 1px solid var(--accent); }
+        body.light-mode .exp-desc { color: #445; }
+        body.light-mode .exp-desc strong { color: #000; }
 
         /* 3D FLOATING BRAND LOGO LINKS */
-        .floating-brands {
-            display: flex; gap: 20px; perspective: 1000px; padding-top: 10px;
-        }
-
+        .floating-brands { display: flex; gap: 20px; perspective: 1000px; padding-top: 10px; }
         .brand-float {
             width: 80px; height: 80px; border-radius: 16px;
             background: rgba(0, 229, 255, 0.05); 
@@ -232,13 +311,12 @@
             box-shadow: 0 10px 20px rgba(0, 229, 255, 0.1), inset 0 0 10px rgba(0,229,255,0.1);
             padding: 10px;
         }
-
+        body.light-mode .brand-float { background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .brand-float img {
             width: 100%; height: 100%; object-fit: contain;
             filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5)); 
             transition: transform 0.3s ease, filter 0.3s ease;
         }
-
         .brand-float.float-1 { animation: float3D 4s ease-in-out infinite; }
         .brand-float.float-2 { animation: float3D 5s ease-in-out infinite 2s; }
 
@@ -255,36 +333,34 @@
             border-color: rgba(0, 229, 255, 0.6);
             animation-play-state: paused;
         }
-
         .brand-float:hover img {
             transform: scale(1.1);
             filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.8)) brightness(1.2);
         }
 
         /* === BENTO GRID SECTION === */
-        .bento-container {
-            padding: 8rem 5vw; max-width: 1400px; margin: 0 auto; position: relative; z-index: 5;
-        }
-
-        .bento-grid {
-            display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; grid-auto-rows: minmax(180px, auto);
-        }
+        .bento-container { padding: 8rem 5vw; max-width: 1400px; margin: 0 auto; position: relative; z-index: 5; }
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; grid-auto-rows: minmax(180px, auto); }
 
         .bento-box {
             background: rgba(10, 15, 30, 0.4); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem;
             backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center;
-            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s, background 0.5s;
         }
-
+        body.light-mode .bento-box { background: rgba(255, 255, 255, 0.6); border-color: rgba(0,0,0,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        
         .bento-box:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15); }
 
         .box-editing { grid-column: span 12; background: linear-gradient(135deg, rgba(0,229,255,0.08) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(0,229,255,0.4); }
+        body.light-mode .box-editing { background: linear-gradient(135deg, rgba(0,119,255,0.1) 0%, rgba(255,255,255,0.8) 100%); border: 1px solid rgba(0,119,255,0.3); }
+        
         .box-media { grid-column: span 7; }
         .box-code { grid-column: span 5; }
         .box-projects { grid-column: span 6; }
         .box-education { grid-column: span 6; }
 
         .bento-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        body.light-mode .bento-title { color: #000; }
         .bento-title i { color: var(--accent); font-size: 2rem; }
 
         .pro-apps { display: flex; flex-wrap: wrap; gap: 20px; }
@@ -292,16 +368,22 @@
             display: flex; align-items: center; gap: 15px; background: #050a15; border: 1px solid #1a2540; padding: 1.2rem 2rem; border-radius: 16px; 
             font-family: 'Anton', sans-serif; font-size: 1.5rem; letter-spacing: 1px; color: #fff; transition: all 0.3s ease; flex-grow: 1; justify-content: center;
         }
+        body.light-mode .app-card { background: #fff; border-color: #ddd; color: #111; }
         .app-card:hover { background: var(--accent); color: #000; box-shadow: 0 10px 30px rgba(0, 229, 255, 0.3); border-color: var(--accent); transform: scale(1.05); }
+        body.light-mode .app-card:hover { color: #fff; }
 
         .tag-wrap { display: flex; flex-wrap: wrap; gap: 12px; }
         .tag { padding: 10px 18px; border-radius: 8px; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); font-size: 1rem; color: #ddd; font-weight: 500; }
+        body.light-mode .tag { background: rgba(0,119,255,0.05); color: #333; border-color: rgba(0,119,255,0.2); }
         .tag:hover { border-color: var(--accent); color: #000; background: var(--accent); }
+        body.light-mode .tag:hover { color: #fff; }
         .code-tag { padding: 8px 14px; border-radius: 6px; border: 1px dashed #445; color: #889; font-size: 0.9rem; font-family: monospace;}
+        body.light-mode .code-tag { border-color: #aaa; color: #555; }
 
         .info-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
         .info-list li h4 { color: var(--accent); font-size: 1.2rem; margin-bottom: 5px; font-weight: 700; }
         .info-list li p { color: #99a; font-size: 0.95rem; line-height: 1.5; }
+        body.light-mode .info-list li p { color: #445; }
         .info-list li span { display: block; font-size: 0.85rem; color: #556; margin-top: 5px; font-weight: 600;}
 
         /* === FOOTER / CONTACT === */
@@ -309,6 +391,7 @@
             min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-align: center; position: relative; background: #010205; border-top: 1px solid var(--border); z-index: 10;
         }
+        body.light-mode .footer { background: #d5dde4; border-color: rgba(0,0,0,0.1); }
 
         .contact-label { color: var(--accent); font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 2rem; font-family: 'Space Grotesk', sans-serif;}
 
@@ -325,6 +408,7 @@
             text-decoration: none; color: #fff; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
+        body.light-mode .social-btn { color: #000; border-color: #ccc; }
         .social-btn i { font-size: 1.5rem; }
         .btn-whatsapp:hover { background: #25D366; color: #fff; border-color: #25D366; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3); }
         .btn-instagram:hover { background: #E1306C; color: #fff; border-color: #E1306C; box-shadow: 0 10px 30px rgba(225, 48, 108, 0.3); }
@@ -332,6 +416,7 @@
 
         .footer-details { display: flex; gap: 2rem; font-size: 1.1rem; color: #889; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;}
         .footer-item { display: flex; align-items: center; gap: 10px; background: var(--glass); padding: 12px 25px; border-radius: 50px; border: 1px solid var(--border); color: #ddd; font-weight: 500;}
+        body.light-mode .footer-item { background: #fff; color: #222; border-color: #ccc; }
         .footer-item i { color: var(--accent); font-size: 1.3rem;}
 
         .ai-widget-btn {
@@ -342,7 +427,9 @@
             padding: 1.2rem 2.5rem; border-radius: 50px; text-decoration: none;
             transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0,229,255,0.1);
         }
+        body.light-mode .ai-widget-btn { color: #000; }
         .ai-widget-btn:hover { background: var(--accent); color: #000000; box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
+        body.light-mode .ai-widget-btn:hover { color: #fff; }
 
         .magnetic-wrap { display: inline-block; }
     </style>
@@ -354,10 +441,23 @@
        <span class="hidden-citation"></span>
     </div>
 
+    <!-- UI Controls -->
+    <div class="top-controls left-controls">
+        <button id="btn-glitter" class="control-btn active" title="Glitter Cursor">
+            <i class="ri-sparkling-fill"></i>
+        </button>
+        <button id="btn-eraser" class="control-btn" title="Eraser Mode">
+            <i class="ri-eraser-fill"></i>
+        </button>
+    </div>
+    <div class="top-controls right-controls">
+        <button id="btn-theme" class="control-btn" title="Toggle Theme">
+            <i class="ri-moon-fill"></i>
+        </button>
+    </div>
+
     <canvas id="smoke-canvas"></canvas>
-    
     <canvas id="glitter-canvas"></canvas>
-    
     <div class="noise-bg"></div>
 
     <div class="cursor-dot"></div>
@@ -366,36 +466,35 @@
     <div class="welcome-screen">
         <img src="welcome-photo.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
         
-        <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
-        
-        <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #E1306C;"></i>
-        <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #FF0000;"></i>
-        <i class="ri-camera-lens-fill float-icon f-icon" style="top: 70%; left: 10%; color: #a334fa;"></i>
-        <i class="ri-clapperboard-fill float-icon f-icon" style="top: 60%; right: 15%; color: #ffd700;"></i>
-        <i class="ri-edit-box-fill float-icon f-icon" style="top: 80%; left: 35%; color: #00f0ff;"></i>
-        <i class="ri-mac-fill float-icon f-icon" style="top: 15%; right: 40%; color: #ff6b00;"></i>
-        <i class="ri-video-chat-fill float-icon f-icon" style="top: 85%; right: 40%; color: #25D366;"></i>
+        <!-- Everything in this wrapper gets erased by the cursor in eraser mode -->
+        <div class="eraser-layer">
+            <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
+            
+            <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #E1306C;"></i>
+            <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #FF0000;"></i>
+            <i class="ri-camera-lens-fill float-icon f-icon" style="top: 70%; left: 10%; color: #a334fa;"></i>
+            <i class="ri-clapperboard-fill float-icon f-icon" style="top: 60%; right: 15%; color: #ffd700;"></i>
+            <i class="ri-edit-box-fill float-icon f-icon" style="top: 80%; left: 35%; color: #00f0ff;"></i>
+            <i class="ri-mac-fill float-icon f-icon" style="top: 15%; right: 40%; color: #ff6b00;"></i>
+            <i class="ri-video-chat-fill float-icon f-icon" style="top: 85%; right: 40%; color: #25D366;"></i>
 
-        <div class="scroll-indicator" style="bottom: 50px;">
-            Scroll to Enter
-            <div class="scroll-line"></div>
+            <div class="scroll-indicator" style="bottom: 50px;">
+                Scroll to Enter
+                <div class="scroll-line"></div>
+            </div>
         </div>
     </div>
 
     <div class="scroll-spacer"></div>
 
+    <!-- Remaining content (Hero, About, etc. as unchanged structure)... -->
     <section class="hero" id="hero-main">
-        
         <div class="text-utkarsh gsap-title-left">UTKARSH</div>
-        
         <div class="hero-image-box gsap-hero-img-box">
             <img src="cutout.png" alt="Utkarsh Shukla" class="gsap-hero-img holographic-cutout">
         </div>
-
         <div class="text-shukla gsap-title-right">SHUKLA</div>
-
         <div class="hero-subtitle-badge gsap-badge">CONTENT STRATEGIST</div>
-
         <div class="scroll-indicator">
             Scroll Down
             <div class="scroll-line"></div>
@@ -411,10 +510,8 @@
 
     <section class="horizontal-section">
         <div class="horizontal-wrapper">
-            
             <div class="panel">
                 <div class="exp-card">
-                    
                     <div class="card-top-row">
                         <div>
                             <i class="ri-rocket-2-fill exp-icon"></i>
@@ -422,7 +519,6 @@
                             <div class="exp-title">Social Media Manager & Strategist</div>
                             <div class="exp-company">eSamparkTech Solutions & MEDH</div>
                         </div>
-
                         <div class="floating-brands">
                             <a href="https://esampark.biz/" target="_blank" class="brand-float float-1" title="Visit eSampark">
                                 <img src="esampark-logo.png" alt="eSampark Logo">
@@ -432,7 +528,6 @@
                             </a>
                         </div>
                     </div>
-
                     <div class="exp-desc">
                         Owning the end-to-end content strategy, ideation, shoot planning, and publishing calendars. I write highly-targeted reel scripts specifically engineered for <strong>parents</strong> and perform as the <strong>primary on-camera talent</strong> for brand videos.
                         <br><br>
@@ -480,7 +575,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 
@@ -562,13 +656,11 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     </section>
 
     <footer class="footer">
         <div class="contact-label">Initiate Transmission</div>
-        
         <div class="magnetic-wrap">
             <a href="mailto:utkarshshukla0327@gmail.com" class="huge-contact">Let's Connect</a>
         </div>
@@ -609,7 +701,45 @@
         </div>
     </footer>
 
+    <!-- Tools & Theme Switcher Logic -->
     <script>
+        let isEraserMode = false;
+        const btnGlitterMode = document.getElementById('btn-glitter');
+        const btnEraserMode = document.getElementById('btn-eraser');
+        const btnTheme = document.getElementById('btn-theme');
+
+        // Toolbar Logic
+        btnGlitterMode.addEventListener('click', () => {
+            isEraserMode = false;
+            document.body.classList.remove('eraser-mode');
+            btnGlitterMode.classList.add('active');
+            btnEraserMode.classList.remove('active');
+        });
+
+        btnEraserMode.addEventListener('click', () => {
+            isEraserMode = true;
+            document.body.classList.add('eraser-mode');
+            btnEraserMode.classList.add('active');
+            btnGlitterMode.classList.remove('active');
+        });
+
+        // Theme Toggle
+        btnTheme.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const icon = btnTheme.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.classList.remove('ri-moon-fill');
+                icon.classList.add('ri-sun-fill');
+            } else {
+                icon.classList.remove('ri-sun-fill');
+                icon.classList.add('ri-moon-fill');
+            }
+        });
+    </script>
+
+    <!-- Original Canvas Scripts -->
+    <script>
+        // --- SMOKE CANVAS ---
         const smokeCanvas = document.getElementById('smoke-canvas');
         const sCtx = smokeCanvas.getContext('2d');
         smokeCanvas.width = window.innerWidth;
@@ -678,6 +808,7 @@
     </script>
 
     <script>
+        // --- GLITTER CANVAS ---
         const glitterCanvas = document.getElementById('glitter-canvas');
         const gCtx = glitterCanvas.getContext('2d');
         glitterCanvas.width = window.innerWidth;
@@ -733,8 +864,15 @@
         }
 
         window.addEventListener('mousemove', (e) => {
-            for (let i = 0; i < 1; i++) { 
-                glitterArray.push(new GlitterParticle(e.clientX, e.clientY));
+            // Eraser logic mask positioning
+            if(isEraserMode) {
+                document.body.style.setProperty('--mx', e.clientX + 'px');
+                document.body.style.setProperty('--my', e.clientY + 'px');
+            } else {
+                // Glitter spawn
+                for (let i = 0; i < 1; i++) { 
+                    glitterArray.push(new GlitterParticle(e.clientX, e.clientY));
+                }
             }
         });
 
@@ -767,6 +905,7 @@
     </script>
 
     <script>
+        // --- CURSOR AND GSAP ANIMATIONS ---
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
 
@@ -781,17 +920,21 @@
             }, { duration: 300, fill: "forwards" });
         });
 
-        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .brand-float');
+        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .brand-float, .control-btn');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
-                cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
-                cursorOutline.style.backgroundColor = 'rgba(0, 240, 255, 0.15)';
-                cursorOutline.style.borderColor = 'rgba(0, 240, 255, 1)';
+                if(!isEraserMode) {
+                    cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
+                    cursorOutline.style.backgroundColor = 'rgba(0, 240, 255, 0.15)';
+                    cursorOutline.style.borderColor = 'rgba(0, 240, 255, 1)';
+                }
             });
             el.addEventListener('mouseleave', () => {
-                cursorOutline.style.width = '40px'; cursorOutline.style.height = '40px';
-                cursorOutline.style.backgroundColor = 'transparent';
-                cursorOutline.style.borderColor = 'var(--accent)';
+                if(!isEraserMode) {
+                    cursorOutline.style.width = '40px'; cursorOutline.style.height = '40px';
+                    cursorOutline.style.backgroundColor = 'transparent';
+                    cursorOutline.style.borderColor = 'var(--accent)';
+                }
             });
         });
 
@@ -799,7 +942,6 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             
-            // Welcome Screen Icon Animations
             gsap.utils.toArray('.f-icon').forEach(icon => {
                 gsap.to(icon, {
                     y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)",
@@ -807,12 +949,10 @@
                 });
             });
             
-            // 🚀 Subtle Float for Welcome Photo 🚀
             gsap.to(".gsap-welcome-photo", {
                 y: -15, duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut"
             });
 
-            // Welcome Screen Disappear on Scroll
             gsap.to('.welcome-screen', {
                 opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut",
                 scrollTrigger: {
@@ -820,7 +960,6 @@
                 }
             });
 
-            // Hero Section Animations
             gsap.from(".gsap-hero-img-box", { 
                 scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out",
                 scrollTrigger: {
@@ -845,7 +984,6 @@
                 scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }
             });
 
-            // Split text animation for info section
             const text = document.getElementById("split-text");
             const words = text.innerText.split(" ");
             text.innerHTML = "";
@@ -873,7 +1011,6 @@
                 }
             });
 
-            // Horizontal scrolling panel setup
             const horizontalWrapper = document.querySelector('.horizontal-wrapper');
             const panels = gsap.utils.toArray('.panel');
 
@@ -886,7 +1023,6 @@
                 }
             });
 
-            // Bento Grid entry
             gsap.utils.toArray('.gsap-fade-up').forEach(box => {
                 gsap.from(box, {
                     y: 60, opacity: 0, duration: 1, ease: "power3.out",
@@ -894,7 +1030,6 @@
                 });
             });
 
-            // Magnetic Buttons
             const magnetics = document.querySelectorAll('.magnetic-wrap');
             magnetics.forEach((magnetic) => {
                 magnetic.addEventListener('mousemove', function(e) {
