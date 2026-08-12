@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Remix Icons (For high-quality scalable icons) -->
+    <!-- Remix Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <!-- GSAP & ScrollTrigger -->
@@ -22,7 +22,7 @@
         :root {
             --bg: #03050a; 
             --text: #f0f0f0;
-            --accent: #00e5ff; /* Cyan Blue matching the screenshot */
+            --accent: #00e5ff; /* Cyan Blue */
             --glass: rgba(0, 229, 255, 0.03);
             --border: rgba(0, 229, 255, 0.15);
         }
@@ -194,14 +194,14 @@
         .exp-desc { font-size: 1.15rem; line-height: 1.8; color: #99a; margin-top: 1rem;}
         .exp-desc strong { color: #fff; border-bottom: 1px solid var(--accent); }
 
-        /* 🚀 NEW: CREATIVE 3D FLOATING LOGO LINKS 🚀 */
+        /* 3D FLOATING BRAND LOGO LINKS */
         .floating-brands {
             display: flex; gap: 20px; perspective: 1000px; padding-top: 10px;
         }
 
         .brand-float {
             width: 80px; height: 80px; border-radius: 16px;
-            background: rgba(0, 229, 255, 0.05); /* Subtle cyber glass */
+            background: rgba(0, 229, 255, 0.05); 
             border: 1px solid rgba(0, 229, 255, 0.2);
             display: flex; align-items: center; justify-content: center;
             text-decoration: none; transform-style: preserve-3d; transition: all 0.3s ease;
@@ -211,12 +211,12 @@
 
         .brand-float img {
             width: 100%; height: 100%; object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5)); /* Glows the transparent PNG */
+            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5)); 
             transition: transform 0.3s ease, filter 0.3s ease;
         }
 
         .brand-float.float-1 { animation: float3D 4s ease-in-out infinite; }
-        .brand-float.float-2 { animation: float3D 5s ease-in-out infinite 2s; } /* Delayed for staggered float */
+        .brand-float.float-2 { animation: float3D 5s ease-in-out infinite 2s; }
 
         @keyframes float3D {
             0% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
@@ -321,14 +321,14 @@
         .ai-widget-btn:hover { background: var(--accent); color: #000000; box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
 
         .magnetic-wrap { display: inline-block; }
-        
-        /* Hidden citation */
-        .hidden-citation { display: none; }
     </style>
 </head>
 <body>
-    <span class="hidden-citation">[cite: 1]</span>
-    <span class="hidden-citation">[cite: 2]</span>
+    
+    <!-- Hidden citations data for internal system matching (Invisible to user) -->
+    <div style="display: none;" aria-hidden="true">
+       [cite: 1][cite: 2]
+    </div>
 
     <!-- Background Effects -->
     <canvas id="smoke-canvas"></canvas>
@@ -345,7 +345,7 @@
     <div class="welcome-screen">
         <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
         
-        <!-- Floating Media & Editing Icons (Colourful) -->
+        <!-- Floating Media & Editing Icons -->
         <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #E1306C;"></i>
         <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #FF0000;"></i>
         <i class="ri-camera-lens-fill float-icon f-icon" style="top: 70%; left: 10%; color: #a334fa;"></i>
@@ -369,8 +369,6 @@
         <div class="text-utkarsh gsap-title-left">UTKARSH</div>
         
         <div class="hero-image-box gsap-hero-img-box">
-            <!-- 🚀 TRANSPARENT CUTOUT IMAGE GOES HERE 🚀 -->
-            <!-- Use the exact name: cutout.png -->
             <img src="cutout.png" alt="Utkarsh Shukla" class="gsap-hero-img holographic-cutout">
         </div>
 
@@ -396,7 +394,7 @@
     <section class="horizontal-section">
         <div class="horizontal-wrapper">
             
-            <!-- Panel 1: SMM & Strategy (WITH 3D FLOATING LOGOS) -->
+            <!-- Panel 1: SMM & Strategy -->
             <div class="panel">
                 <div class="exp-card">
                     
@@ -408,14 +406,12 @@
                             <div class="exp-company">eSamparkTech Solutions & MEDH</div>
                         </div>
 
-                        <!-- 🚀 3D FLOATING BRAND LOGO LINKS 🚀 -->
+                        <!-- 3D FLOATING BRAND LOGO LINKS -->
                         <div class="floating-brands">
                             <a href="https://esampark.biz/" target="_blank" class="brand-float float-1" title="Visit eSampark">
-                                <!-- Upload your transparent logo and name it esampark-logo.png -->
                                 <img src="esampark-logo.png" alt="eSampark Logo">
                             </a>
                             <a href="https://medh.co/" target="_blank" class="brand-float float-2" title="Visit MEDH">
-                                <!-- Upload your transparent logo and name it medh-logo.png -->
                                 <img src="medh-logo.png" alt="MEDH Logo">
                             </a>
                         </div>
@@ -621,19 +617,18 @@
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 100; // Start below screen
-                this.size = Math.random() * 80 + 20; // Big soft particles
+                this.y = canvas.height + Math.random() * 100;
+                this.size = Math.random() * 80 + 20; 
                 this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1.5 + 0.5; // Moving upwards
+                this.speedY = Math.random() * 1.5 + 0.5; 
                 this.opacity = Math.random() * 0.15 + 0.02;
-                this.hue = 180 + Math.random() * 30; // Cyan/Blue hues
+                this.hue = 180 + Math.random() * 30; 
             }
             update() {
                 this.x += this.speedX;
                 this.y -= this.speedY;
-                this.size += 0.1; // Expanding smoke
+                this.size += 0.1; 
                 
-                // Reset if off screen
                 if (this.y < -this.size) {
                     this.y = canvas.height + this.size;
                     this.x = Math.random() * canvas.width;
@@ -644,7 +639,6 @@
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 
-                // Radial gradient to make it soft like smoke
                 let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
                 gradient.addColorStop(0, `hsla(${this.hue}, 100%, 50%, ${this.opacity})`);
                 gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
@@ -682,7 +676,6 @@
 
     <!-- GSAP Custom JS -->
     <script>
-        // === CUSTOM CURSOR LOGIC ===
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
 
@@ -711,10 +704,8 @@
             });
         });
 
-        // === GSAP ANIMATIONS ===
         gsap.registerPlugin(ScrollTrigger);
 
-        // Preloader
         let count = 0;
         const preloaderText = document.querySelector('.preloader');
         const counter = setInterval(() => {
@@ -731,41 +722,24 @@
 
         function initAnimations() {
             
-            // 1. Floating Icons Animation in Welcome Screen
             gsap.utils.toArray('.f-icon').forEach(icon => {
                 gsap.to(icon, {
-                    y: "random(-50, 50)",
-                    x: "random(-50, 50)",
-                    rotation: "random(-30, 30)",
-                    duration: "random(2.5, 4.5)",
-                    repeat: -1,
-                    yoyo: true,
-                    ease: "sine.inOut"
+                    y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)",
+                    duration: "random(2.5, 4.5)", repeat: -1, yoyo: true, ease: "sine.inOut"
                 });
             });
 
-            // 2. Welcome Screen Disappear on Scroll
             gsap.to('.welcome-screen', {
-                opacity: 0,
-                scale: 1.5,
-                filter: "blur(20px)",
-                ease: "power2.inOut",
+                opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut",
                 scrollTrigger: {
-                    trigger: '.scroll-spacer',
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: 1
+                    trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1
                 }
             });
 
-            // 3. Hero Section New Split Typography (Appears as Welcome screen fades)
             gsap.from(".gsap-hero-img-box", { 
                 scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out",
                 scrollTrigger: {
-                    trigger: '.scroll-spacer',
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: 1
+                    trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1
                 }
             });
             
@@ -773,16 +747,10 @@
             gsap.from(".gsap-title-right", { x: 150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
             gsap.from(".gsap-badge", { y: 50, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.6 });
 
-            // Make the 3D cutout float subtly 
             gsap.to(".gsap-hero-img", {
-                y: -20,
-                duration: 2,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
+                y: -20, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut"
             });
             
-            // Text separates vertically on scroll down
             gsap.to(".gsap-title-left", {
                 yPercent: -50, ease: "none",
                 scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }
@@ -792,7 +760,6 @@
                 scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }
             });
 
-            // 4. Cinematic Text Reveal for About Section
             const text = document.getElementById("split-text");
             const words = text.innerText.split(" ");
             text.innerHTML = "";
@@ -805,19 +772,13 @@
             gsap.fromTo("#split-text span", 
                 { opacity: 0.1, y: 20 },
                 {
-                    opacity: 1, y: 0,
-                    stagger: 0.05,
-                    ease: "power2.out",
+                    opacity: 1, y: 0, stagger: 0.05, ease: "power2.out",
                     scrollTrigger: {
-                        trigger: ".about-section",
-                        start: "top 70%",
-                        end: "bottom 60%",
-                        scrub: 1
+                        trigger: ".about-section", start: "top 70%", end: "bottom 60%", scrub: 1
                     }
                 }
             );
 
-            // Highlight specific keywords in the text
             const spans = document.querySelectorAll("#split-text span");
             spans.forEach(span => {
                 const w = span.innerText.trim().toLowerCase();
@@ -827,7 +788,6 @@
             });
         }
 
-        // === HORIZONTAL SCROLL TIMELINE ===
         const horizontalWrapper = document.querySelector('.horizontal-wrapper');
         const panels = gsap.utils.toArray('.panel');
 
@@ -840,7 +800,6 @@
             }
         });
 
-        // Bento Grid Reveal
         gsap.utils.toArray('.gsap-fade-up').forEach(box => {
             gsap.from(box, {
                 y: 60, opacity: 0, duration: 1, ease: "power3.out",
@@ -848,7 +807,6 @@
             });
         });
 
-        // Magnetic Effect
         const magnetics = document.querySelectorAll('.magnetic-wrap');
         magnetics.forEach((magnetic) => {
             magnetic.addEventListener('mousemove', function(e) {
