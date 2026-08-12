@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -19,11 +18,9 @@
         :root {
             --bg: #03050a; 
             --text: #f0f0f0;
-            --accent: #00e5ff; /* Cyan Blue */
+            --accent: #00e5ff; 
             --glass: rgba(0, 229, 255, 0.03);
             --border: rgba(0, 229, 255, 0.15);
-            --mx: 50%;
-            --my: 50%;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -41,16 +38,13 @@
         ::selection { background: var(--accent); color: #000; }
 
         .welcome-text, .text-utkarsh, .text-shukla, .hero-subtitle-badge, .float-icon {
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            user-select: none; -webkit-user-select: none;
         }
 
-        /* === CURSOR SELECTION SCREEN (NEW) === */
+        /* === CURSOR SELECTION SCREEN (STEP 1) === */
         .cursor-selection-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #010205; z-index: 9999999; /* Highest priority */
+            background: #010205; z-index: 9999999; 
             display: flex; flex-direction: row; 
             transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
@@ -85,23 +79,30 @@
         .cursor-option-btn.selected { background: var(--accent); color: #000; box-shadow: 0 0 30px rgba(0,229,255,0.6); border-color: var(--accent); transform: scale(1.05); }
         .cursor-option-btn.selected i { color: #000; }
 
+        /* TEST BOARD STYLES */
+        .test-board-wrapper {
+            flex-grow: 1; display: flex; flex-direction: column; width: 100%;
+        }
+
         .test-board {
-            flex-grow: 1; border: 2px dashed var(--border); border-radius: 24px;
+            flex-grow: 1; border: 2px dashed var(--accent); border-radius: 24px;
             background: radial-gradient(circle at center, rgba(0,229,255,0.05) 0%, transparent 70%);
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
-            position: relative; overflow: hidden;
+            position: relative; transition: all 0.3s;
         }
+
+        .test-board:hover { box-shadow: 0 0 40px rgba(0, 229, 255, 0.1) inset; background: rgba(0, 229, 255, 0.02); }
 
         .test-element-btn {
             padding: 15px 40px; background: transparent; border: 2px solid var(--accent);
             color: var(--accent); font-family: 'Space Grotesk', sans-serif; font-weight: 700;
             font-size: 1.2rem; border-radius: 50px; text-transform: uppercase; cursor: none;
-            transition: all 0.3s;
+            transition: all 0.3s; z-index: 10;
         }
         .test-element-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
+        .test-element-text { font-family: 'Anton', sans-serif; font-size: 4rem; color: #fff; opacity: 0.5; z-index: 10;}
 
-        .test-element-text { font-family: 'Anton', sans-serif; font-size: 4rem; color: #fff; opacity: 0.5; }
-
+        /* GO BUTTON */
         .go-wrapper {
             position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
             z-index: 100;
@@ -115,9 +116,7 @@
             opacity: 0; pointer-events: none; transform: translateY(20px);
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         .go-btn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        
         .go-btn.glowing {
             background: var(--accent); color: #000;
             animation: ultimateGlow 1.5s infinite alternate;
@@ -131,63 +130,20 @@
         /* === LOADING SCREEN === */
         .loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #010205; z-index: 999998; /* Below selection screen */
-            display: none; /* Initially hidden */
+            background: #010205; z-index: 999998; display: none; 
             flex-direction: column; align-items: center; justify-content: center;
         }
         
-        .loader-content {
-            width: 80%; max-width: 600px;
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        .loader-header {
-            font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; color: var(--accent);
-            letter-spacing: 5px; text-transform: uppercase; margin-bottom: 2rem;
-            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
-            display: flex; align-items: center; gap: 10px;
-        }
+        .loader-content { width: 80%; max-width: 600px; display: flex; flex-direction: column; align-items: center; }
+        .loader-header { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; color: var(--accent); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 2rem; text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); display: flex; align-items: center; gap: 10px; }
         .loader-header i { font-size: 1.5rem; animation: spin 2s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loader-percentage { font-family: 'Anton', sans-serif; font-size: clamp(4rem, 15vw, 8rem); color: #fff; line-height: 1; margin-bottom: 1rem; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .loader-bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; position: relative; }
+        .loader-bar { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        .loader-details { display: flex; justify-content: space-between; width: 100%; margin-top: 15px; font-family: monospace; font-size: 0.9rem; color: #667; }
 
-        .loader-percentage {
-            font-family: 'Anton', sans-serif; font-size: clamp(4rem, 15vw, 8rem);
-            color: #fff; line-height: 1; margin-bottom: 1rem;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-
-        .loader-bar-container {
-            width: 100%; height: 4px; background: rgba(255,255,255,0.1); 
-            border-radius: 10px; overflow: hidden; position: relative;
-        }
-
-        .loader-bar {
-            width: 0%; height: 100%; background: var(--accent);
-            box-shadow: 0 0 15px var(--accent);
-        }
-        
-        .loader-details {
-            display: flex; justify-content: space-between; width: 100%; margin-top: 15px;
-            font-family: monospace; font-size: 0.9rem; color: #667;
-        }
-
-        /* === TOP CONTROLS (Hidden initially, shown later) === */
-        .top-controls {
-            position: fixed; top: 30px; left: 30px; z-index: 10000;
-            display: none; gap: 15px; background: rgba(0,0,0,0.4);
-            padding: 10px; border-radius: 50px; border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-        }
-        
-        .control-btn {
-            background: transparent; border: 1px solid transparent; color: #666;
-            width: 45px; height: 45px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; cursor: none; transition: all 0.3s ease;
-        }
-        .control-btn:hover { color: #fff; transform: scale(1.1); }
-        .control-btn.active { background: var(--accent); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.5); }
-
+        /* === CANVASES === */
         .noise-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 9996; opacity: 0.05;
@@ -199,6 +155,7 @@
             z-index: 0; pointer-events: none; opacity: 0.5;
         }
 
+        /* Effects Canvas spans everything, but logic handles WHEN to draw */
         #effects-canvas { z-index: 9998; opacity: 1; mix-blend-mode: screen; }
 
         /* === CUSTOM CURSOR DEFAULTS === */
@@ -206,30 +163,10 @@
             position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
             border-radius: 50%; z-index: 99999999; pointer-events: none;
         }
-
         .cursor-dot { width: 6px; height: 6px; background-color: var(--accent); box-shadow: 0 0 10px var(--accent); transition: opacity 0.2s;}
         .cursor-outline { width: 40px; height: 40px; border: 1px solid var(--accent); transition: width 0.2s, height 0.2s, background-color 0.2s; }
 
-        /* Cursor Modes Setup */
-        body.mode-eraser .cursor-outline {
-            width: 200px !important; height: 200px !important;
-            border: 2px dashed var(--accent); background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(2px);
-        }
-        body.mode-eraser .cursor-dot { opacity: 0; }
-
-        body.mode-crosshair .cursor-outline {
-            border-radius: 0; border: none; width: 30px !important; height: 30px !important;
-            background: linear-gradient(to right, transparent 48%, var(--accent) 48%, var(--accent) 52%, transparent 52%),
-                        linear-gradient(to bottom, transparent 48%, var(--accent) 48%, var(--accent) 52%, transparent 52%);
-        }
-        body.mode-crosshair .cursor-dot { opacity: 0; }
-
-        body.mode-pulse .cursor-outline {
-            animation: cursorPulse 1s infinite alternate;
-        }
-        @keyframes cursorPulse { 0% { transform: translate(-50%, -50%) scale(1); border-width: 1px; opacity: 1;} 100% { transform: translate(-50%, -50%) scale(2); border-width: 3px; opacity: 0; } }
-
-        /* === WELCOME SCREEN === */
+        /* === WELCOME SCREEN & MAIN PORTFOLIO === */
         .welcome-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(3, 5, 10, 0.98); backdrop-filter: blur(20px);
@@ -246,80 +183,27 @@
         .welcome-content-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 10; pointer-events: none; transition: -webkit-mask-image 0.2s ease;
+            z-index: 10; pointer-events: none;
         }
 
-        body.mode-eraser .welcome-content-layer, body.mode-eraser .test-board {
-            -webkit-mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
-            mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
-        }
-
-        .welcome-text {
-            font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem);
-            color: var(--text); text-align: center; line-height: 1; 
-            text-transform: uppercase; position: relative; text-shadow: 0 10px 40px rgba(0,0,0,0.8); 
-        }
-
-        .welcome-text span {
-            color: var(--accent); text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000; -webkit-text-stroke: 0;
-        }
-
+        .welcome-text { font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem); color: var(--text); text-align: center; line-height: 1; text-transform: uppercase; position: relative; text-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .welcome-text span { color: var(--accent); text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000; -webkit-text-stroke: 0; }
         .float-icon { position: absolute; font-size: clamp(3rem, 5vw, 6rem); filter: drop-shadow(0 0 15px currentColor); }
-
         .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 2; }
 
-        /* === HERO SECTION === */
-        .hero {
-            height: 100vh; width: 100vw; position: relative; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; background: transparent; overflow: hidden; z-index: 10;
-        }
-
-        .text-utkarsh {
-            position: absolute; top: 15%; width: 100%; text-align: center;
-            font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8;
-            color: #ffffff; z-index: 1; text-transform: uppercase; letter-spacing: -2px;
-        }
-
-        .hero-image-box {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 320px; height: 480px; z-index: 2; border-radius: 12px;
-            border: 2px solid var(--accent); box-shadow: 0 0 50px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.2);
-            overflow: visible; display: flex; align-items: flex-end; justify-content: center; background: transparent;
-        }
-
-        .hero-image-box img.holographic-cutout {
-            position: absolute; bottom: 0; left: 50%; width: 140%; height: auto;
-            object-fit: cover; z-index: 5; transform: translateX(-50%); 
-            filter: drop-shadow(0 -10px 25px rgba(0, 229, 255, 0.4)) contrast(1.1) brightness(0.95);
-        }
-
-        .text-shukla {
-            position: absolute; bottom: 10%; width: 100%; text-align: center;
-            font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8;
-            color: var(--accent); z-index: 3; text-transform: uppercase; letter-spacing: -2px;
-            text-shadow: 0 10px 40px rgba(0, 229, 255, 0.4);
-            background: linear-gradient(180deg, var(--accent) 0%, #0088ff 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle-badge {
-            position: absolute; bottom: 25%; z-index: 10; background: var(--accent); color: #000;
-            font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(1rem, 2vw, 1.5rem);
-            letter-spacing: 6px; padding: 15px 40px; border-radius: 50px; text-transform: uppercase;
-            box-shadow: 0 10px 40px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.5);
-            animation: badgeFloat 3s ease-in-out infinite alternate;
-        }
+        /* REST OF PORTFOLIO CLASSES (Hero, About, Bento, Footer) */
+        .hero { height: 100vh; width: 100vw; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; overflow: hidden; z-index: 10; }
+        .text-utkarsh { position: absolute; top: 15%; width: 100%; text-align: center; font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8; color: #ffffff; z-index: 1; text-transform: uppercase; letter-spacing: -2px; }
+        .hero-image-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; height: 480px; z-index: 2; border-radius: 12px; border: 2px solid var(--accent); box-shadow: 0 0 50px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.2); overflow: visible; display: flex; align-items: flex-end; justify-content: center; background: transparent; }
+        .hero-image-box img.holographic-cutout { position: absolute; bottom: 0; left: 50%; width: 140%; height: auto; object-fit: cover; z-index: 5; transform: translateX(-50%); filter: drop-shadow(0 -10px 25px rgba(0, 229, 255, 0.4)) contrast(1.1) brightness(0.95); }
+        .text-shukla { position: absolute; bottom: 10%; width: 100%; text-align: center; font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8; color: var(--accent); z-index: 3; text-transform: uppercase; letter-spacing: -2px; text-shadow: 0 10px 40px rgba(0, 229, 255, 0.4); background: linear-gradient(180deg, var(--accent) 0%, #0088ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle-badge { position: absolute; bottom: 25%; z-index: 10; background: var(--accent); color: #000; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(1rem, 2vw, 1.5rem); letter-spacing: 6px; padding: 15px 40px; border-radius: 50px; text-transform: uppercase; box-shadow: 0 10px 40px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.5); animation: badgeFloat 3s ease-in-out infinite alternate; }
         @keyframes badgeFloat { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); } }
-
-        .scroll-indicator {
-            position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px;
-            display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 20; color: #888;
-        }
+        .scroll-indicator { position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 20; color: #888; }
         .scroll-line { width: 1px; height: 40px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
         .scroll-line::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: var(--accent); animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite; }
         @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
 
-        /* === ABOUT SECTION === */
         .about-section { min-height: 100vh; padding: 10rem 10vw; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 5; background: linear-gradient(180deg, transparent 0%, #030610 100%); }
         .section-tag { font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
         .section-tag::before { content: ''; display: inline-block; width: 40px; height: 2px; background: var(--accent); }
@@ -327,7 +211,6 @@
         .about-text span { color: #445; transition: color 0.5s ease; }
         .about-highlight { color: var(--text) !important; text-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
 
-        /* === HORIZONTAL SCROLL === */
         .horizontal-section { overflow: hidden; position: relative; z-index: 5; background: #030610; }
         .horizontal-wrapper { display: flex; width: 400vw; height: 100vh; }
         .panel { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0 5vw; }
@@ -344,9 +227,7 @@
         .action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; color: #fff; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 229, 255, 0.05); }
         .action-btn i { font-size: 1.2rem; color: var(--accent); }
         .action-btn:hover { background: var(--accent); color: #000; box-shadow: 0 5px 20px rgba(0, 229, 255, 0.4); border-color: var(--accent); transform: translateY(-3px); }
-        .action-btn:hover i { color: #000; }
 
-        /* === BENTO GRID SECTION === */
         .bento-container { padding: 8rem 5vw; max-width: 1400px; margin: 0 auto; position: relative; z-index: 5; }
         .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; grid-auto-rows: minmax(180px, auto); }
         .bento-box { background: rgba(10, 15, 30, 0.4); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;}
@@ -367,7 +248,6 @@
         .info-list li p { color: #99a; font-size: 0.95rem; line-height: 1.5; }
         .info-list li span { display: block; font-size: 0.85rem; color: #556; margin-top: 5px; font-weight: 600;}
 
-        /* === FOOTER / CONTACT === */
         .footer { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; background: #010205; border-top: 1px solid var(--border); z-index: 10; }
         .contact-label { color: var(--accent); font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 2rem; font-family: 'Space Grotesk', sans-serif;}
         .huge-contact { font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem); color: var(--text); text-decoration: none; transition: all 0.3s; line-height: 1.1; }
@@ -385,9 +265,6 @@
         .ai-widget-btn:hover { background: var(--accent); color: #000000; box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
         .magnetic-wrap { display: inline-block; }
 
-        /* ========================================================
-           📱 MOBILE RESPONSIVENESS (MEDIA QUERIES)
-           ======================================================== */
         @media (max-width: 768px) {
             .cursor-dot, .cursor-outline { display: none !important; }
             * { cursor: auto !important; }
@@ -397,8 +274,6 @@
             .cursor-left-panel { border-right: none; border-bottom: 1px solid var(--border); }
             .test-board { min-height: 300px; margin-bottom: 80px; }
 
-            .top-controls { top: 15px; left: 50%; transform: translateX(-50%); gap: 15px; }
-            .control-btn { width: 40px; height: 40px; font-size: 1.1rem; }
             .welcome-cutout { height: 80vh; bottom: -5%; }
             .welcome-text { font-size: clamp(2.5rem, 12vw, 4rem); }
             .float-icon { font-size: clamp(2rem, 8vw, 3rem); }
@@ -422,7 +297,7 @@
         }
     </style>
 </head>
-<body class="locked mode-classic">
+<body class="locked">
     
     <div style="display: none;" aria-hidden="true">
        <span class="hidden-citation"></span>
@@ -431,29 +306,28 @@
 
     <!-- === CURSOR SELECTION SCREEN (STEP 1) === -->
     <div id="cursor-selection-screen" class="cursor-selection-wrapper">
-        <!-- Left Side: Selection -->
         <div class="cursor-left-panel">
-            <h2 class="panel-title">CHOOSE YOUR CURSOR</h2>
+            <h2 class="panel-title">CHOOSE YOUR EFFECT</h2>
             <div class="cursor-grid">
-                <button class="cursor-option-btn" data-cursor="classic"><i class="ri-mouse-fill"></i> Classic</button>
-                <button class="cursor-option-btn" data-cursor="glitter"><i class="ri-sparkling-fill"></i> Glitter</button>
-                <button class="cursor-option-btn" data-cursor="water"><i class="ri-drop-fill"></i> Ripple</button>
-                <button class="cursor-option-btn" data-cursor="neon"><i class="ri-magic-line"></i> Neon Trail</button>
-                <button class="cursor-option-btn" data-cursor="eraser"><i class="ri-eraser-fill"></i> Eraser</button>
-                <button class="cursor-option-btn" data-cursor="crosshair"><i class="ri-focus-3-line"></i> Crosshair</button>
-                <button class="cursor-option-btn" data-cursor="pulse"><i class="ri-record-circle-line"></i> Pulse Aura</button>
-                <button class="cursor-option-btn" data-cursor="ghost"><i class="ri-ghost-line"></i> Ghost Trail</button>
-                <button class="cursor-option-btn" data-cursor="spotlight"><i class="ri-flashlight-fill"></i> Spotlight</button>
+                <button class="cursor-option-btn selected" data-effect="classic"><i class="ri-mouse-line"></i> Classic</button>
+                <button class="cursor-option-btn" data-effect="glitter"><i class="ri-sparkling-fill"></i> Glitter</button>
+                <button class="cursor-option-btn" data-effect="water"><i class="ri-drop-fill"></i> Ripple</button>
+                <button class="cursor-option-btn" data-effect="neon"><i class="ri-magic-line"></i> Neon Trail</button>
+                <button class="cursor-option-btn" data-effect="ghost"><i class="ri-ghost-line"></i> Ghost</button>
+                <button class="cursor-option-btn" data-effect="fireflies"><i class="ri-sun-line"></i> Fireflies</button>
+                <button class="cursor-option-btn" data-effect="bubbles"><i class="ri-bubble-chart-fill"></i> Bubbles</button>
+                <button class="cursor-option-btn" data-effect="plasma"><i class="ri-blur-off-line"></i> Plasma</button>
+                <button class="cursor-option-btn" data-effect="sparks"><i class="ri-flashlight-fill"></i> Sparks</button>
             </div>
         </div>
         
-        <!-- Right Side: Test Area -->
         <div class="cursor-right-panel">
-            <h2 class="panel-title">TEST YOUR CURSOR</h2>
-            <div class="test-board" id="test-board">
-                <h3 class="test-element-text">HOVER HERE</h3>
-                <button class="test-element-btn">Interact With Me</button>
-                <p style="color: #666; font-family: monospace;">Move cursor around this box to test the effects.</p>
+            <h2 class="panel-title">TEST YOUR EFFECT</h2>
+            <div class="test-board-wrapper">
+                <div class="test-board" id="test-board">
+                    <h3 class="test-element-text">HOVER HERE</h3>
+                    <button class="test-element-btn">Move Cursor Inside</button>
+                </div>
             </div>
             
             <div class="go-wrapper">
@@ -484,6 +358,7 @@
     <canvas id="effects-canvas"></canvas>
     <div class="noise-bg"></div>
 
+    <!-- NORMAL CURSOR -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
@@ -650,32 +525,35 @@
         <div class="magnetic-wrap"><button id="omni-open-widget-btn" class="ai-widget-btn" style="cursor: none; outline: none;"><i class="ri-robot-2-fill"></i> Open Utkarsh Assistant Widget</button></div>
     </footer>
 
-
     <!-- ==============================================
-         NEW SEQUENCE LOGIC (Selection -> Loader -> Site) 
+         SEQUENCE & TEST BOARD LOGIC
          ============================================== -->
     <script>
-        let currentMode = 'classic';
+        let currentEffect = 'classic';
+        let isTesting = false; // Only true when hovering over Test Board
+        let hasStarted = false; // True once GO is clicked
+
         const goBtn = document.getElementById('go-button');
+        const testBoard = document.getElementById('test-board');
         const selectionScreen = document.getElementById('cursor-selection-screen');
         const loaderWrapper = document.getElementById('loader-wrapper');
         const counterEl = document.getElementById('loader-percentage');
         const barEl = document.getElementById('loader-bar');
         const timeEl = document.getElementById('loader-time');
 
+        // Test Board Hover Logic
+        testBoard.addEventListener('mouseenter', () => { isTesting = true; });
+        testBoard.addEventListener('mouseleave', () => { isTesting = false; });
+
         // Cursor Selection Logic
         document.querySelectorAll('.cursor-option-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Remove active from all
+            btn.addEventListener('click', () => {
                 document.querySelectorAll('.cursor-option-btn').forEach(b => b.classList.remove('selected'));
-                // Add to clicked
                 btn.classList.add('selected');
                 
-                // Get selected cursor
-                currentMode = btn.getAttribute('data-cursor');
-                
-                // Remove old classes from body, add new one
-                document.body.className = `locked mode-${currentMode}`;
+                // Switch effect and clear old canvas particles
+                currentEffect = btn.getAttribute('data-effect');
+                clearCanvasEffects();
 
                 // Show & Animate GO Button
                 goBtn.classList.add('visible');
@@ -685,14 +563,12 @@
 
         // GO Button Click Sequence
         goBtn.addEventListener('click', () => {
-            // Slide Selection Screen Up
             selectionScreen.style.transform = 'translateY(-100%)';
+            hasStarted = true; // Effect will now show everywhere
             
-            // Wait 0.8s for slide to finish, then start Loader
             setTimeout(() => {
-                selectionScreen.style.display = 'none'; // cleanup
-                loaderWrapper.style.display = 'flex'; // show loader
-                
+                selectionScreen.style.display = 'none'; 
+                loaderWrapper.style.display = 'flex'; 
                 startLoadingSequence();
             }, 800);
         });
@@ -701,24 +577,17 @@
             let count = 0;
             let loaderInterval = setInterval(() => {
                 count += Math.floor(Math.random() * 4) + 1; 
-                
                 if(count >= 50) { timeEl.innerText = "00:00:01"; }
                 if(count >= 90) { timeEl.innerText = "00:00:00"; }
-
                 if(count >= 100) {
                     count = 100;
                     clearInterval(loaderInterval);
-                    
                     setTimeout(() => {
                         gsap.to(loaderWrapper, {
-                            yPercent: -100, 
-                            opacity: 0,
-                            duration: 0.8,
-                            ease: "power4.inOut",
+                            yPercent: -100, opacity: 0, duration: 0.8, ease: "power4.inOut",
                             onComplete: () => {
                                 loaderWrapper.style.display = 'none';
-                                document.body.classList.remove('locked'); // Unlock scrolling for site
-                                document.body.classList.add(`mode-${currentMode}`); // Ensure cursor stays
+                                document.body.classList.remove('locked'); 
                                 ScrollTrigger.refresh(); 
                             }
                         });
@@ -730,177 +599,97 @@
         }
     </script>
 
-
-    <!-- SMOKE CANVAS (Background) -->
-    <script>
-        const smokeCanvas = document.getElementById('smoke-canvas');
-        const sCtx = smokeCanvas.getContext('2d');
-        smokeCanvas.width = window.innerWidth;
-        smokeCanvas.height = window.innerHeight;
-        let smokeArray = [];
-        
-        class SmokeParticle {
-            constructor() {
-                this.x = Math.random() * smokeCanvas.width;
-                this.y = smokeCanvas.height + Math.random() * 100; 
-                this.size = Math.random() * 80 + 20; 
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1.5 + 0.5; 
-                this.opacity = Math.random() * 0.15 + 0.02;
-                this.hue = 180 + Math.random() * 30; 
-            }
-            update() {
-                this.x += this.speedX;
-                this.y -= this.speedY;
-                this.size += 0.1; 
-                if (this.y < -this.size) {
-                    this.y = smokeCanvas.height + this.size;
-                    this.x = Math.random() * smokeCanvas.width;
-                    this.size = Math.random() * 80 + 20;
-                }
-            }
-            draw() {
-                sCtx.beginPath();
-                sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                let gradient = sCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-                gradient.addColorStop(0, `hsla(${this.hue}, 100%, 50%, ${this.opacity})`);
-                gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
-                sCtx.fillStyle = gradient;
-                sCtx.fill();
-            }
-        }
-        function initSmoke() {
-            smokeArray = [];
-            for (let i = 0; i < 40; i++) { smokeArray.push(new SmokeParticle()); }
-        }
-        function animateSmoke() {
-            sCtx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
-            for (let i = 0; i < smokeArray.length; i++) {
-                smokeArray[i].update();
-                smokeArray[i].draw();
-            }
-            requestAnimationFrame(animateSmoke);
-        }
-        window.addEventListener('resize', () => {
-            smokeCanvas.width = window.innerWidth;
-            smokeCanvas.height = window.innerHeight;
-            initSmoke();
-        });
-        initSmoke();
-        animateSmoke();
-    </script>
-
-    <!-- EFFECTS CANVAS (Glitter, Water, Neon Trail, Ghost, Spotlight) -->
+    <!-- EFFECTS CANVAS (9 Canvas Logic Effects) -->
     <script>
         const effectsCanvas = document.getElementById('effects-canvas');
         const gCtx = effectsCanvas.getContext('2d');
         effectsCanvas.width = window.innerWidth;
         effectsCanvas.height = window.innerHeight;
         
-        // Arrays for different effects
+        // Arrays for 9 effects
         let glitterArray = [];
         let waterArray = [];
         let neonTrail = [];
         let ghostArray = [];
+        let fireflyArray = [];
+        let bubbleArray = [];
+        let plasmaArray = [];
+        let sparkArray = [];
 
-        // CLASSES FOR CANVAS EFFECTS
-        class GlitterParticle {
-            constructor(x, y) {
-                this.x = x + (Math.random() * 10 - 5); this.y = y + (Math.random() * 10 - 5);
-                this.size = Math.random() * 2 + 1; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * 1 - 0.5;
-                this.color = Math.random() > 0.5 ? '#00e5ff' : '#ffffff'; this.life = 100; 
-                this.type = Math.random() > 0.5 ? 'ripple' : 'glitter'; this.rippleRadius = Math.random() * 2;
-            }
-            update() {
-                this.x += this.speedX; this.y += this.speedY; this.life -= 2; 
-                if (this.type === 'ripple') { this.rippleRadius += 1; } else { if (this.size > 0.1) this.size -= 0.05; }
-            }
-            draw() {
-                gCtx.save(); gCtx.globalAlpha = Math.max(0, this.life / 100); gCtx.beginPath();
-                if (this.type === 'ripple') {
-                    gCtx.arc(this.x, this.y, this.rippleRadius, 0, Math.PI * 2);
-                    gCtx.strokeStyle = this.color; gCtx.lineWidth = 1; gCtx.shadowBlur = 5; gCtx.shadowColor = '#00e5ff'; gCtx.stroke();
-                } else {
-                    gCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    gCtx.fillStyle = this.color; gCtx.shadowBlur = 8; gCtx.shadowColor = '#00e5ff'; gCtx.fill();
-                }
-                gCtx.restore();
-            }
+        function clearCanvasEffects() {
+            glitterArray = []; waterArray = []; neonTrail = [];
+            ghostArray = []; fireflyArray = []; bubbleArray = [];
+            plasmaArray = []; sparkArray = [];
         }
 
-        class WaterRipple {
-            constructor(x, y) {
-                this.x = x; this.y = y; this.radius = 1; this.life = 1; this.decay = Math.random() * 0.015 + 0.01; 
-            }
-            update() { this.radius += 2; this.life -= this.decay; }
-            draw() {
-                gCtx.save(); gCtx.beginPath(); gCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                gCtx.strokeStyle = `rgba(0, 229, 255, ${Math.max(0, this.life * 0.7)})`; gCtx.lineWidth = 2; gCtx.stroke(); gCtx.restore();
-            }
+        /* --- THE 9 EFFECT CLASSES --- */
+        class Glitter {
+            constructor(x,y) { this.x=x+(Math.random()*10-5); this.y=y+(Math.random()*10-5); this.size=Math.random()*2+1; this.vx=Math.random()*1-0.5; this.vy=Math.random()*1-0.5; this.color=Math.random()>0.5?'#00e5ff':'#ffffff'; this.life=100; }
+            update() { this.x+=this.vx; this.y+=this.vy; this.size*=0.95; this.life-=2; }
+            draw() { gCtx.fillStyle=this.color; gCtx.globalAlpha=Math.max(0,this.life/100); gCtx.shadowBlur=8; gCtx.shadowColor='#00e5ff'; gCtx.beginPath(); gCtx.arc(this.x,this.y,this.size,0,Math.PI*2); gCtx.fill(); gCtx.restore(); gCtx.globalAlpha=1; gCtx.shadowBlur=0; }
+        }
+        class Water {
+            constructor(x,y) { this.x=x; this.y=y; this.radius=1; this.life=1; this.decay=Math.random()*0.015+0.01; }
+            update() { this.radius+=2; this.life-=this.decay; }
+            draw() { gCtx.strokeStyle=`rgba(0, 229, 255, ${Math.max(0,this.life*0.7)})`; gCtx.lineWidth=2; gCtx.beginPath(); gCtx.arc(this.x,this.y,this.radius,0,Math.PI*2); gCtx.stroke(); }
+        }
+        class Ghost {
+            constructor(x,y) { this.x=x; this.y=y; this.life=1; this.size=15; }
+            update() { this.life-=0.05; this.size-=0.5; }
+            draw() { gCtx.fillStyle=`rgba(0, 229, 255, ${Math.max(0,this.life*0.5)})`; gCtx.beginPath(); gCtx.arc(this.x,this.y,Math.max(0,this.size),0,Math.PI*2); gCtx.fill(); }
+        }
+        class Firefly {
+            constructor(x,y) { this.x=x+(Math.random()*20-10); this.y=y+(Math.random()*20-10); this.size=Math.random()*3+1; this.vx=(Math.random()-0.5)*2; this.vy=Math.random()*-2-1; this.life=100; }
+            update() { this.x+=this.vx; this.y+=this.vy; this.life-=1.5; }
+            draw() { gCtx.fillStyle='#ffc107'; gCtx.shadowBlur=10; gCtx.shadowColor='#ff9800'; gCtx.beginPath(); gCtx.arc(this.x,this.y,this.size,0,Math.PI*2); gCtx.fill(); gCtx.shadowBlur=0;}
+        }
+        class Bubble {
+            constructor(x,y) { this.x=x; this.y=y; this.size=Math.random()*5+2; this.vy=Math.random()*-3-1; this.life=100; this.wobble=Math.random()*Math.PI*2; }
+            update() { this.y+=this.vy; this.x+=Math.sin(this.wobble)*1; this.wobble+=0.1; this.life-=1; this.size+=0.05; }
+            draw() { gCtx.strokeStyle=`rgba(0, 229, 255, ${Math.max(0,this.life/100)})`; gCtx.lineWidth=1.5; gCtx.beginPath(); gCtx.arc(this.x,this.y,this.size,0,Math.PI*2); gCtx.stroke(); }
+        }
+        class Plasma {
+            constructor(x,y) { this.x=x; this.y=y; this.size=Math.random()*20+10; this.life=100; this.color=Math.random()>0.5?'#b900ff':'#00e5ff'; }
+            update() { this.size*=0.95; this.life-=3; }
+            draw() { gCtx.fillStyle=this.color; gCtx.globalAlpha=Math.max(0,this.life/100); gCtx.shadowBlur=20; gCtx.shadowColor=this.color; gCtx.beginPath(); gCtx.arc(this.x,this.y,this.size,0,Math.PI*2); gCtx.fill(); gCtx.globalAlpha=1; gCtx.shadowBlur=0; }
+        }
+        class Spark {
+            constructor(x,y) { this.x=x; this.y=y; this.vx=(Math.random()-0.5)*15; this.vy=(Math.random()-0.5)*15; this.life=100; }
+            update() { this.x+=this.vx; this.y+=this.vy; this.vy+=0.5; this.life-=4; }
+            draw() { gCtx.fillStyle='#ffffff'; gCtx.globalAlpha=Math.max(0,this.life/100); gCtx.shadowBlur=5; gCtx.shadowColor='#ffff00'; gCtx.fillRect(this.x,this.y,2,8); gCtx.globalAlpha=1; gCtx.shadowBlur=0; }
         }
 
-        class GhostDot {
-            constructor(x, y) {
-                this.x = x; this.y = y; this.life = 1; this.size = 15;
-            }
-            update() { this.life -= 0.05; this.size -= 0.5; }
-            draw() {
-                gCtx.save(); gCtx.beginPath(); gCtx.arc(this.x, this.y, Math.max(0, this.size), 0, Math.PI * 2);
-                gCtx.fillStyle = `rgba(0, 229, 255, ${Math.max(0, this.life * 0.5)})`; gCtx.fill(); gCtx.restore();
-            }
-        }
-
-        // MOUSE / TOUCH EVENTS FOR CANVAS
+        // MOUSE MOVEMENT LOGIC
         function handleCursorMovement(x, y) {
-            if (currentMode === 'glitter') {
-                glitterArray.push(new GlitterParticle(x, y));
-            } else if (currentMode === 'water') {
-                if(Math.random() > 0.6) waterArray.push(new WaterRipple(x, y));
-            } else if (currentMode === 'neon') {
-                neonTrail.push({ x: x, y: y, time: Date.now() });
-            } else if (currentMode === 'ghost') {
-                if(Math.random() > 0.4) ghostArray.push(new GhostDot(x, y));
-            }
+            // ONLY SPAWN EFFECTS IF HAS_STARTED is true OR if we are hovering on TEST BOARD
+            if(!hasStarted && !isTesting) return;
+
+            if (currentEffect === 'glitter') glitterArray.push(new Glitter(x, y));
+            if (currentEffect === 'water' && Math.random() > 0.6) waterArray.push(new Water(x, y));
+            if (currentEffect === 'neon') neonTrail.push({ x: x, y: y, time: Date.now() });
+            if (currentEffect === 'ghost' && Math.random() > 0.4) ghostArray.push(new Ghost(x, y));
+            if (currentEffect === 'fireflies') fireflyArray.push(new Firefly(x, y));
+            if (currentEffect === 'bubbles' && Math.random() > 0.7) bubbleArray.push(new Bubble(x, y));
+            if (currentEffect === 'plasma' && Math.random() > 0.5) plasmaArray.push(new Plasma(x, y));
+            if (currentEffect === 'sparks' && Math.random() > 0.5) { for(let i=0; i<3; i++) sparkArray.push(new Spark(x, y)); }
         }
 
-        window.addEventListener('mousemove', (e) => { 
-            handleCursorMovement(e.clientX, e.clientY); 
-            // Eraser / Spotlight CSS vars
-            if(currentMode === 'eraser' || currentMode === 'spotlight') {
-                document.body.style.setProperty('--mx', e.clientX + 'px');
-                document.body.style.setProperty('--my', e.clientY + 'px');
-            }
-        });
-        
-        window.addEventListener('touchmove', (e) => { 
-            if(e.touches.length > 0) {
-                let tx = e.touches[0].clientX; let ty = e.touches[0].clientY;
-                handleCursorMovement(tx, ty);
-                if(currentMode === 'eraser' || currentMode === 'spotlight') {
-                    document.body.style.setProperty('--mx', tx + 'px'); document.body.style.setProperty('--my', ty + 'px');
-                }
-            }
-        });
+        window.addEventListener('mousemove', (e) => handleCursorMovement(e.clientX, e.clientY));
+        window.addEventListener('touchmove', (e) => { if(e.touches.length > 0) handleCursorMovement(e.touches[0].clientX, e.touches[0].clientY); });
 
-        // ANIMATION LOOP FOR ALL CANVAS EFFECTS
+        // MASTER ANIMATION LOOP
         function animateEffects() {
             gCtx.clearRect(0, 0, effectsCanvas.width, effectsCanvas.height);
             let currentTime = Date.now();
 
-            if (currentMode === 'glitter') {
-                for (let i = 0; i < glitterArray.length; i++) {
-                    glitterArray[i].update(); glitterArray[i].draw();
-                    if (glitterArray[i].life <= 0) { glitterArray.splice(i, 1); i--; }
-                }
+            if (currentEffect === 'glitter') {
+                for (let i=0; i<glitterArray.length; i++) { glitterArray[i].update(); glitterArray[i].draw(); if (glitterArray[i].life<=0) { glitterArray.splice(i,1); i--; } }
             } 
-            else if (currentMode === 'water') {
-                for (let i = 0; i < waterArray.length; i++) {
-                    waterArray[i].update(); waterArray[i].draw();
-                    if (waterArray[i].life <= 0) { waterArray.splice(i, 1); i--; }
-                }
+            else if (currentEffect === 'water') {
+                for (let i=0; i<waterArray.length; i++) { waterArray[i].update(); waterArray[i].draw(); if (waterArray[i].life<=0) { waterArray.splice(i,1); i--; } }
             } 
-            else if (currentMode === 'neon') {
-                neonTrail = neonTrail.filter(p => currentTime - p.time < 1500);
+            else if (currentEffect === 'neon') {
+                neonTrail = neonTrail.filter(p => currentTime - p.time < 1500); // Exists for 1.5 seconds exactly
                 for (let i = 0; i < neonTrail.length - 1; i++) {
                     let p1 = neonTrail[i]; let p2 = neonTrail[i+1];
                     let age = currentTime - p1.time; let alpha = 1 - (age / 1500); if (alpha < 0) alpha = 0;
@@ -909,45 +698,30 @@
                     gCtx.shadowBlur = 15 * alpha; gCtx.shadowColor = '#00e5ff'; gCtx.lineCap = 'round'; gCtx.lineJoin = 'round'; gCtx.stroke();
                 }
             }
-            else if (currentMode === 'ghost') {
-                for (let i = 0; i < ghostArray.length; i++) {
-                    ghostArray[i].update(); ghostArray[i].draw();
-                    if (ghostArray[i].life <= 0) { ghostArray.splice(i, 1); i--; }
-                }
+            else if (currentEffect === 'ghost') {
+                for (let i=0; i<ghostArray.length; i++) { ghostArray[i].update(); ghostArray[i].draw(); if (ghostArray[i].life<=0) { ghostArray.splice(i,1); i--; } }
             }
-            else if (currentMode === 'spotlight') {
-                // Draw darkness everywhere EXCEPT around cursor
-                gCtx.fillStyle = 'rgba(0, 0, 0, 0.85)';
-                gCtx.fillRect(0, 0, effectsCanvas.width, effectsCanvas.height);
-                
-                let mx = parseFloat(document.body.style.getPropertyValue('--mx'));
-                let my = parseFloat(document.body.style.getPropertyValue('--my'));
-                
-                if(!isNaN(mx) && !isNaN(my)) {
-                    gCtx.globalCompositeOperation = 'destination-out';
-                    let radGrad = gCtx.createRadialGradient(mx, my, 0, mx, my, 150);
-                    radGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-                    radGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                    gCtx.fillStyle = radGrad;
-                    gCtx.beginPath();
-                    gCtx.arc(mx, my, 150, 0, Math.PI * 2);
-                    gCtx.fill();
-                    gCtx.globalCompositeOperation = 'source-over';
-                }
+            else if (currentEffect === 'fireflies') {
+                for (let i=0; i<fireflyArray.length; i++) { fireflyArray[i].update(); fireflyArray[i].draw(); if (fireflyArray[i].life<=0) { fireflyArray.splice(i,1); i--; } }
+            }
+            else if (currentEffect === 'bubbles') {
+                for (let i=0; i<bubbleArray.length; i++) { bubbleArray[i].update(); bubbleArray[i].draw(); if (bubbleArray[i].life<=0) { bubbleArray.splice(i,1); i--; } }
+            }
+            else if (currentEffect === 'plasma') {
+                for (let i=0; i<plasmaArray.length; i++) { plasmaArray[i].update(); plasmaArray[i].draw(); if (plasmaArray[i].life<=0) { plasmaArray.splice(i,1); i--; } }
+            }
+            else if (currentEffect === 'sparks') {
+                for (let i=0; i<sparkArray.length; i++) { sparkArray[i].update(); sparkArray[i].draw(); if (sparkArray[i].life<=0) { sparkArray.splice(i,1); i--; } }
             }
 
             requestAnimationFrame(animateEffects);
         }
         
-        window.addEventListener('resize', () => {
-            effectsCanvas.width = window.innerWidth;
-            effectsCanvas.height = window.innerHeight;
-        });
-
+        window.addEventListener('resize', () => { effectsCanvas.width = window.innerWidth; effectsCanvas.height = window.innerHeight; });
         animateEffects();
     </script>
 
-    <!-- CURSOR OUTLINE (The circles following mouse) -->
+    <!-- CURSOR OUTLINE ANIMATION -->
     <script>
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
@@ -955,35 +729,59 @@
         window.addEventListener('mousemove', (e) => {
             const posX = e.clientX;
             const posY = e.clientY;
-            if(cursorDot) {
-                cursorDot.style.left = `${posX}px`;
-                cursorDot.style.top = `${posY}px`;
-            }
-            if(cursorOutline) {
-                cursorOutline.animate({
-                    left: `${posX}px`,
-                    top: `${posY}px`
-                }, { duration: 300, fill: "forwards" });
-            }
+            if(cursorDot) { cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`; }
+            if(cursorOutline) { cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 300, fill: "forwards" }); }
         });
 
-        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .action-btn, .test-element-btn');
+        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .action-btn');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
-                if(window.innerWidth > 768 && currentMode !== 'eraser' && currentMode !== 'crosshair' && currentMode !== 'spotlight') {
+                if(window.innerWidth > 768) {
                     cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
-                    cursorOutline.style.backgroundColor = 'rgba(0, 240, 255, 0.15)';
-                    cursorOutline.style.borderColor = 'rgba(0, 240, 255, 1)';
+                    cursorOutline.style.backgroundColor = 'rgba(0, 240, 255, 0.15)'; cursorOutline.style.borderColor = 'rgba(0, 240, 255, 1)';
                 }
             });
             el.addEventListener('mouseleave', () => {
-                if(window.innerWidth > 768 && currentMode !== 'eraser' && currentMode !== 'crosshair' && currentMode !== 'spotlight') {
+                if(window.innerWidth > 768) {
                     cursorOutline.style.width = '40px'; cursorOutline.style.height = '40px';
-                    cursorOutline.style.backgroundColor = 'transparent';
-                    cursorOutline.style.borderColor = 'var(--accent)';
+                    cursorOutline.style.backgroundColor = 'transparent'; cursorOutline.style.borderColor = 'var(--accent)';
                 }
             });
         });
+    </script>
+
+    <!-- SMOKE BACKGROUND CANVAS -->
+    <script>
+        const smokeCanvas = document.getElementById('smoke-canvas');
+        const sCtx = smokeCanvas.getContext('2d');
+        smokeCanvas.width = window.innerWidth; smokeCanvas.height = window.innerHeight;
+        let smokeArray = [];
+        
+        class SmokeParticle {
+            constructor() {
+                this.x = Math.random() * smokeCanvas.width; this.y = smokeCanvas.height + Math.random() * 100; 
+                this.size = Math.random() * 80 + 20; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * 1.5 + 0.5; 
+                this.opacity = Math.random() * 0.15 + 0.02; this.hue = 180 + Math.random() * 30; 
+            }
+            update() {
+                this.x += this.speedX; this.y -= this.speedY; this.size += 0.1; 
+                if (this.y < -this.size) { this.y = smokeCanvas.height + this.size; this.x = Math.random() * smokeCanvas.width; this.size = Math.random() * 80 + 20; }
+            }
+            draw() {
+                sCtx.beginPath(); sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                let gradient = sCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                gradient.addColorStop(0, `hsla(${this.hue}, 100%, 50%, ${this.opacity})`); gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
+                sCtx.fillStyle = gradient; sCtx.fill();
+            }
+        }
+        function initSmoke() { smokeArray = []; for (let i = 0; i < 40; i++) { smokeArray.push(new SmokeParticle()); } }
+        function animateSmoke() {
+            sCtx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
+            for (let i = 0; i < smokeArray.length; i++) { smokeArray[i].update(); smokeArray[i].draw(); }
+            requestAnimationFrame(animateSmoke);
+        }
+        window.addEventListener('resize', () => { smokeCanvas.width = window.innerWidth; smokeCanvas.height = window.innerHeight; initSmoke(); });
+        initSmoke(); animateSmoke();
     </script>
 
     <!-- GSAP SCROLL ANIMATIONS -->
@@ -991,41 +789,27 @@
         gsap.registerPlugin(ScrollTrigger);
 
         document.addEventListener("DOMContentLoaded", () => {
-            
-            gsap.utils.toArray('.f-icon').forEach(icon => {
-                gsap.to(icon, { y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)", duration: "random(2.5, 4.5)", repeat: -1, yoyo: true, ease: "sine.inOut" });
-            });
+            gsap.utils.toArray('.f-icon').forEach(icon => { gsap.to(icon, { y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)", duration: "random(2.5, 4.5)", repeat: -1, yoyo: true, ease: "sine.inOut" }); });
             gsap.to(".gsap-welcome-photo", { y: -15, duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
-
-            gsap.to('.welcome-screen', {
-                opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut",
-                scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 }
-            });
-
+            gsap.to('.welcome-screen', { opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut", scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 } });
             gsap.from(".gsap-hero-img-box", { scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out", scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 } });
             gsap.from(".gsap-title-left", { x: -150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
             gsap.from(".gsap-title-right", { x: 150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
             gsap.from(".gsap-badge", { y: 50, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.6 });
             gsap.to(".gsap-hero-img", { y: -20, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut" });
-            
             gsap.to(".gsap-title-left", { yPercent: -50, ease: "none", scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }});
             gsap.to(".gsap-title-right", { yPercent: 50, ease: "none", scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }});
 
             const text = document.getElementById("split-text");
-            const words = text.innerText.split(" ");
-            text.innerHTML = "";
+            const words = text.innerText.split(" "); text.innerHTML = "";
             words.forEach(word => { let span = document.createElement("span"); span.innerText = word + " "; text.appendChild(span); });
-
             gsap.fromTo("#split-text span", { opacity: 0.1, y: 20 }, { opacity: 1, y: 0, stagger: 0.05, ease: "power2.out", scrollTrigger: { trigger: ".about-section", start: "top 70%", end: "bottom 60%", scrub: 1 } });
-
             const spans = document.querySelectorAll("#split-text span");
             spans.forEach(span => { const w = span.innerText.trim().toLowerCase(); if (['scripts', 'video', 'editing', 'strategy,', 'storytelling,'].includes(w)) { span.classList.add('about-highlight'); } });
 
             const horizontalWrapper = document.querySelector('.horizontal-wrapper');
             const panels = gsap.utils.toArray('.panel');
-
             gsap.to(panels, { xPercent: -100 * (panels.length - 1), ease: "none", scrollTrigger: { trigger: ".horizontal-section", pin: true, scrub: 1, snap: 1 / (panels.length - 1), end: () => "+=" + horizontalWrapper.offsetWidth } });
-
             gsap.utils.toArray('.gsap-fade-up').forEach(box => { gsap.from(box, { y: 60, opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: box, start: "top 85%" } }); });
 
             const magnetics = document.querySelectorAll('.magnetic-wrap');
@@ -1044,7 +828,5 @@
             });
         });
     </script>
-    
-    <script id="omnidimension-web-widget" async src="https://omnidim.io/web_widget.js?secret_key=9abbd03030fa0efb634866671ffcb0b2"></script>
 </body>
 </html>
