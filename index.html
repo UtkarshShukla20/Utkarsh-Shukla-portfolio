@@ -84,7 +84,7 @@
             flex-direction: column; overflow: hidden;
         }
 
-        /* 🚀 NEW: GIANT CUTOUT BEHIND WELCOME TEXT 🚀 */
+        /* 🚀 GIANT CUTOUT BEHIND WELCOME TEXT 🚀 */
         .welcome-cutout {
             position: absolute;
             bottom: -5%; /* Stick to bottom */
@@ -348,17 +348,9 @@
         .ai-widget-btn:hover { background: var(--accent); color: #000000; box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
 
         .magnetic-wrap { display: inline-block; }
-        
-        .hidden-citation { display: none; }
     </style>
 </head>
 <body>
-    
-    <!-- Hidden citations data -->
-    <div style="display: none;" aria-hidden="true">
-       <span class="hidden-citation"></span>
-       <span class="hidden-citation"></span>
-    </div>
 
     <!-- Background Effects -->
     <canvas id="smoke-canvas"></canvas>
@@ -372,8 +364,9 @@
 
     <!-- WELCOME SCREEN (With Giant 3D Cutout Behind Text) -->
     <div class="welcome-screen">
-        <!-- 🚀 NEW: Your giant cutout image set behind the text 🚀 -->
-        <img src="cutout.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
+        <!-- 🚀 NEW: DIFFERENT PHOTO FOR WELCOME SCREEN 🚀 -->
+        <!-- Ensure this file is uploaded as welcome-photo.png to your GitHub -->
+        <img src="welcome-photo.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
         
         <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
         
