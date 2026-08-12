@@ -52,6 +52,12 @@
             z-index: 0; pointer-events: none; opacity: 0.5;
         }
 
+        /* 🚀 NEW: INTERACTIVE WATER-WAVE & GLITTER CANVAS 🚀 */
+        #glitter-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+
         /* === CUSTOM CURSOR === */
         .cursor-dot, .cursor-outline {
             position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
@@ -93,7 +99,7 @@
             z-index: 5; filter: drop-shadow(0 0 15px currentColor);
         }
 
-        .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 1; }
+        .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 2; }
 
         /* === HERO SECTION === */
         .hero {
@@ -327,11 +333,15 @@
     
     <!-- Hidden citations data for internal system matching (Invisible to user) -->
     <div style="display: none;" aria-hidden="true">
-       [cite: 1][cite: 2]
+      [cite: 1][cite: 2]
     </div>
 
     <!-- Background Effects -->
     <canvas id="smoke-canvas"></canvas>
+    
+    <!-- 🚀 NEW: WATER-WAVE & GLITTER INTERACTIVE CANVAS 🚀 -->
+    <canvas id="glitter-canvas"></canvas>
+    
     <div class="noise-bg"></div>
 
     <!-- Custom Cursor -->
@@ -605,19 +615,19 @@
         </div>
     </footer>
 
-    <!-- Canvas Smoke Script -->
+    <!-- 🚀 CANVAS 1: AMBIENT SMOKE SCRIPT 🚀 -->
     <script>
-        const canvas = document.getElementById('smoke-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const smokeCanvas = document.getElementById('smoke-canvas');
+        const sCtx = smokeCanvas.getContext('2d');
+        smokeCanvas.width = window.innerWidth;
+        smokeCanvas.height = window.innerHeight;
 
-        let particlesArray = [];
+        let smokeArray = [];
         
-        class Particle {
+        class SmokeParticle {
             constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 100;
+                this.x = Math.random() * smokeCanvas.width;
+                this.y = smokeCanvas.height + Math.random() * 100;
                 this.size = Math.random() * 80 + 20; 
                 this.speedX = Math.random() * 1 - 0.5;
                 this.speedY = Math.random() * 1.5 + 0.5; 
@@ -630,51 +640,136 @@
                 this.size += 0.1; 
                 
                 if (this.y < -this.size) {
-                    this.y = canvas.height + this.size;
-                    this.x = Math.random() * canvas.width;
+                    this.y = smokeCanvas.height + this.size;
+                    this.x = Math.random() * smokeCanvas.width;
                     this.size = Math.random() * 80 + 20;
                 }
             }
             draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                sCtx.beginPath();
+                sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 
-                let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                let gradient = sCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
                 gradient.addColorStop(0, `hsla(${this.hue}, 100%, 50%, ${this.opacity})`);
                 gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
                 
-                ctx.fillStyle = gradient;
-                ctx.fill();
+                sCtx.fillStyle = gradient;
+                sCtx.fill();
             }
         }
 
-        function initCanvas() {
-            particlesArray = [];
+        function initSmoke() {
+            smokeArray = [];
             for (let i = 0; i < 40; i++) {
-                particlesArray.push(new Particle());
+                smokeArray.push(new SmokeParticle());
             }
         }
 
-        function animateCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
+        function animateSmoke() {
+            sCtx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
+            for (let i = 0; i < smokeArray.length; i++) {
+                smokeArray[i].update();
+                smokeArray[i].draw();
             }
-            requestAnimationFrame(animateCanvas);
+            requestAnimationFrame(animateSmoke);
         }
 
         window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initCanvas();
+            smokeCanvas.width = window.innerWidth;
+            smokeCanvas.height = window.innerHeight;
+            initSmoke();
         });
 
-        initCanvas();
-        animateCanvas();
+        initSmoke();
+        animateSmoke();
     </script>
 
-    <!-- GSAP Custom JS -->
+    <!-- 🚀 CANVAS 2: INTERACTIVE GLITTER & WATER-WAVE MOUSE TRAIL 🚀 -->
+    <script>
+        const glitterCanvas = document.getElementById('glitter-canvas');
+        const gCtx = glitterCanvas.getContext('2d');
+        glitterCanvas.width = window.innerWidth;
+        glitterCanvas.height = window.innerHeight;
+
+        let glitterArray = [];
+
+        class GlitterParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 3 + 1; // Random small size for glitter
+                this.speedX = Math.random() * 2 - 1; // Drift randomly
+                this.speedY = Math.random() * 2 - 1;
+                this.color = 'rgba(0, 229, 255, 0.8)'; // Cyber Cyan
+                this.life = 100; // Opacity/Life counter
+                // 30% chance to be a water ripple, 70% chance to be glitter dust
+                this.type = Math.random() > 0.7 ? 'ripple' : 'glitter';
+                this.rippleRadius = 0;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= 2; // Fade out speed
+                
+                if (this.type === 'ripple') {
+                    this.rippleRadius += 1.5; // Ripple expands
+                } else {
+                    if (this.size > 0.1) this.size -= 0.05; // Glitter shrinks
+                }
+            }
+            draw() {
+                gCtx.save();
+                gCtx.globalAlpha = Math.max(0, this.life / 100);
+                gCtx.beginPath();
+                
+                if (this.type === 'ripple') {
+                    gCtx.arc(this.x, this.y, this.rippleRadius, 0, Math.PI * 2);
+                    gCtx.strokeStyle = this.color;
+                    gCtx.lineWidth = 1;
+                    gCtx.stroke();
+                } else {
+                    gCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    gCtx.fillStyle = '#ffffff'; // White core
+                    gCtx.shadowBlur = 10; // Glowing edge
+                    gCtx.shadowColor = '#00e5ff';
+                    gCtx.fill();
+                }
+                gCtx.restore();
+            }
+        }
+
+        // Spawn particles when mouse moves
+        window.addEventListener('mousemove', (e) => {
+            // Spawn 3 particles per movement tick
+            for (let i = 0; i < 3; i++) {
+                glitterArray.push(new GlitterParticle(e.clientX, e.clientY));
+            }
+        });
+
+        function animateGlitter() {
+            gCtx.clearRect(0, 0, glitterCanvas.width, glitterCanvas.height);
+            for (let i = 0; i < glitterArray.length; i++) {
+                glitterArray[i].update();
+                glitterArray[i].draw();
+                
+                // Remove dead particles to save memory
+                if (glitterArray[i].life <= 0) {
+                    glitterArray.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animateGlitter);
+        }
+        
+        window.addEventListener('resize', () => {
+            glitterCanvas.width = window.innerWidth;
+            glitterCanvas.height = window.innerHeight;
+        });
+
+        animateGlitter();
+    </script>
+
+    <!-- GSAP Custom JS & Cursor Logic -->
     <script>
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
