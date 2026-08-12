@@ -39,6 +39,14 @@
 
         ::selection { background: var(--accent); color: #000; }
 
+        /* Disable ugly blue highlighting on text */
+        .welcome-text, .text-utkarsh, .text-shukla, .hero-subtitle-badge, .float-icon {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
         /* Cinematic Noise Overlay */
         .noise-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -46,16 +54,17 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Dynamic Canvas Smoke Effect */
+        /* Ambient Smoke Effect */
         #smoke-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 0; pointer-events: none; opacity: 0.5;
         }
 
-        /* 🚀 NEW: INTERACTIVE WATER-WAVE & GLITTER CANVAS 🚀 */
+        /* Smooth & Low Power Water-Wave Glitter Effect */
         #glitter-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 1; pointer-events: none;
+            mix-blend-mode: screen;
         }
 
         /* === CUSTOM CURSOR === */
@@ -67,14 +76,6 @@
         .cursor-dot { width: 6px; height: 6px; background-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
         .cursor-outline { width: 40px; height: 40px; border: 1px solid var(--accent); transition: width 0.2s, height 0.2s, background-color 0.2s; }
 
-        /* === PRELOADER === */
-        .preloader {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #000; z-index: 10000;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Anton', sans-serif; font-size: 6rem; color: var(--accent);
-        }
-
         /* === WELCOME SCREEN === */
         .welcome-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -83,20 +84,40 @@
             flex-direction: column; overflow: hidden;
         }
 
+        /* 🚀 NEW: GIANT CUTOUT BEHIND WELCOME TEXT 🚀 */
+        .welcome-cutout {
+            position: absolute;
+            bottom: -5%; /* Stick to bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            height: 90vh; /* Make it massive */
+            width: auto;
+            z-index: 5; /* Below text (10) but above background */
+            object-fit: contain;
+            opacity: 0.85; /* Slightly faded so text is readable */
+            filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.3)); /* Cyan glow */
+            pointer-events: none;
+        }
+
         .welcome-text {
             font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem);
-            color: var(--text); text-align: center; line-height: 1; z-index: 10; text-transform: uppercase;
+            color: var(--text); text-align: center; line-height: 1; 
+            z-index: 10; /* Above the photo */
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0 10px 40px rgba(0,0,0,0.8); /* Strong shadow to stand out over photo */
         }
 
         .welcome-text span {
             color: var(--accent);
-            text-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
+            text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000;
             -webkit-text-stroke: 0;
         }
 
         .float-icon {
             position: absolute; font-size: clamp(3rem, 5vw, 6rem);
-            z-index: 5; filter: drop-shadow(0 0 15px currentColor);
+            z-index: 15; /* Above everything */
+            filter: drop-shadow(0 0 15px currentColor);
         }
 
         .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 2; }
@@ -105,7 +126,7 @@
         .hero {
             height: 100vh; width: 100vw; position: relative;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: #000; overflow: hidden; z-index: 10;
+            background: transparent; overflow: hidden; z-index: 10;
         }
 
         .text-utkarsh {
@@ -147,7 +168,7 @@
 
         .scroll-indicator {
             position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px;
-            display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 10; color: #888;
+            display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 20; color: #888;
         }
         
         .scroll-line {
@@ -327,19 +348,20 @@
         .ai-widget-btn:hover { background: var(--accent); color: #000000; box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
 
         .magnetic-wrap { display: inline-block; }
+        
+        .hidden-citation { display: none; }
     </style>
 </head>
 <body>
     
-    <!-- Hidden citations data for internal system matching (Invisible to user) -->
+    <!-- Hidden citations data -->
     <div style="display: none;" aria-hidden="true">
-      [cite: 1][cite: 2]
+       <span class="hidden-citation"></span>
+       <span class="hidden-citation"></span>
     </div>
 
     <!-- Background Effects -->
     <canvas id="smoke-canvas"></canvas>
-    
-    <!-- 🚀 NEW: WATER-WAVE & GLITTER INTERACTIVE CANVAS 🚀 -->
     <canvas id="glitter-canvas"></canvas>
     
     <div class="noise-bg"></div>
@@ -348,11 +370,11 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <!-- Preloader -->
-    <div class="preloader">0%</div>
-
-    <!-- WELCOME SCREEN (Colorful Floating Icons) -->
+    <!-- WELCOME SCREEN (With Giant 3D Cutout Behind Text) -->
     <div class="welcome-screen">
+        <!-- 🚀 NEW: Your giant cutout image set behind the text 🚀 -->
+        <img src="cutout.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
+        
         <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
         
         <!-- Floating Media & Editing Icons -->
@@ -486,7 +508,7 @@
         <div class="section-tag" style="justify-content: center; margin-bottom: 2rem;">02 // THE ARSENAL</div>
         
         <div class="bento-grid">
-            <!-- MASTER EDITING SUITE (HIGH PRIORITY) -->
+            <!-- MASTER EDITING SUITE -->
             <div class="bento-box box-editing gsap-fade-up">
                 <div class="bento-title"><i class="ri-film-fill"></i> Master Post-Production Suite</div>
                 <div class="pro-apps">
@@ -512,7 +534,7 @@
                 </div>
             </div>
 
-            <!-- PROGRAMMING (NORMAL PRIORITY) -->
+            <!-- PROGRAMMING -->
             <div class="bento-box box-code gsap-fade-up">
                 <div class="bento-title"><i class="ri-terminal-box-line" style="color: #666;"></i> Web & Tech Stack</div>
                 <div class="tag-wrap">
@@ -627,7 +649,7 @@
         class SmokeParticle {
             constructor() {
                 this.x = Math.random() * smokeCanvas.width;
-                this.y = smokeCanvas.height + Math.random() * 100;
+                this.y = smokeCanvas.height + Math.random() * 100; 
                 this.size = Math.random() * 80 + 20; 
                 this.speedX = Math.random() * 1 - 0.5;
                 this.speedY = Math.random() * 1.5 + 0.5; 
@@ -684,7 +706,7 @@
         animateSmoke();
     </script>
 
-    <!-- 🚀 CANVAS 2: INTERACTIVE GLITTER & WATER-WAVE MOUSE TRAIL 🚀 -->
+    <!-- 🚀 CANVAS 2: SMOOTH, LOW-POWER WATER-WAVE CANVAS 🚀 -->
     <script>
         const glitterCanvas = document.getElementById('glitter-canvas');
         const gCtx = glitterCanvas.getContext('2d');
@@ -695,26 +717,26 @@
 
         class GlitterParticle {
             constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 3 + 1; // Random small size for glitter
-                this.speedX = Math.random() * 2 - 1; // Drift randomly
-                this.speedY = Math.random() * 2 - 1;
-                this.color = 'rgba(0, 229, 255, 0.8)'; // Cyber Cyan
-                this.life = 100; // Opacity/Life counter
-                // 30% chance to be a water ripple, 70% chance to be glitter dust
-                this.type = Math.random() > 0.7 ? 'ripple' : 'glitter';
-                this.rippleRadius = 0;
+                this.x = x + (Math.random() * 10 - 5);
+                this.y = y + (Math.random() * 10 - 5);
+                this.size = Math.random() * 2 + 1; 
+                this.speedX = Math.random() * 1 - 0.5; 
+                this.speedY = Math.random() * 1 - 0.5;
+                
+                this.color = Math.random() > 0.5 ? '#00e5ff' : '#ffffff'; 
+                this.life = 100; 
+                this.type = Math.random() > 0.5 ? 'ripple' : 'glitter';
+                this.rippleRadius = Math.random() * 2;
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                this.life -= 2; // Fade out speed
+                this.life -= 2; 
                 
                 if (this.type === 'ripple') {
-                    this.rippleRadius += 1.5; // Ripple expands
+                    this.rippleRadius += 1; 
                 } else {
-                    if (this.size > 0.1) this.size -= 0.05; // Glitter shrinks
+                    if (this.size > 0.1) this.size -= 0.05; 
                 }
             }
             draw() {
@@ -725,12 +747,14 @@
                 if (this.type === 'ripple') {
                     gCtx.arc(this.x, this.y, this.rippleRadius, 0, Math.PI * 2);
                     gCtx.strokeStyle = this.color;
-                    gCtx.lineWidth = 1;
+                    gCtx.lineWidth = 1; 
+                    gCtx.shadowBlur = 5;
+                    gCtx.shadowColor = '#00e5ff';
                     gCtx.stroke();
                 } else {
                     gCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    gCtx.fillStyle = '#ffffff'; // White core
-                    gCtx.shadowBlur = 10; // Glowing edge
+                    gCtx.fillStyle = this.color;
+                    gCtx.shadowBlur = 8; 
                     gCtx.shadowColor = '#00e5ff';
                     gCtx.fill();
                 }
@@ -738,26 +762,29 @@
             }
         }
 
-        // Spawn particles when mouse moves
         window.addEventListener('mousemove', (e) => {
-            // Spawn 3 particles per movement tick
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 1; i++) { 
                 glitterArray.push(new GlitterParticle(e.clientX, e.clientY));
             }
         });
 
         function animateGlitter() {
             gCtx.clearRect(0, 0, glitterCanvas.width, glitterCanvas.height);
+            
             for (let i = 0; i < glitterArray.length; i++) {
                 glitterArray[i].update();
                 glitterArray[i].draw();
                 
-                // Remove dead particles to save memory
                 if (glitterArray[i].life <= 0) {
                     glitterArray.splice(i, 1);
                     i--;
                 }
             }
+            
+            if (glitterArray.length > 150) {
+                glitterArray.splice(0, glitterArray.length - 150);
+            }
+            
             requestAnimationFrame(animateGlitter);
         }
         
@@ -801,29 +828,22 @@
 
         gsap.registerPlugin(ScrollTrigger);
 
-        let count = 0;
-        const preloaderText = document.querySelector('.preloader');
-        const counter = setInterval(() => {
-            count += Math.floor(Math.random() * 15) + 1;
-            if(count > 100) count = 100;
-            preloaderText.innerHTML = count + '%';
-            if(count === 100) {
-                clearInterval(counter);
-                gsap.to('.preloader', {
-                    yPercent: -100, duration: 1.2, ease: "power4.inOut", onComplete: initAnimations
-                });
-            }
-        }, 50);
-
-        function initAnimations() {
+        document.addEventListener("DOMContentLoaded", () => {
             
+            // Welcome Screen Icon Animations
             gsap.utils.toArray('.f-icon').forEach(icon => {
                 gsap.to(icon, {
                     y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)",
                     duration: "random(2.5, 4.5)", repeat: -1, yoyo: true, ease: "sine.inOut"
                 });
             });
+            
+            // 🚀 Subtle Float for Welcome Photo 🚀
+            gsap.to(".gsap-welcome-photo", {
+                y: -15, duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut"
+            });
 
+            // Welcome Screen Disappear on Scroll
             gsap.to('.welcome-screen', {
                 opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut",
                 scrollTrigger: {
@@ -831,6 +851,7 @@
                 }
             });
 
+            // Hero Section Animations
             gsap.from(".gsap-hero-img-box", { 
                 scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out",
                 scrollTrigger: {
@@ -855,6 +876,7 @@
                 scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }
             });
 
+            // Split text animation for info section
             const text = document.getElementById("split-text");
             const words = text.innerText.split(" ");
             text.innerHTML = "";
@@ -881,37 +903,40 @@
                     span.classList.add('about-highlight');
                 }
             });
-        }
 
-        const horizontalWrapper = document.querySelector('.horizontal-wrapper');
-        const panels = gsap.utils.toArray('.panel');
+            // Horizontal scrolling panel setup
+            const horizontalWrapper = document.querySelector('.horizontal-wrapper');
+            const panels = gsap.utils.toArray('.panel');
 
-        gsap.to(panels, {
-            xPercent: -100 * (panels.length - 1),
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".horizontal-section", pin: true, scrub: 1,
-                snap: 1 / (panels.length - 1), end: () => "+=" + horizontalWrapper.offsetWidth
-            }
-        });
-
-        gsap.utils.toArray('.gsap-fade-up').forEach(box => {
-            gsap.from(box, {
-                y: 60, opacity: 0, duration: 1, ease: "power3.out",
-                scrollTrigger: { trigger: box, start: "top 85%" }
+            gsap.to(panels, {
+                xPercent: -100 * (panels.length - 1),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".horizontal-section", pin: true, scrub: 1,
+                    snap: 1 / (panels.length - 1), end: () => "+=" + horizontalWrapper.offsetWidth
+                }
             });
-        });
 
-        const magnetics = document.querySelectorAll('.magnetic-wrap');
-        magnetics.forEach((magnetic) => {
-            magnetic.addEventListener('mousemove', function(e) {
-                const position = magnetic.getBoundingClientRect();
-                const x = e.clientX - position.left - position.width / 2;
-                const y = e.clientY - position.top - position.height / 2;
-                gsap.to(magnetic, { x: x * 0.2, y: y * 0.2, duration: 0.5, ease: "power3.out" });
+            // Bento Grid entry
+            gsap.utils.toArray('.gsap-fade-up').forEach(box => {
+                gsap.from(box, {
+                    y: 60, opacity: 0, duration: 1, ease: "power3.out",
+                    scrollTrigger: { trigger: box, start: "top 85%" }
+                });
             });
-            magnetic.addEventListener('mouseleave', function() {
-                gsap.to(magnetic, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+
+            // Magnetic Buttons
+            const magnetics = document.querySelectorAll('.magnetic-wrap');
+            magnetics.forEach((magnetic) => {
+                magnetic.addEventListener('mousemove', function(e) {
+                    const position = magnetic.getBoundingClientRect();
+                    const x = e.clientX - position.left - position.width / 2;
+                    const y = e.clientY - position.top - position.height / 2;
+                    gsap.to(magnetic, { x: x * 0.2, y: y * 0.2, duration: 0.5, ease: "power3.out" });
+                });
+                magnetic.addEventListener('mouseleave', function() {
+                    gsap.to(magnetic, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+                });
             });
         });
     </script>
