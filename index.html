@@ -46,14 +46,59 @@
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
+        /* Locking scroll during loader */
+        body.locked { overflow: hidden !important; height: 100vh; }
+
         ::selection { background: var(--accent); color: #000; }
 
-        /* Disable ugly blue highlighting on text */
         .welcome-text, .text-utkarsh, .text-shukla, .hero-subtitle-badge, .float-icon {
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
+        }
+
+        /* === LOADING SCREEN (EXPORTING IN 8K) === */
+        .loader-wrapper {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #010205; z-index: 999999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        
+        .loader-content {
+            width: 80%; max-width: 600px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .loader-header {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; color: var(--accent);
+            letter-spacing: 5px; text-transform: uppercase; margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .loader-header i { font-size: 1.5rem; animation: spin 2s linear infinite; }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .loader-percentage {
+            font-family: 'Anton', sans-serif; font-size: clamp(4rem, 15vw, 8rem);
+            color: #fff; line-height: 1; margin-bottom: 1rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .loader-bar-container {
+            width: 100%; height: 4px; background: rgba(255,255,255,0.1); 
+            border-radius: 10px; overflow: hidden; position: relative;
+        }
+
+        .loader-bar {
+            width: 0%; height: 100%; background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+        }
+        
+        .loader-details {
+            display: flex; justify-content: space-between; width: 100%; margin-top: 15px;
+            font-family: monospace; font-size: 0.9rem; color: #667;
         }
 
         /* === TOP CONTROLS (THEME & TOOLS) === */
@@ -295,7 +340,6 @@
         body.light-mode .exp-desc { color: #445; }
         body.light-mode .exp-desc strong { color: #000; }
 
-        /* 3D FLOATING BRAND LOGO LINKS */
         .floating-brands { display: flex; gap: 20px; perspective: 1000px; padding-top: 10px; }
         .brand-float {
             width: 80px; height: 80px; border-radius: 16px;
@@ -314,11 +358,6 @@
         }
         .brand-float.float-1 { animation: float3D 4s ease-in-out infinite; }
         .brand-float.float-2 { animation: float3D 5s ease-in-out infinite 2s; }
-        @keyframes float3D {
-            0% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-            50% { transform: translateY(-15px) rotateX(10deg) rotateY(-10deg); box-shadow: 0 20px 30px rgba(0, 229, 255, 0.2), inset 0 0 20px rgba(0,229,255,0.2); }
-            100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-        }
 
         /* === BENTO GRID SECTION === */
         .bento-container { padding: 8rem 5vw; max-width: 1400px; margin: 0 auto; position: relative; z-index: 5; }
@@ -418,31 +457,25 @@
            📱 MOBILE RESPONSIVENESS (MEDIA QUERIES)
            ======================================================== */
         @media (max-width: 768px) {
-            /* Hide Custom Cursors on Mobile */
             .cursor-dot, .cursor-outline { display: none !important; }
             * { cursor: auto !important; }
 
-            /* Top Controls Adjustments */
             .top-controls { top: 15px; gap: 10px; }
             .left-controls { left: 15px; }
             .right-controls { right: 15px; }
             .control-btn { width: 40px; height: 40px; font-size: 1.1rem; }
 
-            /* Welcome Screen Adjustments */
             .welcome-cutout { height: 80vh; bottom: -5%; }
             .welcome-text { font-size: clamp(2.5rem, 12vw, 4rem); }
             .float-icon { font-size: clamp(2rem, 8vw, 3rem); }
 
-            /* Hero Section Shrink */
             .hero-image-box { width: 75vw; height: 50vh; max-width: 280px; max-height: 400px; }
             .text-utkarsh, .text-shukla { font-size: 24vw; }
             .hero-subtitle-badge { font-size: 0.8rem; padding: 10px 20px; bottom: 20%; letter-spacing: 3px; }
 
-            /* About Section */
             .about-section { padding: 6rem 5vw; }
             .about-text { font-size: clamp(1.2rem, 5vw, 1.8rem); line-height: 1.5; }
 
-            /* Horizontal Experience Scroll Scaling */
             .panel { padding: 0 3vw; }
             .exp-card { padding: 2rem; border-radius: 16px; gap: 1rem; max-width: 100%; }
             .exp-year { font-size: 2rem; }
@@ -454,7 +487,6 @@
             .floating-brands { padding-top: 5px; gap: 15px; }
             .brand-float { width: 50px; height: 50px; border-radius: 12px; }
 
-            /* Bento Grid (Stacks into single column) */
             .bento-container { padding: 4rem 5vw; }
             .bento-grid { display: flex; flex-direction: column; gap: 15px; }
             .bento-box { padding: 1.5rem; border-radius: 16px; }
@@ -463,7 +495,6 @@
             .tag { font-size: 0.9rem; padding: 8px 12px; }
             .info-list li h4 { font-size: 1.1rem; }
 
-            /* Footer Shrink */
             .huge-contact { font-size: clamp(2.5rem, 12vw, 4rem); }
             .social-container { flex-direction: column; gap: 10px; width: 100%; padding: 0 5vw; }
             .social-btn { justify-content: center; width: 100%; padding: 15px; font-size: 1rem; }
@@ -473,11 +504,28 @@
         }
     </style>
 </head>
-<body>
+<body class="locked"> <!-- locked class prevents scrolling initially -->
     
     <div style="display: none;" aria-hidden="true">
        <span class="hidden-citation"></span>
        <span class="hidden-citation"></span>
+    </div>
+
+    <!-- === LOADING SCREEN === -->
+    <div id="loader-wrapper" class="loader-wrapper">
+        <div class="loader-content">
+            <div class="loader-header">
+                <i class="ri-loader-4-fill"></i> EXPORTING PORTFOLIO IN 8K
+            </div>
+            <div class="loader-percentage" id="loader-percentage">0%</div>
+            <div class="loader-bar-container">
+                <div class="loader-bar" id="loader-bar"></div>
+            </div>
+            <div class="loader-details">
+                <span>EST. TIME: <span id="loader-time">00:00:02</span></span>
+                <span>CODEC: PRORES 4444</span>
+            </div>
+        </div>
     </div>
 
     <!-- UI Controls -->
@@ -502,6 +550,7 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
+    <!-- MAIN PORTFOLIO CONTENT (Hidden behind loader initially) -->
     <div class="welcome-screen">
         <img src="welcome-photo.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
         
@@ -738,6 +787,49 @@
         </div>
     </footer>
 
+
+    <!-- LOADING SCREEN LOGIC -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const counterEl = document.getElementById('loader-percentage');
+            const barEl = document.getElementById('loader-bar');
+            const timeEl = document.getElementById('loader-time');
+            const loaderWrapper = document.getElementById('loader-wrapper');
+            
+            let count = 0;
+            // Interval chalega har 30ms pe, lagbhag 1.5 - 2 seconds me 100% ho jayega
+            let loaderInterval = setInterval(() => {
+                count += Math.floor(Math.random() * 4) + 1; 
+                
+                if(count >= 50) { timeEl.innerText = "00:00:01"; }
+                if(count >= 90) { timeEl.innerText = "00:00:00"; }
+
+                if(count >= 100) {
+                    count = 100;
+                    clearInterval(loaderInterval);
+                    
+                    // Exit animation setup
+                    setTimeout(() => {
+                        gsap.to(loaderWrapper, {
+                            yPercent: -100, 
+                            opacity: 0,
+                            duration: 0.8,
+                            ease: "power4.inOut",
+                            onComplete: () => {
+                                loaderWrapper.style.display = 'none';
+                                document.body.classList.remove('locked'); // Scroll wapis allow karo
+                                ScrollTrigger.refresh(); // GSAP elements ko recalculate karne bolo
+                            }
+                        });
+                    }, 300); // 100% hone ke baad chhota sa pause 
+                }
+                counterEl.innerText = count + '%';
+                barEl.style.width = count + '%';
+            }, 30);
+        });
+    </script>
+
+
     <!-- Tools & Theme Switcher Logic -->
     <script>
         let isEraserMode = false;
@@ -745,7 +837,6 @@
         const btnEraserMode = document.getElementById('btn-eraser');
         const btnTheme = document.getElementById('btn-theme');
 
-        // Toolbar Logic
         btnGlitterMode.addEventListener('click', () => {
             isEraserMode = false;
             document.body.classList.remove('eraser-mode');
@@ -760,7 +851,6 @@
             btnGlitterMode.classList.remove('active');
         });
 
-        // Theme Toggle
         btnTheme.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
             const icon = btnTheme.querySelector('i');
@@ -781,9 +871,7 @@
         const sCtx = smokeCanvas.getContext('2d');
         smokeCanvas.width = window.innerWidth;
         smokeCanvas.height = window.innerHeight;
-
         let smokeArray = [];
-        
         class SmokeParticle {
             constructor() {
                 this.x = Math.random() * smokeCanvas.width;
@@ -798,7 +886,6 @@
                 this.x += this.speedX;
                 this.y -= this.speedY;
                 this.size += 0.1; 
-                
                 if (this.y < -this.size) {
                     this.y = smokeCanvas.height + this.size;
                     this.x = Math.random() * smokeCanvas.width;
@@ -808,23 +895,17 @@
             draw() {
                 sCtx.beginPath();
                 sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                
                 let gradient = sCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
                 gradient.addColorStop(0, `hsla(${this.hue}, 100%, 50%, ${this.opacity})`);
                 gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
-                
                 sCtx.fillStyle = gradient;
                 sCtx.fill();
             }
         }
-
         function initSmoke() {
             smokeArray = [];
-            for (let i = 0; i < 40; i++) {
-                smokeArray.push(new SmokeParticle());
-            }
+            for (let i = 0; i < 40; i++) { smokeArray.push(new SmokeParticle()); }
         }
-
         function animateSmoke() {
             sCtx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
             for (let i = 0; i < smokeArray.length; i++) {
@@ -833,13 +914,11 @@
             }
             requestAnimationFrame(animateSmoke);
         }
-
         window.addEventListener('resize', () => {
             smokeCanvas.width = window.innerWidth;
             smokeCanvas.height = window.innerHeight;
             initSmoke();
         });
-
         initSmoke();
         animateSmoke();
     </script>
@@ -850,9 +929,7 @@
         const gCtx = glitterCanvas.getContext('2d');
         glitterCanvas.width = window.innerWidth;
         glitterCanvas.height = window.innerHeight;
-
         let glitterArray = [];
-
         class GlitterParticle {
             constructor(x, y) {
                 this.x = x + (Math.random() * 10 - 5);
@@ -860,7 +937,6 @@
                 this.size = Math.random() * 2 + 1; 
                 this.speedX = Math.random() * 1 - 0.5; 
                 this.speedY = Math.random() * 1 - 0.5;
-                
                 this.color = Math.random() > 0.5 ? '#00e5ff' : '#ffffff'; 
                 this.life = 100; 
                 this.type = Math.random() > 0.5 ? 'ripple' : 'glitter';
@@ -870,7 +946,6 @@
                 this.x += this.speedX;
                 this.y += this.speedY;
                 this.life -= 2; 
-                
                 if (this.type === 'ripple') {
                     this.rippleRadius += 1; 
                 } else {
@@ -881,7 +956,6 @@
                 gCtx.save();
                 gCtx.globalAlpha = Math.max(0, this.life / 100);
                 gCtx.beginPath();
-                
                 if (this.type === 'ripple') {
                     gCtx.arc(this.x, this.y, this.rippleRadius, 0, Math.PI * 2);
                     gCtx.strokeStyle = this.color;
@@ -899,52 +973,37 @@
                 gCtx.restore();
             }
         }
-
-        // Mouse hover logic for Eraser / Glitter
         window.addEventListener('mousemove', (e) => {
             if(isEraserMode) {
                 document.body.style.setProperty('--mx', e.clientX + 'px');
                 document.body.style.setProperty('--my', e.clientY + 'px');
             } else {
-                for (let i = 0; i < 1; i++) { 
-                    glitterArray.push(new GlitterParticle(e.clientX, e.clientY));
-                }
+                for (let i = 0; i < 1; i++) { glitterArray.push(new GlitterParticle(e.clientX, e.clientY)); }
             }
         });
-
-        // Touch logic for Eraser on Mobile
         window.addEventListener('touchmove', (e) => {
             if(isEraserMode && e.touches.length > 0) {
                 document.body.style.setProperty('--mx', e.touches[0].clientX + 'px');
                 document.body.style.setProperty('--my', e.touches[0].clientY + 'px');
             }
         });
-
         function animateGlitter() {
             gCtx.clearRect(0, 0, glitterCanvas.width, glitterCanvas.height);
-            
             for (let i = 0; i < glitterArray.length; i++) {
                 glitterArray[i].update();
                 glitterArray[i].draw();
-                
                 if (glitterArray[i].life <= 0) {
                     glitterArray.splice(i, 1);
                     i--;
                 }
             }
-            
-            if (glitterArray.length > 150) {
-                glitterArray.splice(0, glitterArray.length - 150);
-            }
-            
+            if (glitterArray.length > 150) { glitterArray.splice(0, glitterArray.length - 150); }
             requestAnimationFrame(animateGlitter);
         }
-        
         window.addEventListener('resize', () => {
             glitterCanvas.width = window.innerWidth;
             glitterCanvas.height = window.innerHeight;
         });
-
         animateGlitter();
     </script>
 
