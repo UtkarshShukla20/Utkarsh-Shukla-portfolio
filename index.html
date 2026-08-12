@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Remix Icons -->
+    <!-- Remix Icons (For high-quality scalable icons) -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <!-- GSAP & ScrollTrigger -->
@@ -52,12 +52,6 @@
             z-index: 0; pointer-events: none; opacity: 0.5;
         }
 
-        /* 🚀 NEW: INTERACTIVE WATER-WAVE & GLITTER CANVAS 🚀 */
-        #glitter-canvas {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 1; pointer-events: none;
-        }
-
         /* === CUSTOM CURSOR === */
         .cursor-dot, .cursor-outline {
             position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
@@ -75,7 +69,7 @@
             font-family: 'Anton', sans-serif; font-size: 6rem; color: var(--accent);
         }
 
-        /* === WELCOME SCREEN === */
+        /* === WELCOME SCREEN (COLORFUL FLOATING ICONS) === */
         .welcome-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(3, 5, 10, 0.98); backdrop-filter: blur(20px);
@@ -88,6 +82,7 @@
             color: var(--text); text-align: center; line-height: 1; z-index: 10; text-transform: uppercase;
         }
 
+        /* Portfolio in Cyber Blue */
         .welcome-text span {
             color: var(--accent);
             text-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
@@ -99,13 +94,54 @@
             z-index: 5; filter: drop-shadow(0 0 15px currentColor);
         }
 
-        .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 2; }
+        .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 1; }
 
         /* === HERO SECTION === */
         .hero {
             height: 100vh; width: 100vw; position: relative;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: #000; overflow: hidden; z-index: 10;
+        }
+
+        .hero-poster-container {
+            width: 90vw;
+            height: 85vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(255, 153, 0, 0.15);
+            border: 1px solid rgba(255, 153, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.05);
+        }
+
+        .scroll-indicator {
+            position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px;
+            display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 4; color: #888;
+        }
+        
+        .scroll-line {
+            width: 1px; height: 40px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden;
+        }
+
+        .scroll-line::after {
+            content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+            background: var(--accent); animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+        }
+
+        @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
+
+        /* === ABOUT SECTION (3D CUTOUT WITH UTKARSH SHUKLA BACKGROUND) === */
+        .about-section {
+            min-height: 100vh; position: relative; z-index: 5;
+            background: #000; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
         }
 
         .text-utkarsh {
@@ -143,28 +179,13 @@
             box-shadow: 0 10px 40px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.5);
             animation: badgeFloat 3s ease-in-out infinite alternate;
         }
+        
         @keyframes badgeFloat { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); box-shadow: 0 15px 50px rgba(0, 229, 255, 0.8); } }
 
-        .scroll-indicator {
-            position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px;
-            display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 10; color: #888;
-        }
-        
-        .scroll-line {
-            width: 1px; height: 40px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden;
-        }
-
-        .scroll-line::after {
-            content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
-            background: var(--accent); animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-        }
-
-        @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
-
-        /* === ABOUT SECTION === */
-        .about-section {
-            min-height: 100vh; padding: 10rem 10vw; display: flex; flex-direction: column; justify-content: center;
-            position: relative; z-index: 5; background: linear-gradient(180deg, transparent 0%, #030610 100%);
+        /* === INFO SECTION === */
+        .info-section {
+            min-height: 80vh; padding: 10rem 10vw; display: flex; flex-direction: column; justify-content: center;
+            position: relative; z-index: 5; background: linear-gradient(180deg, #000 0%, #030610 100%);
         }
 
         .section-tag {
@@ -327,21 +348,20 @@
         .ai-widget-btn:hover { background: var(--accent); color: #000000; box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
 
         .magnetic-wrap { display: inline-block; }
+        
+        .hidden-citation { display: none; }
     </style>
 </head>
 <body>
     
-    <!-- Hidden citations data for internal system matching (Invisible to user) -->
+    <!-- Hidden citations data -->
     <div style="display: none;" aria-hidden="true">
-      [cite: 1][cite: 2]
+       <span class="hidden-citation">[cite: 1]</span>
+       <span class="hidden-citation">[cite: 2]</span>
     </div>
 
     <!-- Background Effects -->
     <canvas id="smoke-canvas"></canvas>
-    
-    <!-- 🚀 NEW: WATER-WAVE & GLITTER INTERACTIVE CANVAS 🚀 -->
-    <canvas id="glitter-canvas"></canvas>
-    
     <div class="noise-bg"></div>
 
     <!-- Custom Cursor -->
@@ -355,7 +375,7 @@
     <div class="welcome-screen">
         <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
         
-        <!-- Floating Media & Editing Icons -->
+        <!-- Floating Media & Editing Icons (Colourful) -->
         <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #E1306C;"></i>
         <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #FF0000;"></i>
         <i class="ri-camera-lens-fill float-icon f-icon" style="top: 70%; left: 10%; color: #a334fa;"></i>
@@ -373,12 +393,27 @@
     <!-- Scroll Spacer to trigger Welcome Screen disappear -->
     <div class="scroll-spacer"></div>
 
-    <!-- SCROLL 1: HERO SECTION -->
+    <!-- SCROLL 1: HERO SECTION (WITH POSTER.JPG) -->
     <section class="hero" id="hero-main">
+        <div class="hero-poster-container">
+            <!-- Ensure your file on GitHub is renamed to poster.jpg -->
+            <img src="poster.jpg" alt="Utkarsh Shukla Creative Portfolio" class="hero-img">
+        </div>
+
+        <div class="scroll-indicator">
+            The Strategist
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- SCROLL 2: 3D CYBER BLUE CUTOUT & TYPOGRAPHY -->
+    <section class="about-section" id="about-main">
         
         <div class="text-utkarsh gsap-title-left">UTKARSH</div>
         
         <div class="hero-image-box gsap-hero-img-box">
+            <!-- 🚀 TRANSPARENT CUTOUT IMAGE GOES HERE 🚀 -->
+            <!-- Ensure your cutout file on GitHub is named cutout.png -->
             <img src="cutout.png" alt="Utkarsh Shukla" class="gsap-hero-img holographic-cutout">
         </div>
 
@@ -386,21 +421,17 @@
 
         <div class="hero-subtitle-badge gsap-badge">CONTENT STRATEGIST</div>
 
-        <div class="scroll-indicator">
-            Scroll Down
-            <div class="scroll-line"></div>
-        </div>
     </section>
 
-    <!-- SCROLL 2: THE STRATEGIST -->
-    <section class="about-section">
+    <!-- SCROLL 3: THE STRATEGIST INFORMATION -->
+    <section class="info-section">
         <div class="section-tag">01 // THE STRATEGIST</div>
         <p class="about-text" id="split-text">
             Content strategist and social media manager with hands-on experience writing and performing scripts for short-form video across brand accounts, paired with a BSc in Information Technology. Currently drive content strategy, reel scriptwriting, and on-camera presenting for eSamparkTech Solutions and MEDH, while running freelance social media editing on the side and volunteering on real brand campaigns. Backed by a technical foundation in web development and journalism-grade research and fact-checking — looking to grow into a full-time content and social role where storytelling, strategy, and technical fluency come together.
         </p>
     </section>
 
-    <!-- SCROLL 3: HORIZONTAL TIMELINE -->
+    <!-- SCROLL 4: HORIZONTAL TIMELINE -->
     <section class="horizontal-section">
         <div class="horizontal-wrapper">
             
@@ -419,9 +450,11 @@
                         <!-- 3D FLOATING BRAND LOGO LINKS -->
                         <div class="floating-brands">
                             <a href="https://esampark.biz/" target="_blank" class="brand-float float-1" title="Visit eSampark">
+                                <!-- Ensure your logo file on GitHub is named esampark-logo.png -->
                                 <img src="esampark-logo.png" alt="eSampark Logo">
                             </a>
                             <a href="https://medh.co/" target="_blank" class="brand-float float-2" title="Visit MEDH">
+                                <!-- Ensure your logo file on GitHub is named medh-logo.png -->
                                 <img src="medh-logo.png" alt="MEDH Logo">
                             </a>
                         </div>
@@ -481,7 +514,7 @@
         </div>
     </section>
 
-    <!-- SCROLL 4: THE ARSENAL BENTO GRID -->
+    <!-- SCROLL 5: THE ARSENAL BENTO GRID -->
     <section class="bento-container" id="arsenal">
         <div class="section-tag" style="justify-content: center; margin-bottom: 2rem;">02 // THE ARSENAL</div>
         
@@ -615,19 +648,19 @@
         </div>
     </footer>
 
-    <!-- 🚀 CANVAS 1: AMBIENT SMOKE SCRIPT 🚀 -->
+    <!-- Canvas Smoke Script -->
     <script>
-        const smokeCanvas = document.getElementById('smoke-canvas');
-        const sCtx = smokeCanvas.getContext('2d');
-        smokeCanvas.width = window.innerWidth;
-        smokeCanvas.height = window.innerHeight;
+        const canvas = document.getElementById('smoke-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        let smokeArray = [];
+        let particlesArray = [];
         
-        class SmokeParticle {
+        class Particle {
             constructor() {
-                this.x = Math.random() * smokeCanvas.width;
-                this.y = smokeCanvas.height + Math.random() * 100;
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100; 
                 this.size = Math.random() * 80 + 20; 
                 this.speedX = Math.random() * 1 - 0.5;
                 this.speedY = Math.random() * 1.5 + 0.5; 
@@ -640,136 +673,51 @@
                 this.size += 0.1; 
                 
                 if (this.y < -this.size) {
-                    this.y = smokeCanvas.height + this.size;
-                    this.x = Math.random() * smokeCanvas.width;
+                    this.y = canvas.height + this.size;
+                    this.x = Math.random() * canvas.width;
                     this.size = Math.random() * 80 + 20;
                 }
             }
             draw() {
-                sCtx.beginPath();
-                sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 
-                let gradient = sCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
                 gradient.addColorStop(0, `hsla(${this.hue}, 100%, 50%, ${this.opacity})`);
                 gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
                 
-                sCtx.fillStyle = gradient;
-                sCtx.fill();
+                ctx.fillStyle = gradient;
+                ctx.fill();
             }
         }
 
-        function initSmoke() {
-            smokeArray = [];
+        function initCanvas() {
+            particlesArray = [];
             for (let i = 0; i < 40; i++) {
-                smokeArray.push(new SmokeParticle());
+                particlesArray.push(new Particle());
             }
         }
 
-        function animateSmoke() {
-            sCtx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
-            for (let i = 0; i < smokeArray.length; i++) {
-                smokeArray[i].update();
-                smokeArray[i].draw();
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
             }
-            requestAnimationFrame(animateSmoke);
+            requestAnimationFrame(animateCanvas);
         }
 
         window.addEventListener('resize', () => {
-            smokeCanvas.width = window.innerWidth;
-            smokeCanvas.height = window.innerHeight;
-            initSmoke();
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initCanvas();
         });
 
-        initSmoke();
-        animateSmoke();
+        initCanvas();
+        animateCanvas();
     </script>
 
-    <!-- 🚀 CANVAS 2: INTERACTIVE GLITTER & WATER-WAVE MOUSE TRAIL 🚀 -->
-    <script>
-        const glitterCanvas = document.getElementById('glitter-canvas');
-        const gCtx = glitterCanvas.getContext('2d');
-        glitterCanvas.width = window.innerWidth;
-        glitterCanvas.height = window.innerHeight;
-
-        let glitterArray = [];
-
-        class GlitterParticle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 3 + 1; // Random small size for glitter
-                this.speedX = Math.random() * 2 - 1; // Drift randomly
-                this.speedY = Math.random() * 2 - 1;
-                this.color = 'rgba(0, 229, 255, 0.8)'; // Cyber Cyan
-                this.life = 100; // Opacity/Life counter
-                // 30% chance to be a water ripple, 70% chance to be glitter dust
-                this.type = Math.random() > 0.7 ? 'ripple' : 'glitter';
-                this.rippleRadius = 0;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.life -= 2; // Fade out speed
-                
-                if (this.type === 'ripple') {
-                    this.rippleRadius += 1.5; // Ripple expands
-                } else {
-                    if (this.size > 0.1) this.size -= 0.05; // Glitter shrinks
-                }
-            }
-            draw() {
-                gCtx.save();
-                gCtx.globalAlpha = Math.max(0, this.life / 100);
-                gCtx.beginPath();
-                
-                if (this.type === 'ripple') {
-                    gCtx.arc(this.x, this.y, this.rippleRadius, 0, Math.PI * 2);
-                    gCtx.strokeStyle = this.color;
-                    gCtx.lineWidth = 1;
-                    gCtx.stroke();
-                } else {
-                    gCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    gCtx.fillStyle = '#ffffff'; // White core
-                    gCtx.shadowBlur = 10; // Glowing edge
-                    gCtx.shadowColor = '#00e5ff';
-                    gCtx.fill();
-                }
-                gCtx.restore();
-            }
-        }
-
-        // Spawn particles when mouse moves
-        window.addEventListener('mousemove', (e) => {
-            // Spawn 3 particles per movement tick
-            for (let i = 0; i < 3; i++) {
-                glitterArray.push(new GlitterParticle(e.clientX, e.clientY));
-            }
-        });
-
-        function animateGlitter() {
-            gCtx.clearRect(0, 0, glitterCanvas.width, glitterCanvas.height);
-            for (let i = 0; i < glitterArray.length; i++) {
-                glitterArray[i].update();
-                glitterArray[i].draw();
-                
-                // Remove dead particles to save memory
-                if (glitterArray[i].life <= 0) {
-                    glitterArray.splice(i, 1);
-                    i--;
-                }
-            }
-            requestAnimationFrame(animateGlitter);
-        }
-        
-        window.addEventListener('resize', () => {
-            glitterCanvas.width = window.innerWidth;
-            glitterCanvas.height = window.innerHeight;
-        });
-
-        animateGlitter();
-    </script>
-
-    <!-- GSAP Custom JS & Cursor Logic -->
+    <!-- GSAP Custom JS -->
     <script>
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
@@ -817,6 +765,7 @@
 
         function initAnimations() {
             
+            // 1. Floating Icons Animation in Welcome Screen
             gsap.utils.toArray('.f-icon').forEach(icon => {
                 gsap.to(icon, {
                     y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)",
@@ -824,6 +773,7 @@
                 });
             });
 
+            // 2. Welcome Screen Disappear on Scroll
             gsap.to('.welcome-screen', {
                 opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut",
                 scrollTrigger: {
@@ -831,30 +781,55 @@
                 }
             });
 
-            gsap.from(".gsap-hero-img-box", { 
+            // 3. Hero Section (Poster) Reveal
+            gsap.from(".hero-poster-container", { 
                 scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out",
                 scrollTrigger: {
                     trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1
                 }
             });
-            
-            gsap.from(".gsap-title-left", { x: -150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
-            gsap.from(".gsap-title-right", { x: 150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
-            gsap.from(".gsap-badge", { y: 50, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.6 });
+            gsap.to(".hero-img", {
+                yPercent: 15, ease: "none",
+                scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: true }
+            });
 
+            // 4. About Section (3D Holographic Cutout) Reveal
+            gsap.from(".gsap-hero-img-box", { 
+                scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out",
+                scrollTrigger: {
+                    trigger: '#hero-main', start: 'bottom 80%', end: 'bottom 20%', scrub: 1
+                }
+            });
+            
+            gsap.from(".gsap-title-left", { 
+                x: -150, opacity: 0, duration: 1.5, ease: "power4.out",
+                scrollTrigger: { trigger: '#hero-main', start: 'bottom 80%', end: 'bottom 20%', scrub: 1 }
+            });
+            gsap.from(".gsap-title-right", { 
+                x: 150, opacity: 0, duration: 1.5, ease: "power4.out",
+                scrollTrigger: { trigger: '#hero-main', start: 'bottom 80%', end: 'bottom 20%', scrub: 1 }
+            });
+            gsap.from(".gsap-badge", { 
+                y: 50, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.5)",
+                scrollTrigger: { trigger: '#hero-main', start: 'bottom 80%', end: 'bottom 20%', scrub: 1 }
+            });
+
+            // Make the 3D cutout float subtly 
             gsap.to(".gsap-hero-img", {
                 y: -20, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut"
             });
             
+            // Text separates vertically on scroll down
             gsap.to(".gsap-title-left", {
                 yPercent: -50, ease: "none",
-                scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }
+                scrollTrigger: { trigger: "#about-main", start: "top top", end: "bottom top", scrub: 1 }
             });
             gsap.to(".gsap-title-right", {
                 yPercent: 50, ease: "none",
-                scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }
+                scrollTrigger: { trigger: "#about-main", start: "top top", end: "bottom top", scrub: 1 }
             });
 
+            // 5. Cinematic Text Reveal for Info Section
             const text = document.getElementById("split-text");
             const words = text.innerText.split(" ");
             text.innerHTML = "";
@@ -869,7 +844,7 @@
                 {
                     opacity: 1, y: 0, stagger: 0.05, ease: "power2.out",
                     scrollTrigger: {
-                        trigger: ".about-section", start: "top 70%", end: "bottom 60%", scrub: 1
+                        trigger: ".info-section", start: "top 70%", end: "bottom 60%", scrub: 1
                     }
                 }
             );
@@ -883,6 +858,7 @@
             });
         }
 
+        // Horizontal Scroll
         const horizontalWrapper = document.querySelector('.horizontal-wrapper');
         const panels = gsap.utils.toArray('.panel');
 
@@ -895,6 +871,7 @@
             }
         });
 
+        // Bento Grid Reveal
         gsap.utils.toArray('.gsap-fade-up').forEach(box => {
             gsap.from(box, {
                 y: 60, opacity: 0, duration: 1, ease: "power3.out",
@@ -902,6 +879,7 @@
             });
         });
 
+        // Magnetic Effect
         const magnetics = document.querySelectorAll('.magnetic-wrap');
         magnetics.forEach((magnetic) => {
             magnetic.addEventListener('mousemove', function(e) {
