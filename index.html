@@ -86,7 +86,6 @@
         .control-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
         .control-btn.active { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); border-color: var(--accent); }
         
-        /* Light mode overrides for controls */
         body.light-mode .control-btn { background: rgba(0,0,0,0.05); color: #000; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         body.light-mode .control-btn.active { background: var(--accent); color: #fff; }
 
@@ -136,13 +135,12 @@
         }
         body.light-mode .welcome-screen { background: rgba(240, 245, 249, 0.95); }
 
-        /* GIANT CUTOUT BEHIND WELCOME TEXT */
         .welcome-cutout {
             position: absolute;
             bottom: -15%; 
             left: 50%;
             transform: translateX(-50%);
-            height: 110vh; /* INCREASED SIZE */
+            height: 110vh; 
             width: auto;
             z-index: 5; 
             object-fit: contain;
@@ -151,7 +149,6 @@
             pointer-events: none;
         }
 
-        /* ERASER LAYER FOR TEXT & ICONS */
         .eraser-layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -161,7 +158,6 @@
         }
 
         body.eraser-mode .eraser-layer {
-            /* Creates a transparent hole where the mouse is */
             -webkit-mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
             mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
         }
@@ -250,7 +246,6 @@
             content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
             background: var(--accent); animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
         }
-
         @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
 
         /* === ABOUT SECTION === */
@@ -319,23 +314,10 @@
         }
         .brand-float.float-1 { animation: float3D 4s ease-in-out infinite; }
         .brand-float.float-2 { animation: float3D 5s ease-in-out infinite 2s; }
-
         @keyframes float3D {
             0% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
             50% { transform: translateY(-15px) rotateX(10deg) rotateY(-10deg); box-shadow: 0 20px 30px rgba(0, 229, 255, 0.2), inset 0 0 20px rgba(0,229,255,0.2); }
             100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-        }
-
-        .brand-float:hover {
-            background: rgba(0, 229, 255, 0.15);
-            transform: scale(1.1) translateY(-5px) !important;
-            box-shadow: 0 15px 40px rgba(0, 229, 255, 0.4);
-            border-color: rgba(0, 229, 255, 0.6);
-            animation-play-state: paused;
-        }
-        .brand-float:hover img {
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.8)) brightness(1.2);
         }
 
         /* === BENTO GRID SECTION === */
@@ -348,7 +330,6 @@
             transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s, background 0.5s;
         }
         body.light-mode .bento-box { background: rgba(255, 255, 255, 0.6); border-color: rgba(0,0,0,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        
         .bento-box:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15); }
 
         .box-editing { grid-column: span 12; background: linear-gradient(135deg, rgba(0,229,255,0.08) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(0,229,255,0.4); }
@@ -432,6 +413,64 @@
         body.light-mode .ai-widget-btn:hover { color: #fff; }
 
         .magnetic-wrap { display: inline-block; }
+
+        /* ========================================================
+           📱 MOBILE RESPONSIVENESS (MEDIA QUERIES)
+           ======================================================== */
+        @media (max-width: 768px) {
+            /* Hide Custom Cursors on Mobile */
+            .cursor-dot, .cursor-outline { display: none !important; }
+            * { cursor: auto !important; }
+
+            /* Top Controls Adjustments */
+            .top-controls { top: 15px; gap: 10px; }
+            .left-controls { left: 15px; }
+            .right-controls { right: 15px; }
+            .control-btn { width: 40px; height: 40px; font-size: 1.1rem; }
+
+            /* Welcome Screen Adjustments */
+            .welcome-cutout { height: 80vh; bottom: -5%; }
+            .welcome-text { font-size: clamp(2.5rem, 12vw, 4rem); }
+            .float-icon { font-size: clamp(2rem, 8vw, 3rem); }
+
+            /* Hero Section Shrink */
+            .hero-image-box { width: 75vw; height: 50vh; max-width: 280px; max-height: 400px; }
+            .text-utkarsh, .text-shukla { font-size: 24vw; }
+            .hero-subtitle-badge { font-size: 0.8rem; padding: 10px 20px; bottom: 20%; letter-spacing: 3px; }
+
+            /* About Section */
+            .about-section { padding: 6rem 5vw; }
+            .about-text { font-size: clamp(1.2rem, 5vw, 1.8rem); line-height: 1.5; }
+
+            /* Horizontal Experience Scroll Scaling */
+            .panel { padding: 0 3vw; }
+            .exp-card { padding: 2rem; border-radius: 16px; gap: 1rem; max-width: 100%; }
+            .exp-year { font-size: 2rem; }
+            .exp-title { font-size: 1.5rem; line-height: 1.2; }
+            .exp-company { font-size: 1rem; }
+            .exp-desc { font-size: 0.95rem; line-height: 1.5; margin-top: 0.5rem; }
+            .exp-icon { font-size: 2.5rem; margin-bottom: 0; }
+            .card-top-row { flex-direction: column; gap: 10px; }
+            .floating-brands { padding-top: 5px; gap: 15px; }
+            .brand-float { width: 50px; height: 50px; border-radius: 12px; }
+
+            /* Bento Grid (Stacks into single column) */
+            .bento-container { padding: 4rem 5vw; }
+            .bento-grid { display: flex; flex-direction: column; gap: 15px; }
+            .bento-box { padding: 1.5rem; border-radius: 16px; }
+            .bento-title { font-size: 1.2rem; }
+            .app-card { font-size: 1.1rem; padding: 1rem; width: 100%; }
+            .tag { font-size: 0.9rem; padding: 8px 12px; }
+            .info-list li h4 { font-size: 1.1rem; }
+
+            /* Footer Shrink */
+            .huge-contact { font-size: clamp(2.5rem, 12vw, 4rem); }
+            .social-container { flex-direction: column; gap: 10px; width: 100%; padding: 0 5vw; }
+            .social-btn { justify-content: center; width: 100%; padding: 15px; font-size: 1rem; }
+            .footer-details { flex-direction: column; gap: 15px; width: 100%; padding: 0 5vw; }
+            .footer-item { width: 100%; justify-content: center; font-size: 0.9rem; padding: 10px; }
+            .ai-widget-btn { padding: 1rem 1.5rem; font-size: 0.9rem; width: 90vw; justify-content: center; }
+        }
     </style>
 </head>
 <body>
@@ -466,7 +505,6 @@
     <div class="welcome-screen">
         <img src="welcome-photo.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
         
-        <!-- Everything in this wrapper gets erased by the cursor in eraser mode -->
         <div class="eraser-layer">
             <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
             
@@ -487,7 +525,6 @@
 
     <div class="scroll-spacer"></div>
 
-    <!-- Remaining content (Hero, About, etc. as unchanged structure)... -->
     <section class="hero" id="hero-main">
         <div class="text-utkarsh gsap-title-left">UTKARSH</div>
         <div class="hero-image-box gsap-hero-img-box">
@@ -737,7 +774,7 @@
         });
     </script>
 
-    <!-- Original Canvas Scripts -->
+    <!-- Canvas Scripts -->
     <script>
         // --- SMOKE CANVAS ---
         const smokeCanvas = document.getElementById('smoke-canvas');
@@ -863,16 +900,23 @@
             }
         }
 
+        // Mouse hover logic for Eraser / Glitter
         window.addEventListener('mousemove', (e) => {
-            // Eraser logic mask positioning
             if(isEraserMode) {
                 document.body.style.setProperty('--mx', e.clientX + 'px');
                 document.body.style.setProperty('--my', e.clientY + 'px');
             } else {
-                // Glitter spawn
                 for (let i = 0; i < 1; i++) { 
                     glitterArray.push(new GlitterParticle(e.clientX, e.clientY));
                 }
+            }
+        });
+
+        // Touch logic for Eraser on Mobile
+        window.addEventListener('touchmove', (e) => {
+            if(isEraserMode && e.touches.length > 0) {
+                document.body.style.setProperty('--mx', e.touches[0].clientX + 'px');
+                document.body.style.setProperty('--my', e.touches[0].clientY + 'px');
             }
         });
 
@@ -912,25 +956,29 @@
         window.addEventListener('mousemove', (e) => {
             const posX = e.clientX;
             const posY = e.clientY;
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 300, fill: "forwards" });
+            if(cursorDot) {
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+            }
+            if(cursorOutline) {
+                cursorOutline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 300, fill: "forwards" });
+            }
         });
 
         const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .brand-float, .control-btn');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
-                if(!isEraserMode) {
+                if(!isEraserMode && window.innerWidth > 768) {
                     cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
                     cursorOutline.style.backgroundColor = 'rgba(0, 240, 255, 0.15)';
                     cursorOutline.style.borderColor = 'rgba(0, 240, 255, 1)';
                 }
             });
             el.addEventListener('mouseleave', () => {
-                if(!isEraserMode) {
+                if(!isEraserMode && window.innerWidth > 768) {
                     cursorOutline.style.width = '40px'; cursorOutline.style.height = '40px';
                     cursorOutline.style.backgroundColor = 'transparent';
                     cursorOutline.style.borderColor = 'var(--accent)';
@@ -1033,13 +1081,17 @@
             const magnetics = document.querySelectorAll('.magnetic-wrap');
             magnetics.forEach((magnetic) => {
                 magnetic.addEventListener('mousemove', function(e) {
-                    const position = magnetic.getBoundingClientRect();
-                    const x = e.clientX - position.left - position.width / 2;
-                    const y = e.clientY - position.top - position.height / 2;
-                    gsap.to(magnetic, { x: x * 0.2, y: y * 0.2, duration: 0.5, ease: "power3.out" });
+                    if (window.innerWidth > 768) {
+                        const position = magnetic.getBoundingClientRect();
+                        const x = e.clientX - position.left - position.width / 2;
+                        const y = e.clientY - position.top - position.height / 2;
+                        gsap.to(magnetic, { x: x * 0.2, y: y * 0.2, duration: 0.5, ease: "power3.out" });
+                    }
                 });
                 magnetic.addEventListener('mouseleave', function() {
-                    gsap.to(magnetic, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+                    if (window.innerWidth > 768) {
+                        gsap.to(magnetic, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+                    }
                 });
             });
         });
