@@ -22,6 +22,8 @@
             --accent: #00e5ff; /* Cyan Blue */
             --glass: rgba(0, 229, 255, 0.03);
             --border: rgba(0, 229, 255, 0.15);
+            --mx: 50%;
+            --my: 50%;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -45,11 +47,93 @@
             -ms-user-select: none;
         }
 
+        /* === CURSOR SELECTION SCREEN (NEW) === */
+        .cursor-selection-wrapper {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #010205; z-index: 9999999; /* Highest priority */
+            display: flex; flex-direction: row; 
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .cursor-left-panel, .cursor-right-panel {
+            width: 50%; height: 100%; display: flex; flex-direction: column;
+            padding: 5rem 4rem; position: relative;
+        }
+
+        .cursor-left-panel { border-right: 1px solid var(--border); background: rgba(0, 229, 255, 0.02); }
+
+        .panel-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; color: var(--accent);
+            letter-spacing: 4px; text-transform: uppercase; margin-bottom: 3rem;
+            text-shadow: 0 0 15px rgba(0, 229, 255, 0.4); text-align: center;
+        }
+
+        .cursor-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+            width: 100%; max-width: 500px; margin: 0 auto;
+        }
+
+        .cursor-option-btn {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            color: #fff; padding: 20px 10px; border-radius: 16px;
+            font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            transition: all 0.3s ease; cursor: none;
+        }
+        .cursor-option-btn i { font-size: 2rem; color: var(--accent); }
+        .cursor-option-btn:hover { background: rgba(0, 229, 255, 0.1); border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,229,255,0.15); }
+        .cursor-option-btn.selected { background: var(--accent); color: #000; box-shadow: 0 0 30px rgba(0,229,255,0.6); border-color: var(--accent); transform: scale(1.05); }
+        .cursor-option-btn.selected i { color: #000; }
+
+        .test-board {
+            flex-grow: 1; border: 2px dashed var(--border); border-radius: 24px;
+            background: radial-gradient(circle at center, rgba(0,229,255,0.05) 0%, transparent 70%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
+            position: relative; overflow: hidden;
+        }
+
+        .test-element-btn {
+            padding: 15px 40px; background: transparent; border: 2px solid var(--accent);
+            color: var(--accent); font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 1.2rem; border-radius: 50px; text-transform: uppercase; cursor: none;
+            transition: all 0.3s;
+        }
+        .test-element-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
+
+        .test-element-text { font-family: 'Anton', sans-serif; font-size: 4rem; color: #fff; opacity: 0.5; }
+
+        .go-wrapper {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            z-index: 100;
+        }
+
+        .go-btn {
+            background: transparent; border: 2px solid var(--accent); color: var(--accent);
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800;
+            padding: 15px 60px; border-radius: 50px; text-transform: uppercase; letter-spacing: 4px;
+            display: flex; align-items: center; gap: 10px; cursor: none;
+            opacity: 0; pointer-events: none; transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .go-btn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        
+        .go-btn.glowing {
+            background: var(--accent); color: #000;
+            animation: ultimateGlow 1.5s infinite alternate;
+        }
+
+        @keyframes ultimateGlow {
+            0% { box-shadow: 0 0 10px var(--accent), inset 0 0 10px rgba(255,255,255,0.5); transform: scale(1); }
+            100% { box-shadow: 0 0 40px var(--accent), 0 0 20px #fff, inset 0 0 20px #fff; transform: scale(1.05); }
+        }
+
         /* === LOADING SCREEN === */
         .loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #010205; z-index: 999999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: #010205; z-index: 999998; /* Below selection screen */
+            display: none; /* Initially hidden */
+            flex-direction: column; align-items: center; justify-content: center;
         }
         
         .loader-content {
@@ -64,7 +148,6 @@
             display: flex; align-items: center; gap: 10px;
         }
         .loader-header i { font-size: 1.5rem; animation: spin 2s linear infinite; }
-        
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .loader-percentage {
@@ -88,41 +171,26 @@
             font-family: monospace; font-size: 0.9rem; color: #667;
         }
 
-        /* === TOP CONTROLS === */
+        /* === TOP CONTROLS (Hidden initially, shown later) === */
         .top-controls {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            z-index: 10000;
-            display: flex;
-            gap: 15px;
-            background: rgba(0,0,0,0.4);
-            padding: 10px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
+            position: fixed; top: 30px; left: 30px; z-index: 10000;
+            display: none; gap: 15px; background: rgba(0,0,0,0.4);
+            padding: 10px; border-radius: 50px; border: 1px solid var(--border);
             backdrop-filter: blur(10px);
         }
         
         .control-btn {
-            background: transparent;
-            border: 1px solid transparent;
-            color: #666;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            cursor: none;
-            transition: all 0.3s ease;
+            background: transparent; border: 1px solid transparent; color: #666;
+            width: 45px; height: 45px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; cursor: none; transition: all 0.3s ease;
         }
         .control-btn:hover { color: #fff; transform: scale(1.1); }
         .control-btn.active { background: var(--accent); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.5); }
 
         .noise-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 9998; opacity: 0.05;
+            pointer-events: none; z-index: 9996; opacity: 0.05;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
@@ -131,18 +199,35 @@
             z-index: 0; pointer-events: none; opacity: 0.5;
         }
 
-        #effects-canvas {
-            z-index: 9997; opacity: 1; mix-blend-mode: screen;
-        }
+        #effects-canvas { z-index: 9998; opacity: 1; mix-blend-mode: screen; }
 
-        /* === CUSTOM CURSOR === */
+        /* === CUSTOM CURSOR DEFAULTS === */
         .cursor-dot, .cursor-outline {
             position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
-            border-radius: 50%; z-index: 9999; pointer-events: none;
+            border-radius: 50%; z-index: 99999999; pointer-events: none;
         }
 
         .cursor-dot { width: 6px; height: 6px; background-color: var(--accent); box-shadow: 0 0 10px var(--accent); transition: opacity 0.2s;}
         .cursor-outline { width: 40px; height: 40px; border: 1px solid var(--accent); transition: width 0.2s, height 0.2s, background-color 0.2s; }
+
+        /* Cursor Modes Setup */
+        body.mode-eraser .cursor-outline {
+            width: 200px !important; height: 200px !important;
+            border: 2px dashed var(--accent); background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(2px);
+        }
+        body.mode-eraser .cursor-dot { opacity: 0; }
+
+        body.mode-crosshair .cursor-outline {
+            border-radius: 0; border: none; width: 30px !important; height: 30px !important;
+            background: linear-gradient(to right, transparent 48%, var(--accent) 48%, var(--accent) 52%, transparent 52%),
+                        linear-gradient(to bottom, transparent 48%, var(--accent) 48%, var(--accent) 52%, transparent 52%);
+        }
+        body.mode-crosshair .cursor-dot { opacity: 0; }
+
+        body.mode-pulse .cursor-outline {
+            animation: cursorPulse 1s infinite alternate;
+        }
+        @keyframes cursorPulse { 0% { transform: translate(-50%, -50%) scale(1); border-width: 1px; opacity: 1;} 100% { transform: translate(-50%, -50%) scale(2); border-width: 3px; opacity: 0; } }
 
         /* === WELCOME SCREEN === */
         .welcome-screen {
@@ -153,51 +238,40 @@
         }
 
         .welcome-cutout {
-            position: absolute;
-            bottom: -15%; 
-            left: 50%;
-            transform: translateX(-50%);
-            height: 110vh; 
-            width: auto;
-            z-index: 5; 
-            object-fit: contain;
-            opacity: 0.8; 
-            filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.2)); 
-            pointer-events: none;
+            position: absolute; bottom: -15%; left: 50%; transform: translateX(-50%);
+            height: 110vh; width: auto; z-index: 5; object-fit: contain;
+            opacity: 0.8; filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.2)); pointer-events: none;
         }
 
         .welcome-content-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 10; pointer-events: none;
+            z-index: 10; pointer-events: none; transition: -webkit-mask-image 0.2s ease;
+        }
+
+        body.mode-eraser .welcome-content-layer, body.mode-eraser .test-board {
+            -webkit-mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
+            mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
         }
 
         .welcome-text {
             font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem);
             color: var(--text); text-align: center; line-height: 1; 
-            text-transform: uppercase; position: relative;
-            text-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            text-transform: uppercase; position: relative; text-shadow: 0 10px 40px rgba(0,0,0,0.8); 
         }
 
         .welcome-text span {
-            color: var(--accent);
-            text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000;
-            -webkit-text-stroke: 0;
+            color: var(--accent); text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000; -webkit-text-stroke: 0;
         }
 
-        .float-icon {
-            position: absolute; font-size: clamp(3rem, 5vw, 6rem);
-            filter: drop-shadow(0 0 15px currentColor);
-        }
+        .float-icon { position: absolute; font-size: clamp(3rem, 5vw, 6rem); filter: drop-shadow(0 0 15px currentColor); }
 
         .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 2; }
 
         /* === HERO SECTION === */
         .hero {
-            height: 100vh; width: 100vw; position: relative;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: transparent; overflow: hidden; z-index: 10;
+            height: 100vh; width: 100vw; position: relative; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; background: transparent; overflow: hidden; z-index: 10;
         }
 
         .text-utkarsh {
@@ -235,169 +309,80 @@
             box-shadow: 0 10px 40px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.5);
             animation: badgeFloat 3s ease-in-out infinite alternate;
         }
-        
         @keyframes badgeFloat { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); } }
 
         .scroll-indicator {
             position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px;
             display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 20; color: #888;
         }
-        
-        .scroll-line {
-            width: 1px; height: 40px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden;
-        }
-
-        .scroll-line::after {
-            content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
-            background: var(--accent); animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-        }
+        .scroll-line { width: 1px; height: 40px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
+        .scroll-line::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: var(--accent); animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite; }
         @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
 
         /* === ABOUT SECTION === */
-        .about-section {
-            min-height: 100vh; padding: 10rem 10vw; display: flex; flex-direction: column; justify-content: center;
-            position: relative; z-index: 5; background: linear-gradient(180deg, transparent 0%, #030610 100%);
-        }
-
-        .section-tag {
-            font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--accent); letter-spacing: 3px;
-            text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 2rem;
-        }
+        .about-section { min-height: 100vh; padding: 10rem 10vw; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 5; background: linear-gradient(180deg, transparent 0%, #030610 100%); }
+        .section-tag { font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
         .section-tag::before { content: ''; display: inline-block; width: 40px; height: 2px; background: var(--accent); }
-
         .about-text { font-size: clamp(1.5rem, 3.5vw, 3rem); font-weight: 600; line-height: 1.4; color: #fff; max-width: 1400px; transition: color 0.5s; }
         .about-text span { color: #445; transition: color 0.5s ease; }
         .about-highlight { color: var(--text) !important; text-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
 
-        /* === HORIZONTAL SCROLL TIMELINE === */
+        /* === HORIZONTAL SCROLL === */
         .horizontal-section { overflow: hidden; position: relative; z-index: 5; background: #030610; }
         .horizontal-wrapper { display: flex; width: 400vw; height: 100vh; }
         .panel { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0 5vw; }
-
-        .exp-card {
-            background: var(--glass); border: 1px solid var(--border); padding: 4rem; border-radius: 24px;
-            width: 100%; max-width: 1000px; backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 1.5rem; 
-            position: relative; overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); transition: background 0.5s;
-        }
-
+        .exp-card { background: var(--glass); border: 1px solid var(--border); padding: 4rem; border-radius: 24px; width: 100%; max-width: 1000px; backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); }
         .card-top-row { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; z-index: 20; position: relative; }
-        
-        .exp-card::before { 
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; 
-            background: linear-gradient(90deg, var(--accent), transparent); 
-        }
-
+        .exp-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent), transparent); }
         .exp-icon { font-size: 3.5rem; color: var(--accent); margin-bottom: -1rem; text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);}
         .exp-year { color: #556; font-family: 'Anton', sans-serif; font-size: 3.5rem; line-height: 1; }
         .exp-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; color: #fff; }
         .exp-company { font-size: 1.2rem; color: var(--accent); font-weight: 600; font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
         .exp-desc { font-size: 1.15rem; line-height: 1.8; color: #99a; margin-top: 1rem;}
         .exp-desc strong { color: #fff; border-bottom: 1px solid var(--accent); }
-
-        /* ACTION BUTTONS IN EXP CARD */
-        .exp-action-buttons {
-            display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px;
-        }
-        
-        .action-btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 12px 25px; border-radius: 50px;
-            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem;
-            text-decoration: none; color: #fff; 
-            background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.05);
-        }
-        
+        .exp-action-buttons { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px; }
+        .action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; color: #fff; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 229, 255, 0.05); }
         .action-btn i { font-size: 1.2rem; color: var(--accent); }
-        
-        .action-btn:hover {
-            background: var(--accent); color: #000;
-            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.4);
-            border-color: var(--accent);
-            transform: translateY(-3px);
-        }
+        .action-btn:hover { background: var(--accent); color: #000; box-shadow: 0 5px 20px rgba(0, 229, 255, 0.4); border-color: var(--accent); transform: translateY(-3px); }
         .action-btn:hover i { color: #000; }
 
         /* === BENTO GRID SECTION === */
         .bento-container { padding: 8rem 5vw; max-width: 1400px; margin: 0 auto; position: relative; z-index: 5; }
         .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; grid-auto-rows: minmax(180px, auto); }
-
-        .bento-box {
-            background: rgba(10, 15, 30, 0.4); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem;
-            backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center;
-            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s, background 0.5s;
-        }
+        .bento-box { background: rgba(10, 15, 30, 0.4); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;}
         .bento-box:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15); }
-
         .box-editing { grid-column: span 12; background: linear-gradient(135deg, rgba(0,229,255,0.08) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(0,229,255,0.4); }
-        
-        .box-media { grid-column: span 7; }
-        .box-code { grid-column: span 5; }
-        .box-projects { grid-column: span 6; }
-        .box-education { grid-column: span 6; }
-
+        .box-media { grid-column: span 7; } .box-code { grid-column: span 5; } .box-projects { grid-column: span 6; } .box-education { grid-column: span 6; }
         .bento-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
         .bento-title i { color: var(--accent); font-size: 2rem; }
-
         .pro-apps { display: flex; flex-wrap: wrap; gap: 20px; }
-        .app-card { 
-            display: flex; align-items: center; gap: 15px; background: #050a15; border: 1px solid #1a2540; padding: 1.2rem 2rem; border-radius: 16px; 
-            font-family: 'Anton', sans-serif; font-size: 1.5rem; letter-spacing: 1px; color: #fff; transition: all 0.3s ease; flex-grow: 1; justify-content: center;
-        }
+        .app-card { display: flex; align-items: center; gap: 15px; background: #050a15; border: 1px solid #1a2540; padding: 1.2rem 2rem; border-radius: 16px; font-family: 'Anton', sans-serif; font-size: 1.5rem; letter-spacing: 1px; color: #fff; transition: all 0.3s ease; flex-grow: 1; justify-content: center; }
         .app-card:hover { background: var(--accent); color: #000; box-shadow: 0 10px 30px rgba(0, 229, 255, 0.3); border-color: var(--accent); transform: scale(1.05); }
-
         .tag-wrap { display: flex; flex-wrap: wrap; gap: 12px; }
         .tag { padding: 10px 18px; border-radius: 8px; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); font-size: 1rem; color: #ddd; font-weight: 500; }
         .tag:hover { border-color: var(--accent); color: #000; background: var(--accent); }
         .code-tag { padding: 8px 14px; border-radius: 6px; border: 1px dashed #445; color: #889; font-size: 0.9rem; font-family: monospace;}
-
         .info-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
         .info-list li h4 { color: var(--accent); font-size: 1.2rem; margin-bottom: 5px; font-weight: 700; }
         .info-list li p { color: #99a; font-size: 0.95rem; line-height: 1.5; }
         .info-list li span { display: block; font-size: 0.85rem; color: #556; margin-top: 5px; font-weight: 600;}
 
         /* === FOOTER / CONTACT === */
-        .footer {
-            min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; position: relative; background: #010205; border-top: 1px solid var(--border); z-index: 10;
-        }
-
+        .footer { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; background: #010205; border-top: 1px solid var(--border); z-index: 10; }
         .contact-label { color: var(--accent); font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 2rem; font-family: 'Space Grotesk', sans-serif;}
-
-        .huge-contact {
-            font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem); color: var(--text);
-            text-decoration: none; transition: all 0.3s; line-height: 1.1;
-        }
+        .huge-contact { font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem); color: var(--text); text-decoration: none; transition: all 0.3s; line-height: 1.1; }
         .huge-contact:hover { color: transparent; -webkit-text-stroke: 2px var(--accent); text-shadow: 0 0 30px rgba(0,229,255,0.3);}
-
         .social-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; margin-top: 2rem; }
-        .social-btn {
-            display: flex; align-items: center; gap: 10px; padding: 15px 30px; border-radius: 50px;
-            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem;
-            text-decoration: none; color: #fff; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
+        .social-btn { display: flex; align-items: center; gap: 10px; padding: 15px 30px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; text-decoration: none; color: #fff; background: rgba(255,255,255,0.05); border: 1px solid var(--border); transition: all 0.3s ease; }
         .social-btn i { font-size: 1.5rem; }
         .btn-whatsapp:hover { background: #25D366; color: #fff; border-color: #25D366; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3); }
         .btn-instagram:hover { background: #E1306C; color: #fff; border-color: #E1306C; box-shadow: 0 10px 30px rgba(225, 48, 108, 0.3); }
         .btn-linkedin:hover { background: #0077B5; color: #fff; border-color: #0077B5; box-shadow: 0 10px 30px rgba(0, 119, 181, 0.3); }
-
         .footer-details { display: flex; gap: 2rem; font-size: 1.1rem; color: #889; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;}
         .footer-item { display: flex; align-items: center; gap: 10px; background: var(--glass); padding: 12px 25px; border-radius: 50px; border: 1px solid var(--border); color: #ddd; font-weight: 500;}
         .footer-item i { color: var(--accent); font-size: 1.3rem;}
-
-        .ai-widget-btn {
-            display: inline-flex; align-items: center; gap: 12px;
-            background: linear-gradient(135deg, rgba(0,229,255,0.15) 0%, rgba(0,229,255,0.05) 100%);
-            border: 1px solid var(--accent); color: #ffffff;
-            font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600;
-            padding: 1.2rem 2.5rem; border-radius: 50px; text-decoration: none;
-            transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0,229,255,0.1);
-        }
+        .ai-widget-btn { display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(135deg, rgba(0,229,255,0.15) 0%, rgba(0,229,255,0.05) 100%); border: 1px solid var(--accent); color: #ffffff; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; padding: 1.2rem 2.5rem; border-radius: 50px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0,229,255,0.1); }
         .ai-widget-btn:hover { background: var(--accent); color: #000000; box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
-
         .magnetic-wrap { display: inline-block; }
 
         /* ========================================================
@@ -407,59 +392,77 @@
             .cursor-dot, .cursor-outline { display: none !important; }
             * { cursor: auto !important; }
 
+            .cursor-selection-wrapper { flex-direction: column; overflow-y: auto; }
+            .cursor-left-panel, .cursor-right-panel { width: 100%; height: auto; padding: 2rem; }
+            .cursor-left-panel { border-right: none; border-bottom: 1px solid var(--border); }
+            .test-board { min-height: 300px; margin-bottom: 80px; }
+
             .top-controls { top: 15px; left: 50%; transform: translateX(-50%); gap: 15px; }
             .control-btn { width: 40px; height: 40px; font-size: 1.1rem; }
-
             .welcome-cutout { height: 80vh; bottom: -5%; }
             .welcome-text { font-size: clamp(2.5rem, 12vw, 4rem); }
             .float-icon { font-size: clamp(2rem, 8vw, 3rem); }
-
             .hero-image-box { width: 75vw; height: 50vh; max-width: 280px; max-height: 400px; }
             .text-utkarsh, .text-shukla { font-size: 24vw; }
             .hero-subtitle-badge { font-size: 0.8rem; padding: 10px 20px; bottom: 20%; letter-spacing: 3px; }
-
             .about-section { padding: 6rem 5vw; }
             .about-text { font-size: clamp(1.2rem, 5vw, 1.8rem); line-height: 1.5; }
-
             .panel { padding: 0 3vw; }
             .exp-card { padding: 2rem; border-radius: 16px; gap: 1rem; max-width: 100%; overflow: hidden; }
             .exp-year { font-size: 2rem; }
             .exp-title { font-size: 1.5rem; line-height: 1.2; }
-            .exp-company { font-size: 1rem; }
-            .exp-desc { font-size: 0.95rem; line-height: 1.5; margin-top: 0.5rem; }
-            .exp-icon { font-size: 2.5rem; margin-bottom: 0; }
-            
-            .card-top-row { flex-direction: column; gap: 15px; }
-            
-            /* Action Buttons Mobile Fix */
             .exp-action-buttons { flex-direction: row; gap: 10px; justify-content: flex-start; }
             .action-btn { padding: 10px 20px; font-size: 0.9rem; }
-
             .bento-container { padding: 4rem 5vw; }
             .bento-grid { display: flex; flex-direction: column; gap: 15px; }
             .bento-box { padding: 1.5rem; border-radius: 16px; }
-            .bento-title { font-size: 1.2rem; }
-            .app-card { font-size: 1.1rem; padding: 1rem; width: 100%; }
-            .tag { font-size: 0.9rem; padding: 8px 12px; }
-            .info-list li h4 { font-size: 1.1rem; }
-
             .huge-contact { font-size: clamp(2.5rem, 12vw, 4rem); }
             .social-container { flex-direction: column; gap: 10px; width: 100%; padding: 0 5vw; }
             .social-btn { justify-content: center; width: 100%; padding: 15px; font-size: 1rem; }
-            .footer-details { flex-direction: column; gap: 15px; width: 100%; padding: 0 5vw; }
-            .footer-item { width: 100%; justify-content: center; font-size: 0.9rem; padding: 10px; }
-            .ai-widget-btn { padding: 1rem 1.5rem; font-size: 0.9rem; width: 90vw; justify-content: center; }
         }
     </style>
 </head>
-<body class="locked">
+<body class="locked mode-classic">
     
     <div style="display: none;" aria-hidden="true">
        <span class="hidden-citation"></span>
        <span class="hidden-citation"></span>
     </div>
 
-    <!-- === LOADING SCREEN === -->
+    <!-- === CURSOR SELECTION SCREEN (STEP 1) === -->
+    <div id="cursor-selection-screen" class="cursor-selection-wrapper">
+        <!-- Left Side: Selection -->
+        <div class="cursor-left-panel">
+            <h2 class="panel-title">CHOOSE YOUR CURSOR</h2>
+            <div class="cursor-grid">
+                <button class="cursor-option-btn" data-cursor="classic"><i class="ri-mouse-fill"></i> Classic</button>
+                <button class="cursor-option-btn" data-cursor="glitter"><i class="ri-sparkling-fill"></i> Glitter</button>
+                <button class="cursor-option-btn" data-cursor="water"><i class="ri-drop-fill"></i> Ripple</button>
+                <button class="cursor-option-btn" data-cursor="neon"><i class="ri-magic-line"></i> Neon Trail</button>
+                <button class="cursor-option-btn" data-cursor="eraser"><i class="ri-eraser-fill"></i> Eraser</button>
+                <button class="cursor-option-btn" data-cursor="crosshair"><i class="ri-focus-3-line"></i> Crosshair</button>
+                <button class="cursor-option-btn" data-cursor="pulse"><i class="ri-record-circle-line"></i> Pulse Aura</button>
+                <button class="cursor-option-btn" data-cursor="ghost"><i class="ri-ghost-line"></i> Ghost Trail</button>
+                <button class="cursor-option-btn" data-cursor="spotlight"><i class="ri-flashlight-fill"></i> Spotlight</button>
+            </div>
+        </div>
+        
+        <!-- Right Side: Test Area -->
+        <div class="cursor-right-panel">
+            <h2 class="panel-title">TEST YOUR CURSOR</h2>
+            <div class="test-board" id="test-board">
+                <h3 class="test-element-text">HOVER HERE</h3>
+                <button class="test-element-btn">Interact With Me</button>
+                <p style="color: #666; font-family: monospace;">Move cursor around this box to test the effects.</p>
+            </div>
+            
+            <div class="go-wrapper">
+                <button id="go-button" class="go-btn">GO <i class="ri-arrow-right-line"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- === LOADING SCREEN (STEP 2) === -->
     <div id="loader-wrapper" class="loader-wrapper">
         <div class="loader-content">
             <div class="loader-header">
@@ -476,33 +479,19 @@
         </div>
     </div>
 
-    <!-- === NEW UI CONTROLS (CURSOR MODES) === -->
-    <div class="top-controls">
-        <button id="btn-glitter" class="control-btn active" title="Glitter Mode">
-            <i class="ri-sparkling-fill"></i>
-        </button>
-        <button id="btn-water" class="control-btn" title="Water Ripple Mode">
-            <i class="ri-drop-fill"></i>
-        </button>
-        <button id="btn-neon" class="control-btn" title="Neon Trail Mode">
-            <i class="ri-magic-line"></i>
-        </button>
-    </div>
-
+    <!-- MAIN CANVASES -->
     <canvas id="smoke-canvas"></canvas>
-    <!-- We will use one canvas for all three cursor effects to keep performance high -->
     <canvas id="effects-canvas"></canvas>
     <div class="noise-bg"></div>
 
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
+    <!-- MAIN PORTFOLIO CONTENT (STEP 3) -->
     <div class="welcome-screen">
         <img src="welcome-photo.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
-        
         <div class="welcome-content-layer">
             <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
-            
             <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #E1306C;"></i>
             <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #FF0000;"></i>
             <i class="ri-camera-lens-fill float-icon f-icon" style="top: 70%; left: 10%; color: #a334fa;"></i>
@@ -510,7 +499,6 @@
             <i class="ri-edit-box-fill float-icon f-icon" style="top: 80%; left: 35%; color: #00f0ff;"></i>
             <i class="ri-mac-fill float-icon f-icon" style="top: 15%; right: 40%; color: #ff6b00;"></i>
             <i class="ri-video-chat-fill float-icon f-icon" style="top: 85%; right: 40%; color: #25D366;"></i>
-
             <div class="scroll-indicator" style="bottom: 50px;">
                 Scroll to Enter
                 <div class="scroll-line"></div>
@@ -527,10 +515,7 @@
         </div>
         <div class="text-shukla gsap-title-right">SHUKLA</div>
         <div class="hero-subtitle-badge gsap-badge">CONTENT STRATEGIST</div>
-        <div class="scroll-indicator">
-            Scroll Down
-            <div class="scroll-line"></div>
-        </div>
+        <div class="scroll-indicator">Scroll Down<div class="scroll-line"></div></div>
     </section>
 
     <section class="about-section">
@@ -551,21 +536,10 @@
                             <div class="exp-title">Social Media Manager & Strategist</div>
                             <div class="exp-company">eSamparkTech Solutions & MEDH</div>
                         </div>
-                        
-                        <!-- CLEAN BUTTON LINKS -->
                         <div class="exp-action-buttons">
-                            <div class="magnetic-wrap">
-                                <a href="https://esampark.biz/" target="_blank" class="action-btn" title="Visit eSampark">
-                                    <i class="ri-external-link-line"></i> eSampark.biz
-                                </a>
-                            </div>
-                            <div class="magnetic-wrap">
-                                <a href="https://medh.co/" target="_blank" class="action-btn" title="Visit MEDH">
-                                    <i class="ri-external-link-line"></i> MEDH.co
-                                </a>
-                            </div>
+                            <div class="magnetic-wrap"><a href="https://esampark.biz/" target="_blank" class="action-btn" title="Visit eSampark"><i class="ri-external-link-line"></i> eSampark.biz</a></div>
+                            <div class="magnetic-wrap"><a href="https://medh.co/" target="_blank" class="action-btn" title="Visit MEDH"><i class="ri-external-link-line"></i> MEDH.co</a></div>
                         </div>
-                        
                     </div>
                     <div class="exp-desc">
                         Owning the end-to-end content strategy, ideation, shoot planning, and publishing calendars. I write highly-targeted reel scripts specifically engineered for <strong>parents</strong> and perform as the <strong>primary on-camera talent</strong> for brand videos.
@@ -574,7 +548,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="panel">
                 <div class="exp-card">
                     <i class="ri-clapperboard-fill exp-icon"></i>
@@ -588,7 +561,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="panel">
                 <div class="exp-card">
                     <i class="ri-mic-2-fill exp-icon"></i>
@@ -602,7 +574,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="panel">
                 <div class="exp-card">
                     <i class="ri-code-box-fill exp-icon"></i>
@@ -619,80 +590,46 @@
 
     <section class="bento-container" id="arsenal">
         <div class="section-tag" style="justify-content: center; margin-bottom: 2rem;">02 // THE ARSENAL</div>
-        
         <div class="bento-grid">
             <div class="bento-box box-editing gsap-fade-up">
                 <div class="bento-title"><i class="ri-film-fill"></i> Master Post-Production Suite</div>
                 <div class="pro-apps">
-                    <div class="app-card">DaVinci Resolve</div>
-                    <div class="app-card">Premiere Pro</div>
-                    <div class="app-card">After Effects</div>
-                    <div class="app-card">CapCut Pro</div>
+                    <div class="app-card">DaVinci Resolve</div><div class="app-card">Premiere Pro</div>
+                    <div class="app-card">After Effects</div><div class="app-card">CapCut Pro</div>
                 </div>
             </div>
-
             <div class="bento-box box-media gsap-fade-up">
                 <div class="bento-title"><i class="ri-quill-pen-fill"></i> Content & Strategy</div>
                 <div class="tag-wrap">
-                    <span class="tag">Reel Scriptwriting</span>
-                    <span class="tag">On-Camera Presenting</span>
-                    <span class="tag">Campaign Strategy</span>
-                    <span class="tag">Brand Growth</span>
-                    <span class="tag">Fact-Checking</span>
-                    <span class="tag">Field Reporting</span>
-                    <span class="tag">UI/UX & Graphic Design</span>
-                    <span class="tag">Videography & Photography</span>
+                    <span class="tag">Reel Scriptwriting</span><span class="tag">On-Camera Presenting</span>
+                    <span class="tag">Campaign Strategy</span><span class="tag">Brand Growth</span>
+                    <span class="tag">Fact-Checking</span><span class="tag">Field Reporting</span>
+                    <span class="tag">UI/UX & Graphic Design</span><span class="tag">Videography & Photography</span>
                 </div>
             </div>
-
             <div class="bento-box box-code gsap-fade-up">
                 <div class="bento-title"><i class="ri-terminal-box-line" style="color: #666;"></i> Web & Tech Stack</div>
                 <div class="tag-wrap">
-                    <span class="code-tag">Python & C</span>
-                    <span class="code-tag">JavaScript</span>
-                    <span class="code-tag">React Native</span>
-                    <span class="code-tag">HTML/CSS/PHP</span>
-                    <span class="code-tag">MySQL & MongoDB</span>
-                    <span class="code-tag">Flutter SDK</span>
-                    <span class="code-tag">WordPress</span>
-                    <span class="code-tag">Git/GitHub</span>
+                    <span class="code-tag">Python & C</span><span class="code-tag">JavaScript</span>
+                    <span class="code-tag">React Native</span><span class="code-tag">HTML/CSS/PHP</span>
+                    <span class="code-tag">MySQL & MongoDB</span><span class="code-tag">Flutter SDK</span>
+                    <span class="code-tag">WordPress</span><span class="code-tag">Git/GitHub</span>
                 </div>
             </div>
-
             <div class="bento-box box-projects gsap-fade-up">
                 <div class="bento-title"><i class="ri-folder-add-fill"></i> Dev Projects</div>
                 <ul class="info-list">
-                    <li>
-                        <h4>Pawfect Buddy</h4>
-                        <p>Complete pet care & shop management web app connecting owners and vendors.</p>
-                    </li>
-                    <li>
-                        <h4>Library Book Management</h4>
-                        <p>Digital system for managing records efficiently.</p>
-                    </li>
-                    <li>
-                        <h4>Responsive Web Design & Duck Jump Game</h4>
-                        <p>Mobile-friendly interface and simple interactive game built using core logic.</p>
-                    </li>
+                    <li><h4>Pawfect Buddy</h4><p>Complete pet care & shop management web app connecting owners and vendors.</p></li>
+                    <li><h4>Library Book Management</h4><p>Digital system for managing records efficiently.</p></li>
+                    <li><h4>Responsive Web Design & Duck Jump Game</h4><p>Mobile-friendly interface and simple interactive game built using core logic.</p></li>
                 </ul>
             </div>
-
             <div class="bento-box box-education gsap-fade-up">
                 <div class="bento-title"><i class="ri-graduation-cap-fill"></i> Education & Credentials</div>
                 <ul class="info-list">
-                    <li>
-                        <h4>BSc Information Technology</h4>
-                        <p>Thakur College of Science and Commerce</p>
-                        <span>SGPA 7.30 | 2021 — 2024</span>
-                    </li>
-                    <li>
-                        <h4>Secondary (XII) & Schooling (X)</h4>
-                        <p>Adarsh Education Society (78.0%) | St Willibrords Innovative School (64.80%)</p>
-                    </li>
-                    <li>
-                        <h4>Certifications</h4>
-                        <p>The Complete Python Developer (Udemy) • Graphic Designing (Thakur College) • Ethical Hacking Level 1 (MrWebsecure)</p>
-                    </li>
+                    <li><h4>BSc Information Technology</h4><p>Thakur College of Science and Commerce</p><span>SGPA 7.30 | 2021 — 2024</span></li>
+                    <li><h4>Secondary (XII) & Schooling (X)</h4><p>Adarsh Education Society (78.0%) | St Willibrords Innovative School (64.80%)</p></li>
+                    <li><h4>Certifications</h4><p>The Complete Python Developer (Udemy) • Graphic Designing (Thakur College) • Ethical Hacking Level 1 (MrWebsecure)</p></li>
                 </ul>
             </div>
         </div>
@@ -700,54 +637,67 @@
 
     <footer class="footer">
         <div class="contact-label">Initiate Transmission</div>
-        <div class="magnetic-wrap">
-            <a href="mailto:utkarshshukla0327@gmail.com" class="huge-contact">Let's Connect</a>
-        </div>
-        
+        <div class="magnetic-wrap"><a href="mailto:utkarshshukla0327@gmail.com" class="huge-contact">Let's Connect</a></div>
         <div class="social-container">
-            <div class="magnetic-wrap">
-                <a href="https://wa.me/919764979543" target="_blank" class="social-btn btn-whatsapp">
-                    <i class="ri-whatsapp-fill"></i> +91 9764979543
-                </a>
-            </div>
-            <div class="magnetic-wrap">
-                <a href="https://instagram.com/utkarshshukla____" target="_blank" class="social-btn btn-instagram">
-                    <i class="ri-instagram-fill"></i> @utkarshshukla____
-                </a>
-            </div>
-            <div class="magnetic-wrap">
-                <a href="https://linkedin.com/in/utkarshshukla" target="_blank" class="social-btn btn-linkedin">
-                    <i class="ri-linkedin-fill"></i> LinkedIn
-                </a>
-            </div>
+            <div class="magnetic-wrap"><a href="https://wa.me/919764979543" target="_blank" class="social-btn btn-whatsapp"><i class="ri-whatsapp-fill"></i> +91 9764979543</a></div>
+            <div class="magnetic-wrap"><a href="https://instagram.com/utkarshshukla____" target="_blank" class="social-btn btn-instagram"><i class="ri-instagram-fill"></i> @utkarshshukla____</a></div>
+            <div class="magnetic-wrap"><a href="https://linkedin.com/in/utkarshshukla" target="_blank" class="social-btn btn-linkedin"><i class="ri-linkedin-fill"></i> LinkedIn</a></div>
         </div>
-
         <div class="footer-details">
-            <a href="mailto:utkarshshukla0327@gmail.com" style="text-decoration: none;">
-                <div class="footer-item magnetic-wrap">
-                    <i class="ri-mail-send-fill"></i> utkarshshukla0327@gmail.com
-                </div>
-            </a>
-            <div class="footer-item magnetic-wrap">
-                <i class="ri-map-pin-fill"></i> Dadar (W), Mumbai 400028
-            </div>
+            <a href="mailto:utkarshshukla0327@gmail.com" style="text-decoration: none;"><div class="footer-item magnetic-wrap"><i class="ri-mail-send-fill"></i> utkarshshukla0327@gmail.com</div></a>
+            <div class="footer-item magnetic-wrap"><i class="ri-map-pin-fill"></i> Dadar (W), Mumbai 400028</div>
         </div>
-        
-        <div class="magnetic-wrap">
-            <button id="omni-open-widget-btn" class="ai-widget-btn" style="cursor: none; outline: none;">
-                <i class="ri-robot-2-fill"></i> Open Utkarsh Assistant Widget
-            </button>
-        </div>
+        <div class="magnetic-wrap"><button id="omni-open-widget-btn" class="ai-widget-btn" style="cursor: none; outline: none;"><i class="ri-robot-2-fill"></i> Open Utkarsh Assistant Widget</button></div>
     </footer>
 
-    <!-- LOADING SCREEN LOGIC -->
+
+    <!-- ==============================================
+         NEW SEQUENCE LOGIC (Selection -> Loader -> Site) 
+         ============================================== -->
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const counterEl = document.getElementById('loader-percentage');
-            const barEl = document.getElementById('loader-bar');
-            const timeEl = document.getElementById('loader-time');
-            const loaderWrapper = document.getElementById('loader-wrapper');
+        let currentMode = 'classic';
+        const goBtn = document.getElementById('go-button');
+        const selectionScreen = document.getElementById('cursor-selection-screen');
+        const loaderWrapper = document.getElementById('loader-wrapper');
+        const counterEl = document.getElementById('loader-percentage');
+        const barEl = document.getElementById('loader-bar');
+        const timeEl = document.getElementById('loader-time');
+
+        // Cursor Selection Logic
+        document.querySelectorAll('.cursor-option-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Remove active from all
+                document.querySelectorAll('.cursor-option-btn').forEach(b => b.classList.remove('selected'));
+                // Add to clicked
+                btn.classList.add('selected');
+                
+                // Get selected cursor
+                currentMode = btn.getAttribute('data-cursor');
+                
+                // Remove old classes from body, add new one
+                document.body.className = `locked mode-${currentMode}`;
+
+                // Show & Animate GO Button
+                goBtn.classList.add('visible');
+                goBtn.classList.add('glowing');
+            });
+        });
+
+        // GO Button Click Sequence
+        goBtn.addEventListener('click', () => {
+            // Slide Selection Screen Up
+            selectionScreen.style.transform = 'translateY(-100%)';
             
+            // Wait 0.8s for slide to finish, then start Loader
+            setTimeout(() => {
+                selectionScreen.style.display = 'none'; // cleanup
+                loaderWrapper.style.display = 'flex'; // show loader
+                
+                startLoadingSequence();
+            }, 800);
+        });
+
+        function startLoadingSequence() {
             let count = 0;
             let loaderInterval = setInterval(() => {
                 count += Math.floor(Math.random() * 4) + 1; 
@@ -767,7 +717,8 @@
                             ease: "power4.inOut",
                             onComplete: () => {
                                 loaderWrapper.style.display = 'none';
-                                document.body.classList.remove('locked');
+                                document.body.classList.remove('locked'); // Unlock scrolling for site
+                                document.body.classList.add(`mode-${currentMode}`); // Ensure cursor stays
                                 ScrollTrigger.refresh(); 
                             }
                         });
@@ -776,29 +727,9 @@
                 counterEl.innerText = count + '%';
                 barEl.style.width = count + '%';
             }, 30);
-        });
-    </script>
-
-    <!-- NEW CURSOR MODES LOGIC -->
-    <script>
-        // State Variable for Cursor Mode
-        let currentMode = 'glitter'; // 'glitter', 'water', or 'neon'
-
-        // Button Elements
-        const btnGlitter = document.getElementById('btn-glitter');
-        const btnWater = document.getElementById('btn-water');
-        const btnNeon = document.getElementById('btn-neon');
-
-        // Toggle Active Classes
-        function setActiveButton(btn) {
-            document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
         }
-
-        btnGlitter.addEventListener('click', () => { currentMode = 'glitter'; setActiveButton(btnGlitter); });
-        btnWater.addEventListener('click', () => { currentMode = 'water'; setActiveButton(btnWater); });
-        btnNeon.addEventListener('click', () => { currentMode = 'neon'; setActiveButton(btnNeon); });
     </script>
+
 
     <!-- SMOKE CANVAS (Background) -->
     <script>
@@ -859,7 +790,7 @@
         animateSmoke();
     </script>
 
-    <!-- EFFECTS CANVAS (Glitter, Water, Neon Trail) -->
+    <!-- EFFECTS CANVAS (Glitter, Water, Neon Trail, Ghost, Spotlight) -->
     <script>
         const effectsCanvas = document.getElementById('effects-canvas');
         const gCtx = effectsCanvas.getContext('2d');
@@ -870,141 +801,138 @@
         let glitterArray = [];
         let waterArray = [];
         let neonTrail = [];
+        let ghostArray = [];
 
-        // GLITTER CLASS
+        // CLASSES FOR CANVAS EFFECTS
         class GlitterParticle {
             constructor(x, y) {
-                this.x = x + (Math.random() * 10 - 5);
-                this.y = y + (Math.random() * 10 - 5);
-                this.size = Math.random() * 2 + 1; 
-                this.speedX = Math.random() * 1 - 0.5; 
-                this.speedY = Math.random() * 1 - 0.5;
-                this.color = Math.random() > 0.5 ? '#00e5ff' : '#ffffff'; 
-                this.life = 100; 
-                this.type = Math.random() > 0.5 ? 'ripple' : 'glitter';
-                this.rippleRadius = Math.random() * 2;
+                this.x = x + (Math.random() * 10 - 5); this.y = y + (Math.random() * 10 - 5);
+                this.size = Math.random() * 2 + 1; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * 1 - 0.5;
+                this.color = Math.random() > 0.5 ? '#00e5ff' : '#ffffff'; this.life = 100; 
+                this.type = Math.random() > 0.5 ? 'ripple' : 'glitter'; this.rippleRadius = Math.random() * 2;
             }
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.life -= 2; 
-                if (this.type === 'ripple') { this.rippleRadius += 1; } 
-                else { if (this.size > 0.1) this.size -= 0.05; }
+                this.x += this.speedX; this.y += this.speedY; this.life -= 2; 
+                if (this.type === 'ripple') { this.rippleRadius += 1; } else { if (this.size > 0.1) this.size -= 0.05; }
             }
             draw() {
-                gCtx.save();
-                gCtx.globalAlpha = Math.max(0, this.life / 100);
-                gCtx.beginPath();
+                gCtx.save(); gCtx.globalAlpha = Math.max(0, this.life / 100); gCtx.beginPath();
                 if (this.type === 'ripple') {
                     gCtx.arc(this.x, this.y, this.rippleRadius, 0, Math.PI * 2);
-                    gCtx.strokeStyle = this.color;
-                    gCtx.lineWidth = 1; 
-                    gCtx.shadowBlur = 5;
-                    gCtx.shadowColor = '#00e5ff';
-                    gCtx.stroke();
+                    gCtx.strokeStyle = this.color; gCtx.lineWidth = 1; gCtx.shadowBlur = 5; gCtx.shadowColor = '#00e5ff'; gCtx.stroke();
                 } else {
                     gCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    gCtx.fillStyle = this.color;
-                    gCtx.shadowBlur = 8; 
-                    gCtx.shadowColor = '#00e5ff';
-                    gCtx.fill();
+                    gCtx.fillStyle = this.color; gCtx.shadowBlur = 8; gCtx.shadowColor = '#00e5ff'; gCtx.fill();
                 }
                 gCtx.restore();
             }
         }
 
-        // WATER RIPPLE CLASS
         class WaterRipple {
             constructor(x, y) {
-                this.x = x; 
-                this.y = y;
-                this.radius = 1;
-                this.life = 1; 
-                // Random decay so some ripples last longer
-                this.decay = Math.random() * 0.015 + 0.01; 
+                this.x = x; this.y = y; this.radius = 1; this.life = 1; this.decay = Math.random() * 0.015 + 0.01; 
             }
-            update() {
-                this.radius += 2; // Expand speed
-                this.life -= this.decay; // Fade out
-            }
+            update() { this.radius += 2; this.life -= this.decay; }
             draw() {
-                gCtx.save();
-                gCtx.beginPath();
-                gCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                gCtx.strokeStyle = `rgba(0, 229, 255, ${Math.max(0, this.life * 0.7)})`;
-                gCtx.lineWidth = 2;
-                gCtx.stroke();
-                gCtx.restore();
+                gCtx.save(); gCtx.beginPath(); gCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                gCtx.strokeStyle = `rgba(0, 229, 255, ${Math.max(0, this.life * 0.7)})`; gCtx.lineWidth = 2; gCtx.stroke(); gCtx.restore();
             }
         }
 
-        // MOUSE / TOUCH EVENTS
+        class GhostDot {
+            constructor(x, y) {
+                this.x = x; this.y = y; this.life = 1; this.size = 15;
+            }
+            update() { this.life -= 0.05; this.size -= 0.5; }
+            draw() {
+                gCtx.save(); gCtx.beginPath(); gCtx.arc(this.x, this.y, Math.max(0, this.size), 0, Math.PI * 2);
+                gCtx.fillStyle = `rgba(0, 229, 255, ${Math.max(0, this.life * 0.5)})`; gCtx.fill(); gCtx.restore();
+            }
+        }
+
+        // MOUSE / TOUCH EVENTS FOR CANVAS
         function handleCursorMovement(x, y) {
             if (currentMode === 'glitter') {
                 glitterArray.push(new GlitterParticle(x, y));
-            } 
-            else if (currentMode === 'water') {
-                // Throttle water ripples slightly so it looks clean
-                if(Math.random() > 0.6) {
-                    waterArray.push(new WaterRipple(x, y));
-                }
-            } 
-            else if (currentMode === 'neon') {
-                // Push coordinate and timestamp (to delete after 1.5s)
+            } else if (currentMode === 'water') {
+                if(Math.random() > 0.6) waterArray.push(new WaterRipple(x, y));
+            } else if (currentMode === 'neon') {
                 neonTrail.push({ x: x, y: y, time: Date.now() });
+            } else if (currentMode === 'ghost') {
+                if(Math.random() > 0.4) ghostArray.push(new GhostDot(x, y));
             }
         }
 
-        window.addEventListener('mousemove', (e) => { handleCursorMovement(e.clientX, e.clientY); });
+        window.addEventListener('mousemove', (e) => { 
+            handleCursorMovement(e.clientX, e.clientY); 
+            // Eraser / Spotlight CSS vars
+            if(currentMode === 'eraser' || currentMode === 'spotlight') {
+                document.body.style.setProperty('--mx', e.clientX + 'px');
+                document.body.style.setProperty('--my', e.clientY + 'px');
+            }
+        });
+        
         window.addEventListener('touchmove', (e) => { 
-            if(e.touches.length > 0) handleCursorMovement(e.touches[0].clientX, e.touches[0].clientY); 
+            if(e.touches.length > 0) {
+                let tx = e.touches[0].clientX; let ty = e.touches[0].clientY;
+                handleCursorMovement(tx, ty);
+                if(currentMode === 'eraser' || currentMode === 'spotlight') {
+                    document.body.style.setProperty('--mx', tx + 'px'); document.body.style.setProperty('--my', ty + 'px');
+                }
+            }
         });
 
-        // ANIMATION LOOP FOR ALL 3 EFFECTS
+        // ANIMATION LOOP FOR ALL CANVAS EFFECTS
         function animateEffects() {
             gCtx.clearRect(0, 0, effectsCanvas.width, effectsCanvas.height);
             let currentTime = Date.now();
 
             if (currentMode === 'glitter') {
                 for (let i = 0; i < glitterArray.length; i++) {
-                    glitterArray[i].update();
-                    glitterArray[i].draw();
+                    glitterArray[i].update(); glitterArray[i].draw();
                     if (glitterArray[i].life <= 0) { glitterArray.splice(i, 1); i--; }
                 }
             } 
             else if (currentMode === 'water') {
                 for (let i = 0; i < waterArray.length; i++) {
-                    waterArray[i].update();
-                    waterArray[i].draw();
+                    waterArray[i].update(); waterArray[i].draw();
                     if (waterArray[i].life <= 0) { waterArray.splice(i, 1); i--; }
                 }
             } 
             else if (currentMode === 'neon') {
-                // Remove points older than 1.5 seconds (1500ms)
                 neonTrail = neonTrail.filter(p => currentTime - p.time < 1500);
-
-                // Draw connecting fading lines between points
                 for (let i = 0; i < neonTrail.length - 1; i++) {
-                    let p1 = neonTrail[i];
-                    let p2 = neonTrail[i+1];
-                    let age = currentTime - p1.time;
-                    
-                    // Alpha goes from 1 to 0 over 1500ms
-                    let alpha = 1 - (age / 1500);
-                    if (alpha < 0) alpha = 0;
-
+                    let p1 = neonTrail[i]; let p2 = neonTrail[i+1];
+                    let age = currentTime - p1.time; let alpha = 1 - (age / 1500); if (alpha < 0) alpha = 0;
+                    gCtx.beginPath(); gCtx.moveTo(p1.x, p1.y); gCtx.lineTo(p2.x, p2.y);
+                    gCtx.strokeStyle = `rgba(0, 229, 255, ${alpha})`; gCtx.lineWidth = 3 + (alpha * 3); 
+                    gCtx.shadowBlur = 15 * alpha; gCtx.shadowColor = '#00e5ff'; gCtx.lineCap = 'round'; gCtx.lineJoin = 'round'; gCtx.stroke();
+                }
+            }
+            else if (currentMode === 'ghost') {
+                for (let i = 0; i < ghostArray.length; i++) {
+                    ghostArray[i].update(); ghostArray[i].draw();
+                    if (ghostArray[i].life <= 0) { ghostArray.splice(i, 1); i--; }
+                }
+            }
+            else if (currentMode === 'spotlight') {
+                // Draw darkness everywhere EXCEPT around cursor
+                gCtx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+                gCtx.fillRect(0, 0, effectsCanvas.width, effectsCanvas.height);
+                
+                let mx = parseFloat(document.body.style.getPropertyValue('--mx'));
+                let my = parseFloat(document.body.style.getPropertyValue('--my'));
+                
+                if(!isNaN(mx) && !isNaN(my)) {
+                    gCtx.globalCompositeOperation = 'destination-out';
+                    let radGrad = gCtx.createRadialGradient(mx, my, 0, mx, my, 150);
+                    radGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                    radGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                    gCtx.fillStyle = radGrad;
                     gCtx.beginPath();
-                    gCtx.moveTo(p1.x, p1.y);
-                    gCtx.lineTo(p2.x, p2.y);
-                    
-                    gCtx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
-                    gCtx.lineWidth = 3 + (alpha * 3); // Thicker at the front
-                    gCtx.shadowBlur = 15 * alpha;     // Glow fades out too
-                    gCtx.shadowColor = '#00e5ff';
-                    gCtx.lineCap = 'round';
-                    gCtx.lineJoin = 'round';
-                    
-                    gCtx.stroke();
+                    gCtx.arc(mx, my, 150, 0, Math.PI * 2);
+                    gCtx.fill();
+                    gCtx.globalCompositeOperation = 'source-over';
                 }
             }
 
@@ -1039,17 +967,17 @@
             }
         });
 
-        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .action-btn, .control-btn');
+        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .action-btn, .test-element-btn');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
-                if(window.innerWidth > 768) {
+                if(window.innerWidth > 768 && currentMode !== 'eraser' && currentMode !== 'crosshair' && currentMode !== 'spotlight') {
                     cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
                     cursorOutline.style.backgroundColor = 'rgba(0, 240, 255, 0.15)';
                     cursorOutline.style.borderColor = 'rgba(0, 240, 255, 1)';
                 }
             });
             el.addEventListener('mouseleave', () => {
-                if(window.innerWidth > 768) {
+                if(window.innerWidth > 768 && currentMode !== 'eraser' && currentMode !== 'crosshair' && currentMode !== 'spotlight') {
                     cursorOutline.style.width = '40px'; cursorOutline.style.height = '40px';
                     cursorOutline.style.backgroundColor = 'transparent';
                     cursorOutline.style.borderColor = 'var(--accent)';
@@ -1065,92 +993,40 @@
         document.addEventListener("DOMContentLoaded", () => {
             
             gsap.utils.toArray('.f-icon').forEach(icon => {
-                gsap.to(icon, {
-                    y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)",
-                    duration: "random(2.5, 4.5)", repeat: -1, yoyo: true, ease: "sine.inOut"
-                });
+                gsap.to(icon, { y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)", duration: "random(2.5, 4.5)", repeat: -1, yoyo: true, ease: "sine.inOut" });
             });
-            
-            gsap.to(".gsap-welcome-photo", {
-                y: -15, duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut"
-            });
+            gsap.to(".gsap-welcome-photo", { y: -15, duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
             gsap.to('.welcome-screen', {
                 opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut",
-                scrollTrigger: {
-                    trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1
-                }
+                scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 }
             });
 
-            gsap.from(".gsap-hero-img-box", { 
-                scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out",
-                scrollTrigger: {
-                    trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1
-                }
-            });
-            
+            gsap.from(".gsap-hero-img-box", { scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out", scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 } });
             gsap.from(".gsap-title-left", { x: -150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
             gsap.from(".gsap-title-right", { x: 150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
             gsap.from(".gsap-badge", { y: 50, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.6 });
-
-            gsap.to(".gsap-hero-img", {
-                y: -20, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut"
-            });
+            gsap.to(".gsap-hero-img", { y: -20, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut" });
             
-            gsap.to(".gsap-title-left", {
-                yPercent: -50, ease: "none",
-                scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }
-            });
-            gsap.to(".gsap-title-right", {
-                yPercent: 50, ease: "none",
-                scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }
-            });
+            gsap.to(".gsap-title-left", { yPercent: -50, ease: "none", scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }});
+            gsap.to(".gsap-title-right", { yPercent: 50, ease: "none", scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }});
 
             const text = document.getElementById("split-text");
             const words = text.innerText.split(" ");
             text.innerHTML = "";
-            words.forEach(word => {
-                let span = document.createElement("span");
-                span.innerText = word + " ";
-                text.appendChild(span);
-            });
+            words.forEach(word => { let span = document.createElement("span"); span.innerText = word + " "; text.appendChild(span); });
 
-            gsap.fromTo("#split-text span", 
-                { opacity: 0.1, y: 20 },
-                {
-                    opacity: 1, y: 0, stagger: 0.05, ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: ".about-section", start: "top 70%", end: "bottom 60%", scrub: 1
-                    }
-                }
-            );
+            gsap.fromTo("#split-text span", { opacity: 0.1, y: 20 }, { opacity: 1, y: 0, stagger: 0.05, ease: "power2.out", scrollTrigger: { trigger: ".about-section", start: "top 70%", end: "bottom 60%", scrub: 1 } });
 
             const spans = document.querySelectorAll("#split-text span");
-            spans.forEach(span => {
-                const w = span.innerText.trim().toLowerCase();
-                if (['scripts', 'video', 'editing', 'strategy,', 'storytelling,'].includes(w)) {
-                    span.classList.add('about-highlight');
-                }
-            });
+            spans.forEach(span => { const w = span.innerText.trim().toLowerCase(); if (['scripts', 'video', 'editing', 'strategy,', 'storytelling,'].includes(w)) { span.classList.add('about-highlight'); } });
 
             const horizontalWrapper = document.querySelector('.horizontal-wrapper');
             const panels = gsap.utils.toArray('.panel');
 
-            gsap.to(panels, {
-                xPercent: -100 * (panels.length - 1),
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".horizontal-section", pin: true, scrub: 1,
-                    snap: 1 / (panels.length - 1), end: () => "+=" + horizontalWrapper.offsetWidth
-                }
-            });
+            gsap.to(panels, { xPercent: -100 * (panels.length - 1), ease: "none", scrollTrigger: { trigger: ".horizontal-section", pin: true, scrub: 1, snap: 1 / (panels.length - 1), end: () => "+=" + horizontalWrapper.offsetWidth } });
 
-            gsap.utils.toArray('.gsap-fade-up').forEach(box => {
-                gsap.from(box, {
-                    y: 60, opacity: 0, duration: 1, ease: "power3.out",
-                    scrollTrigger: { trigger: box, start: "top 85%" }
-                });
-            });
+            gsap.utils.toArray('.gsap-fade-up').forEach(box => { gsap.from(box, { y: 60, opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: box, start: "top 85%" } }); });
 
             const magnetics = document.querySelectorAll('.magnetic-wrap');
             magnetics.forEach((magnetic) => {
@@ -1163,9 +1039,7 @@
                     }
                 });
                 magnetic.addEventListener('mouseleave', function() {
-                    if (window.innerWidth > 768) {
-                        gsap.to(magnetic, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
-                    }
+                    if (window.innerWidth > 768) { gsap.to(magnetic, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" }); }
                 });
             });
         });
