@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Utkarsh Shukla | Content Strategist</title>
     
-    <!-- Premium Fonts: Anton (Bold), Inter (Body), Space Grotesk (Tech) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Remix Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
-    <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
@@ -54,16 +51,17 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Ambient Smoke Effect */
+        /* Ambient Smoke Effect (Stays in background) */
         #smoke-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 0; pointer-events: none; opacity: 0.5;
         }
 
-        /* Smooth & Low Power Water-Wave Glitter Effect */
+        /* 🚀 Smooth & Low Power Water-Wave Glitter Effect (NOW WORKS ON FULL PAGE) 🚀 */
         #glitter-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 1; pointer-events: none;
+            z-index: 9997; /* Pulled above all sections so it works everywhere */
+            pointer-events: none; /* Won't block any clicks */
             mix-blend-mode: screen;
         }
 
@@ -84,28 +82,28 @@
             flex-direction: column; overflow: hidden;
         }
 
-        /* 🚀 GIANT CUTOUT BEHIND WELCOME TEXT 🚀 */
+        /* GIANT CUTOUT BEHIND WELCOME TEXT */
         .welcome-cutout {
             position: absolute;
-            bottom: -5%; /* Stick to bottom */
+            bottom: -5%; 
             left: 50%;
             transform: translateX(-50%);
-            height: 90vh; /* Make it massive */
+            height: 90vh; 
             width: auto;
-            z-index: 5; /* Below text (10) but above background */
+            z-index: 5; 
             object-fit: contain;
-            opacity: 0.85; /* Slightly faded so text is readable */
-            filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.3)); /* Cyan glow */
+            opacity: 0.85; 
+            filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.3)); 
             pointer-events: none;
         }
 
         .welcome-text {
             font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem);
             color: var(--text); text-align: center; line-height: 1; 
-            z-index: 10; /* Above the photo */
+            z-index: 10; 
             text-transform: uppercase;
             position: relative;
-            text-shadow: 0 10px 40px rgba(0,0,0,0.8); /* Strong shadow to stand out over photo */
+            text-shadow: 0 10px 40px rgba(0,0,0,0.8); 
         }
 
         .welcome-text span {
@@ -116,8 +114,7 @@
 
         .float-icon {
             position: absolute; font-size: clamp(3rem, 5vw, 6rem);
-            z-index: 15; /* Above everything */
-            filter: drop-shadow(0 0 15px currentColor);
+            z-index: 15; filter: drop-shadow(0 0 15px currentColor);
         }
 
         .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 2; }
@@ -351,26 +348,26 @@
     </style>
 </head>
 <body>
+    
+    <div style="display: none;" aria-hidden="true">
+       <span class="hidden-citation"></span>
+       <span class="hidden-citation"></span>
+    </div>
 
-    <!-- Background Effects -->
     <canvas id="smoke-canvas"></canvas>
+    
     <canvas id="glitter-canvas"></canvas>
     
     <div class="noise-bg"></div>
 
-    <!-- Custom Cursor -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <!-- WELCOME SCREEN (With Giant 3D Cutout Behind Text) -->
     <div class="welcome-screen">
-        <!-- 🚀 NEW: DIFFERENT PHOTO FOR WELCOME SCREEN 🚀 -->
-        <!-- Ensure this file is uploaded as welcome-photo.png to your GitHub -->
         <img src="welcome-photo.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
         
         <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
         
-        <!-- Floating Media & Editing Icons -->
         <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #E1306C;"></i>
         <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #FF0000;"></i>
         <i class="ri-camera-lens-fill float-icon f-icon" style="top: 70%; left: 10%; color: #a334fa;"></i>
@@ -385,10 +382,8 @@
         </div>
     </div>
 
-    <!-- Scroll Spacer to trigger Welcome Screen disappear -->
     <div class="scroll-spacer"></div>
 
-    <!-- SCROLL 1: HERO SECTION -->
     <section class="hero" id="hero-main">
         
         <div class="text-utkarsh gsap-title-left">UTKARSH</div>
@@ -407,7 +402,6 @@
         </div>
     </section>
 
-    <!-- SCROLL 2: THE STRATEGIST -->
     <section class="about-section">
         <div class="section-tag">01 // THE STRATEGIST</div>
         <p class="about-text" id="split-text">
@@ -415,11 +409,9 @@
         </p>
     </section>
 
-    <!-- SCROLL 3: HORIZONTAL TIMELINE -->
     <section class="horizontal-section">
         <div class="horizontal-wrapper">
             
-            <!-- Panel 1: SMM & Strategy -->
             <div class="panel">
                 <div class="exp-card">
                     
@@ -431,7 +423,6 @@
                             <div class="exp-company">eSamparkTech Solutions & MEDH</div>
                         </div>
 
-                        <!-- 3D FLOATING BRAND LOGO LINKS -->
                         <div class="floating-brands">
                             <a href="https://esampark.biz/" target="_blank" class="brand-float float-1" title="Visit eSampark">
                                 <img src="esampark-logo.png" alt="eSampark Logo">
@@ -450,7 +441,6 @@
                 </div>
             </div>
 
-            <!-- Panel 2: Freelance Editor -->
             <div class="panel">
                 <div class="exp-card">
                     <i class="ri-clapperboard-fill exp-icon"></i>
@@ -465,7 +455,6 @@
                 </div>
             </div>
 
-            <!-- Panel 3: Journalism -->
             <div class="panel">
                 <div class="exp-card">
                     <i class="ri-mic-2-fill exp-icon"></i>
@@ -480,7 +469,6 @@
                 </div>
             </div>
 
-            <!-- Panel 4: Web Dev -->
             <div class="panel">
                 <div class="exp-card">
                     <i class="ri-code-box-fill exp-icon"></i>
@@ -496,12 +484,10 @@
         </div>
     </section>
 
-    <!-- SCROLL 4: THE ARSENAL BENTO GRID -->
     <section class="bento-container" id="arsenal">
         <div class="section-tag" style="justify-content: center; margin-bottom: 2rem;">02 // THE ARSENAL</div>
         
         <div class="bento-grid">
-            <!-- MASTER EDITING SUITE -->
             <div class="bento-box box-editing gsap-fade-up">
                 <div class="bento-title"><i class="ri-film-fill"></i> Master Post-Production Suite</div>
                 <div class="pro-apps">
@@ -512,7 +498,6 @@
                 </div>
             </div>
 
-            <!-- CONTENT & STRATEGY -->
             <div class="bento-box box-media gsap-fade-up">
                 <div class="bento-title"><i class="ri-quill-pen-fill"></i> Content & Strategy</div>
                 <div class="tag-wrap">
@@ -527,7 +512,6 @@
                 </div>
             </div>
 
-            <!-- PROGRAMMING -->
             <div class="bento-box box-code gsap-fade-up">
                 <div class="bento-title"><i class="ri-terminal-box-line" style="color: #666;"></i> Web & Tech Stack</div>
                 <div class="tag-wrap">
@@ -542,7 +526,6 @@
                 </div>
             </div>
 
-            <!-- PROJECTS -->
             <div class="bento-box box-projects gsap-fade-up">
                 <div class="bento-title"><i class="ri-folder-add-fill"></i> Dev Projects</div>
                 <ul class="info-list">
@@ -561,7 +544,6 @@
                 </ul>
             </div>
 
-            <!-- EDUCATION & CERTS -->
             <div class="bento-box box-education gsap-fade-up">
                 <div class="bento-title"><i class="ri-graduation-cap-fill"></i> Education & Credentials</div>
                 <ul class="info-list">
@@ -584,7 +566,6 @@
         </div>
     </section>
 
-    <!-- FOOTER / CONTACT -->
     <footer class="footer">
         <div class="contact-label">Initiate Transmission</div>
         
@@ -592,7 +573,6 @@
             <a href="mailto:utkarshshukla0327@gmail.com" class="huge-contact">Let's Connect</a>
         </div>
         
-        <!-- SOCIAL MEDIA BUTTONS -->
         <div class="social-container">
             <div class="magnetic-wrap">
                 <a href="https://wa.me/919764979543" target="_blank" class="social-btn btn-whatsapp">
@@ -622,7 +602,6 @@
             </div>
         </div>
         
-        <!-- UTKARSH ASSISTANT AI WIDGET BUTTON -->
         <div class="magnetic-wrap">
             <button id="omni-open-widget-btn" class="ai-widget-btn" style="cursor: none; outline: none;">
                 <i class="ri-robot-2-fill"></i> Open Utkarsh Assistant Widget
@@ -630,7 +609,6 @@
         </div>
     </footer>
 
-    <!-- 🚀 CANVAS 1: AMBIENT SMOKE SCRIPT 🚀 -->
     <script>
         const smokeCanvas = document.getElementById('smoke-canvas');
         const sCtx = smokeCanvas.getContext('2d');
@@ -699,7 +677,6 @@
         animateSmoke();
     </script>
 
-    <!-- 🚀 CANVAS 2: SMOOTH, LOW-POWER WATER-WAVE CANVAS 🚀 -->
     <script>
         const glitterCanvas = document.getElementById('glitter-canvas');
         const gCtx = glitterCanvas.getContext('2d');
@@ -789,7 +766,6 @@
         animateGlitter();
     </script>
 
-    <!-- GSAP Custom JS & Cursor Logic -->
     <script>
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
@@ -934,7 +910,6 @@
         });
     </script>
     
-    <!-- OMNIDIMENSION WEB WIDGET SCRIPT -->
     <script id="omnidimension-web-widget" async src="https://omnidim.io/web_widget.js?secret_key=9abbd03030fa0efb634866671ffcb0b2"></script>
 </body>
 </html>
