@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Utkarsh Shukla | Content Strategist</title>
     
-    <!-- Premium Fonts: Anton (Bold), Inter (Body), Space Grotesk (Tech) -->
+    <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Remix Icons (For high-quality scalable icons) -->
+    <!-- Remix Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <!-- GSAP & ScrollTrigger -->
@@ -22,7 +22,7 @@
         :root {
             --bg: #03050a; 
             --text: #f0f0f0;
-            --accent: #00e5ff; /* Cyan Blue matching the screenshot */
+            --accent: #00e5ff; /* Cyan Blue */
             --glass: rgba(0, 229, 255, 0.03);
             --border: rgba(0, 229, 255, 0.15);
         }
@@ -30,10 +30,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
+            background-color: var(--bg); color: var(--text);
+            font-family: 'Inter', sans-serif; overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -69,7 +67,7 @@
             font-family: 'Anton', sans-serif; font-size: 6rem; color: var(--accent);
         }
 
-        /* === WELCOME SCREEN (COLORFUL FLOATING ICONS) === */
+        /* === WELCOME SCREEN === */
         .welcome-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(3, 5, 10, 0.98); backdrop-filter: blur(20px);
@@ -81,136 +79,58 @@
             font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem);
             color: var(--text); text-align: center; line-height: 1; z-index: 10; text-transform: uppercase;
         }
-
-        /* Portfolio in Cyber Blue */
-        .welcome-text span {
-            color: var(--accent);
-            text-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
-            -webkit-text-stroke: 0;
-        }
+        .welcome-text span { color: var(--accent); text-shadow: 0 0 30px rgba(0, 229, 255, 0.5); -webkit-text-stroke: 0; }
 
         .float-icon {
-            position: absolute; font-size: clamp(3rem, 5vw, 6rem);
-            z-index: 5;
+            position: absolute; font-size: clamp(3rem, 5vw, 6rem); z-index: 5;
             filter: drop-shadow(0 0 15px currentColor);
         }
 
         .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 1; }
 
-        /* === HERO SECTION (NEW CYBER BLUE TYPOGRAPHY LAYOUT) === */
+        /* === HERO SECTION === */
         .hero {
             height: 100vh; width: 100vw; position: relative;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: #000;
-            overflow: hidden;
-            z-index: 10;
+            background: #000; overflow: hidden; z-index: 10;
         }
 
-        /* UTKARSH Text (Behind/Top) */
         .text-utkarsh {
-            position: absolute;
-            top: 15%;
-            width: 100%;
-            text-align: center;
-            font-family: 'Anton', sans-serif;
-            font-size: 22vw;
-            line-height: 0.8;
-            color: #ffffff;
-            z-index: 1;
-            text-transform: uppercase;
-            letter-spacing: -2px;
+            position: absolute; top: 15%; width: 100%; text-align: center;
+            font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8;
+            color: #ffffff; z-index: 1; text-transform: uppercase; letter-spacing: -2px;
         }
 
-        /* Center Glowing Image Box */
         .hero-image-box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px;
-            height: 480px;
-            z-index: 2;
-            border-radius: 12px;
-            border: 2px solid var(--accent);
-            box-shadow: 0 0 50px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.2);
-            /* Set to visible so the 3D cutout can pop out of the frame */
-            overflow: visible; 
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            background: transparent;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 320px; height: 480px; z-index: 2; border-radius: 12px;
+            border: 2px solid var(--accent); box-shadow: 0 0 50px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.2);
+            overflow: visible; display: flex; align-items: flex-end; justify-content: center; background: transparent;
         }
 
-        /* NEW 3D Holographic Cutout Style */
         .hero-image-box img.holographic-cutout {
-            position: absolute;
-            bottom: 0; /* Sticks perfectly to the bottom of the box */
-            left: 50%;
-            width: 140%; /* Makes the image larger than the box for 3D pop-out */
-            height: auto;
-            object-fit: cover;
-            z-index: 5;
-            transform: translateX(-50%); 
+            position: absolute; bottom: 0; left: 50%; width: 140%; height: auto;
+            object-fit: cover; z-index: 5; transform: translateX(-50%); 
             filter: drop-shadow(0 -10px 25px rgba(0, 229, 255, 0.4)) contrast(1.1) brightness(0.95);
         }
 
-        /* SHUKLA Text (Front/Bottom) */
         .text-shukla {
-            position: absolute;
-            bottom: 10%;
-            width: 100%;
-            text-align: center;
-            font-family: 'Anton', sans-serif;
-            font-size: 22vw;
-            line-height: 0.8;
-            color: var(--accent);
-            z-index: 3;
-            text-transform: uppercase;
-            letter-spacing: -2px;
+            position: absolute; bottom: 10%; width: 100%; text-align: center;
+            font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8;
+            color: var(--accent); z-index: 3; text-transform: uppercase; letter-spacing: -2px;
             text-shadow: 0 10px 40px rgba(0, 229, 255, 0.4);
             background: linear-gradient(180deg, #00ffff 0%, #0088ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* 🚀 GLOWING FLOATING BADGE FOR CONTENT STRATEGIST */
         .hero-subtitle-badge {
-            position: absolute;
-            bottom: 25%;
-            z-index: 10; /* Ensures it sits above EVERYTHING else */
-            background: var(--accent);
-            color: #000;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 800;
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            letter-spacing: 6px;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-transform: uppercase;
+            position: absolute; bottom: 25%; z-index: 10; background: var(--accent); color: #000;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(1rem, 2vw, 1.5rem);
+            letter-spacing: 6px; padding: 15px 40px; border-radius: 50px; text-transform: uppercase;
             box-shadow: 0 10px 40px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.5);
             animation: badgeFloat 3s ease-in-out infinite alternate;
         }
-
-        @keyframes badgeFloat {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-10px) scale(1.05); box-shadow: 0 15px 50px rgba(0, 229, 255, 0.8); }
-        }
-
-        .scroll-indicator {
-            position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px;
-            display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 10; color: #888;
-        }
-        
-        .scroll-line {
-            width: 1px; height: 40px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden;
-        }
-
-        .scroll-line::after {
-            content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
-            background: var(--accent); animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-        }
-
-        @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
+        @keyframes badgeFloat { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); box-shadow: 0 15px 50px rgba(0, 229, 255, 0.8); } }
 
         /* === ABOUT SECTION === */
         .about-section {
@@ -222,13 +142,9 @@
             font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--accent); letter-spacing: 3px;
             text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 2rem;
         }
-
         .section-tag::before { content: ''; display: inline-block; width: 40px; height: 2px; background: var(--accent); }
 
-        .about-text {
-            font-size: clamp(1.5rem, 3.5vw, 3rem); font-weight: 600; line-height: 1.4; color: #fff; max-width: 1400px;
-        }
-
+        .about-text { font-size: clamp(1.5rem, 3.5vw, 3rem); font-weight: 600; line-height: 1.4; color: #fff; max-width: 1400px; }
         .about-text span { color: #445; transition: color 0.5s ease; }
         .about-highlight { color: var(--text) !important; text-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
 
@@ -239,20 +155,61 @@
 
         .exp-card {
             background: var(--glass); border: 1px solid var(--border); padding: 4rem; border-radius: 24px;
-            width: 100%; max-width: 900px; backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 1.5rem; position: relative; overflow: hidden;
+            width: 100%; max-width: 1000px; backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 1.5rem; position: relative; overflow: hidden;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
-        .exp-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent), transparent);
+        .card-top-row {
+            display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;
         }
 
+        .exp-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent), transparent); }
         .exp-icon { font-size: 3.5rem; color: var(--accent); margin-bottom: -1rem; text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);}
         .exp-year { color: #556; font-family: 'Anton', sans-serif; font-size: 3.5rem; line-height: 1; }
         .exp-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; color: #fff; }
         .exp-company { font-size: 1.2rem; color: var(--accent); font-weight: 600; font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
-        .exp-desc { font-size: 1.15rem; line-height: 1.8; color: #99a; }
+        .exp-desc { font-size: 1.15rem; line-height: 1.8; color: #99a; margin-top: 1rem;}
         .exp-desc strong { color: #fff; border-bottom: 1px solid var(--accent); }
+
+        /* 🚀 NEW: 3D FLOATING BRAND CUBES 🚀 */
+        .floating-brands {
+            display: flex; gap: 15px; perspective: 1000px; padding-top: 10px;
+        }
+
+        .brand-float {
+            width: 85px; height: 85px; border-radius: 18px;
+            background: rgba(0, 20, 30, 0.6); border: 1px solid rgba(0, 229, 255, 0.4);
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transform-style: preserve-3d; transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 229, 255, 0.15), inset 0 0 15px rgba(0,229,255,0.2);
+        }
+
+        .brand-float.float-1 { animation: float3D 4s ease-in-out infinite; }
+        .brand-float.float-2 { animation: float3D 5s ease-in-out infinite 2s; } /* Delay for staggered effect */
+
+        @keyframes float3D {
+            0% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+            50% { transform: translateY(-12px) rotateX(12deg) rotateY(-8deg); box-shadow: 0 20px 30px rgba(0, 229, 255, 0.3), inset 0 0 25px rgba(0,229,255,0.3); }
+            100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+        }
+
+        .brand-float:hover {
+            background: var(--accent); animation-play-state: paused;
+            transform: scale(1.15) translateY(-5px) !important;
+            box-shadow: 0 15px 50px rgba(0, 229, 255, 0.6);
+        }
+
+        .brand-float:hover .brand-text { color: #000; text-shadow: none; }
+
+        .brand-text {
+            color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--accent); transition: all 0.3s;
+        }
+
+        /* Use this class if you add actual PNG logos later */
+        .brand-img { max-width: 70%; max-height: 70%; object-fit: contain; display: none; }
+
 
         /* === BENTO GRID SECTION === */
         .bento-container {
@@ -280,7 +237,6 @@
         .bento-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
         .bento-title i { color: var(--accent); font-size: 2rem; }
 
-        /* Pro Editing Apps Design */
         .pro-apps { display: flex; flex-wrap: wrap; gap: 20px; }
         .app-card { 
             display: flex; align-items: center; gap: 15px; background: #050a15; border: 1px solid #1a2540; padding: 1.2rem 2rem; border-radius: 16px; 
@@ -288,11 +244,9 @@
         }
         .app-card:hover { background: var(--accent); color: #000; box-shadow: 0 10px 30px rgba(0, 229, 255, 0.3); border-color: var(--accent); transform: scale(1.05); }
 
-        /* Regular Tags */
         .tag-wrap { display: flex; flex-wrap: wrap; gap: 12px; }
         .tag { padding: 10px 18px; border-radius: 8px; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); font-size: 1rem; color: #ddd; font-weight: 500; }
         .tag:hover { border-color: var(--accent); color: #000; background: var(--accent); }
-        
         .code-tag { padding: 8px 14px; border-radius: 6px; border: 1px dashed #445; color: #889; font-size: 0.9rem; font-family: monospace;}
 
         .info-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
@@ -314,20 +268,14 @@
         }
         .huge-contact:hover { color: transparent; -webkit-text-stroke: 2px var(--accent); text-shadow: 0 0 30px rgba(0,229,255,0.3);}
 
-        /* Social Media Buttons */
-        .social-container {
-            display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; margin-top: 2rem;
-        }
-
+        .social-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; margin-top: 2rem; }
         .social-btn {
             display: flex; align-items: center; gap: 10px; padding: 15px 30px; border-radius: 50px;
             font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem;
             text-decoration: none; color: #fff; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
-
         .social-btn i { font-size: 1.5rem; }
-
         .btn-whatsapp:hover { background: #25D366; color: #fff; border-color: #25D366; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3); }
         .btn-instagram:hover { background: #E1306C; color: #fff; border-color: #E1306C; box-shadow: 0 10px 30px rgba(225, 48, 108, 0.3); }
         .btn-linkedin:hover { background: #0077B5; color: #fff; border-color: #0077B5; box-shadow: 0 10px 30px rgba(0, 119, 181, 0.3); }
@@ -336,7 +284,6 @@
         .footer-item { display: flex; align-items: center; gap: 10px; background: var(--glass); padding: 12px 25px; border-radius: 50px; border: 1px solid var(--border); color: #ddd; font-weight: 500;}
         .footer-item i { color: var(--accent); font-size: 1.3rem;}
 
-        /* Widget button styling */
         .ai-widget-btn {
             display: inline-flex; align-items: center; gap: 12px;
             background: linear-gradient(135deg, rgba(0,229,255,0.15) 0%, rgba(0,229,255,0.05) 100%);
@@ -348,15 +295,9 @@
         .ai-widget-btn:hover { background: var(--accent); color: #000000; box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
 
         .magnetic-wrap { display: inline-block; }
-        
-        /* Hidden citation */
-        .hidden-citation { display: none; }
     </style>
 </head>
 <body>
-    <!-- Citations hidden so they don't break the UI -->
-    <span class="hidden-citation">[cite: 1]</span>
-    <span class="hidden-citation">[cite: 2]</span>
 
     <!-- Background Effects -->
     <canvas id="smoke-canvas"></canvas>
@@ -373,7 +314,7 @@
     <div class="welcome-screen">
         <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
         
-        <!-- Floating Media & Editing Icons (Colourful as requested) -->
+        <!-- Floating Media & Editing Icons (Colourful) -->
         <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #E1306C;"></i>
         <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #FF0000;"></i>
         <i class="ri-camera-lens-fill float-icon f-icon" style="top: 70%; left: 10%; color: #a334fa;"></i>
@@ -391,22 +332,17 @@
     <!-- Scroll Spacer to trigger Welcome Screen disappear -->
     <div class="scroll-spacer"></div>
 
-    <!-- SCROLL 1: HERO SECTION (NEW CYBER BLUE TYPOGRAPHY LAYOUT) -->
+    <!-- SCROLL 1: HERO SECTION -->
     <section class="hero" id="hero-main">
-        
-        <!-- Background/Top Name -->
         <div class="text-utkarsh gsap-title-left">UTKARSH</div>
         
-        <!-- Glowing Image Box in the Center -->
         <div class="hero-image-box gsap-hero-img-box">
             <!-- 🚀 TRANSPARENT CUTOUT IMAGE GOES HERE 🚀 -->
             <img src="cutout.png" alt="Utkarsh Shukla" class="gsap-hero-img holographic-cutout">
         </div>
 
-        <!-- Foreground/Bottom Name (Blue Gradient) -->
         <div class="text-shukla gsap-title-right">SHUKLA</div>
 
-        <!-- NEW: HIGH VISIBILITY FLOATING NEON BADGE -->
         <div class="hero-subtitle-badge gsap-badge">CONTENT STRATEGIST</div>
 
         <div class="scroll-indicator">
@@ -415,7 +351,7 @@
         </div>
     </section>
 
-    <!-- SCROLL 2: THE STRATEGIST (ABOUT INFORMATION) -->
+    <!-- SCROLL 2: THE STRATEGIST -->
     <section class="about-section">
         <div class="section-tag">01 // THE STRATEGIST</div>
         <p class="about-text" id="split-text">
@@ -427,13 +363,33 @@
     <section class="horizontal-section">
         <div class="horizontal-wrapper">
             
-            <!-- Panel 1: SMM & Strategy -->
+            <!-- Panel 1: SMM & Strategy (NEW LAYOUT WITH LOGOS) -->
             <div class="panel">
                 <div class="exp-card">
-                    <i class="ri-rocket-2-fill exp-icon"></i>
-                    <div class="exp-year">FEB 2026 - PRESENT</div>
-                    <div class="exp-title">Social Media Manager & Strategist</div>
-                    <div class="exp-company">eSamparkTech Solutions (Private Corporate) & MEDH</div>
+                    
+                    <!-- Top Info + Floating Brands Row -->
+                    <div class="card-top-row">
+                        <div>
+                            <i class="ri-rocket-2-fill exp-icon"></i>
+                            <div class="exp-year">FEB 2026 - PRESENT</div>
+                            <div class="exp-title">Social Media Manager & Strategist</div>
+                            <div class="exp-company">eSamparkTech Solutions & MEDH</div>
+                        </div>
+
+                        <!-- 🚀 3D FLOATING BRAND LINKS 🚀 -->
+                        <div class="floating-brands">
+                            <a href="https://esampark.biz" target="_blank" class="brand-float float-1" title="Visit eSampark">
+                                <!-- Swap this span with an <img> tag when you have the logo! -->
+                                <span class="brand-text">eSampark</span>
+                            </a>
+                            <a href="https://medh.co" target="_blank" class="brand-float float-2" title="Visit MEDH">
+                                <!-- Swap this span with an <img> tag when you have the logo! -->
+                                <span class="brand-text">MEDH</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
                     <div class="exp-desc">
                         Owning the end-to-end content strategy, ideation, shoot planning, and publishing calendars. I write highly-targeted reel scripts specifically engineered for <strong>parents</strong> and perform as the <strong>primary on-camera talent</strong> for brand videos.
                         <br><br>
@@ -493,7 +449,7 @@
         <div class="section-tag" style="justify-content: center; margin-bottom: 2rem;">02 // THE ARSENAL</div>
         
         <div class="bento-grid">
-            <!-- MASTER EDITING SUITE (HIGH PRIORITY) -->
+            <!-- MASTER EDITING SUITE -->
             <div class="bento-box box-editing gsap-fade-up">
                 <div class="bento-title"><i class="ri-film-fill"></i> Master Post-Production Suite</div>
                 <div class="pro-apps">
@@ -519,7 +475,7 @@
                 </div>
             </div>
 
-            <!-- PROGRAMMING (NORMAL PRIORITY) -->
+            <!-- PROGRAMMING -->
             <div class="bento-box box-code gsap-fade-up">
                 <div class="bento-title"><i class="ri-terminal-box-line" style="color: #666;"></i> Web & Tech Stack</div>
                 <div class="tag-wrap">
@@ -710,7 +666,7 @@
             }, { duration: 300, fill: "forwards" });
         });
 
-        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag');
+        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .brand-float');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
                 cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
