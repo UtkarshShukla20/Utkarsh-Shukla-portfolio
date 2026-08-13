@@ -117,10 +117,7 @@
             transition: opacity 0.5s, transform 0.5s;
         }
         .go-btn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        
-        .go-btn.glowing {
-            animation: djStrobeLight 0.6s infinite;
-        }
+        .go-btn.glowing { animation: djStrobeLight 0.6s infinite; }
 
         @keyframes djStrobeLight {
             0%   { background: var(--accent); color: #000; box-shadow: 0 0 60px var(--accent), inset 0 0 20px #fff; transform: scale(1.1); }
@@ -153,17 +150,9 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        #smoke-canvas, #effects-canvas {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; 
-        }
-        
+        #smoke-canvas, #effects-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }
         #smoke-canvas { z-index: 0; opacity: 0.5; }
-
-        #effects-canvas { 
-            z-index: 99999998;
-            opacity: 1; mix-blend-mode: screen; 
-        }
+        #effects-canvas { z-index: 99999998; opacity: 1; mix-blend-mode: screen; }
 
         /* === CUSTOM CURSOR DEFAULTS === */
         .cursor-dot, .cursor-outline {
@@ -173,49 +162,22 @@
         .cursor-dot { width: 6px; height: 6px; background-color: var(--accent); box-shadow: 0 0 10px var(--accent); transition: opacity 0.2s;}
         .cursor-outline { width: 40px; height: 40px; border: 1px solid var(--accent); transition: width 0.2s, height 0.2s, background-color 0.2s; }
 
-        /* === WELCOME SCREEN & MAIN PORTFOLIO === */
+        /* === WELCOME SCREEN === */
         .welcome-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(3, 5, 10, 0.98); backdrop-filter: blur(20px);
             z-index: 50; display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
+            flex-direction: column; overflow: hidden;
         }
 
-        /* 3D Depth Layout */
-        .welcome-text-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2; /* Behind the photo */
-            pointer-events: none;
-        }
-
+        .welcome-text-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
         .welcome-text-left, .welcome-text-right {
-            position: absolute;
-            font-family: 'Anton', sans-serif; 
-            font-size: clamp(4rem, 10vw, 10rem);
-            color: var(--text); 
-            line-height: 1; 
-            text-transform: uppercase; 
-            text-shadow: 0 10px 40px rgba(0,0,0,0.8); 
-            margin: 0;
+            position: absolute; font-family: 'Anton', sans-serif; font-size: clamp(4rem, 10vw, 10rem);
+            color: var(--text); line-height: 1; text-transform: uppercase; text-shadow: 0 10px 40px rgba(0,0,0,0.8); margin: 0;
         }
-
-        .welcome-text-left {
-            top: 30%; 
-            left: 8%;
-            text-align: left;
-        }
-
-        .welcome-text-right {
-            top: 55%; 
-            right: 8%;
-            text-align: right;
-        }
-
-        .welcome-text-right span {
-            color: var(--accent); 
-            text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000; 
-            -webkit-text-stroke: 0; 
-        }
+        .welcome-text-left { top: 30%; left: 8%; text-align: left; }
+        .welcome-text-right { top: 55%; right: 8%; text-align: right; }
+        .welcome-text-right span { color: var(--accent); text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000; -webkit-text-stroke: 0; }
 
         .welcome-cutout {
             position: absolute; bottom: -15%; left: 50%; transform: translateX(-50%);
@@ -228,10 +190,7 @@
             z-index: 10; pointer-events: none;
         }
 
-        /* Eraser Mask logic updated for new structure */
-        body.mode-eraser .welcome-content-layer,
-        body.mode-eraser .welcome-text-container,
-        body.mode-eraser .test-board {
+        body.mode-eraser .welcome-content-layer, body.mode-eraser .welcome-text-container, body.mode-eraser .test-board {
             -webkit-mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
             mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
         }
@@ -239,7 +198,7 @@
         .float-icon { position: absolute; font-size: clamp(3rem, 5vw, 6rem); filter: drop-shadow(0 0 15px currentColor); }
         .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 2; }
 
-        /* REST OF PORTFOLIO CLASSES */
+        /* === HERO SECTION === */
         .hero { height: 100vh; width: 100vw; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; overflow: hidden; z-index: 10; }
         .text-utkarsh { position: absolute; top: 15%; width: 100%; text-align: center; font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8; color: #ffffff; z-index: 1; text-transform: uppercase; letter-spacing: -2px; }
         .hero-image-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; height: 480px; z-index: 2; border-radius: 12px; border: 2px solid var(--accent); box-shadow: 0 0 50px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.2); overflow: visible; display: flex; align-items: flex-end; justify-content: center; background: transparent; }
@@ -247,18 +206,72 @@
         .text-shukla { position: absolute; bottom: 10%; width: 100%; text-align: center; font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8; color: var(--accent); z-index: 3; text-transform: uppercase; letter-spacing: -2px; text-shadow: 0 10px 40px rgba(0, 229, 255, 0.4); background: linear-gradient(180deg, var(--accent) 0%, #0088ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-subtitle-badge { position: absolute; bottom: 25%; z-index: 10; background: var(--accent); color: #000; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(1rem, 2vw, 1.5rem); letter-spacing: 6px; padding: 15px 40px; border-radius: 50px; text-transform: uppercase; box-shadow: 0 10px 40px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.5); animation: badgeFloat 3s ease-in-out infinite alternate; }
         @keyframes badgeFloat { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); } }
+        
+        /* NEW: RESUME BUTTON IN HERO */
+        .hero-actions { position: absolute; bottom: 12%; z-index: 15; }
+        .hero-resume-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(0, 229, 255, 0.1); border: 1px solid var(--accent);
+            color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            padding: 12px 30px; border-radius: 50px; text-decoration: none; text-transform: uppercase;
+            letter-spacing: 2px; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+            cursor: none;
+        }
+        .hero-resume-btn i { font-size: 1.4rem; color: var(--accent); }
+        .hero-resume-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 30px rgba(0,229,255,0.6); transform: translateY(-3px); }
+        .hero-resume-btn:hover i { color: #000; }
+
         .scroll-indicator { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 20; color: #888; }
         .scroll-line { width: 1px; height: 40px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
         .scroll-line::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: var(--accent); animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite; }
         @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
 
+        /* === ABOUT SECTION === */
         .about-section { min-height: 100vh; padding: 10rem 10vw; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 5; background: linear-gradient(180deg, transparent 0%, #030610 100%); }
         .section-tag { font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
         .section-tag::before { content: ''; display: inline-block; width: 40px; height: 2px; background: var(--accent); }
         .about-text { font-size: clamp(1.5rem, 3.5vw, 3rem); font-weight: 600; line-height: 1.4; color: #fff; max-width: 1400px; transition: color 0.5s; }
         .about-text span { color: #445; transition: color 0.5s ease; }
-        .about-highlight { color: var(--text) !important; text-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
+        
+        /* Interactive Highlight Words */
+        .about-highlight { 
+            color: var(--text) !important; text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+            cursor: none; position: relative; display: inline-block;
+            transition: all 0.3s ease; border-bottom: 2px dashed rgba(0,229,255,0.5);
+        }
+        .about-highlight:hover { color: var(--accent) !important; text-shadow: 0 0 30px var(--accent); border-bottom-color: var(--accent); transform: translateY(-2px); }
 
+        /* === MODAL FOR DEFINITIONS === */
+        .def-modal {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(1, 2, 5, 0.85); backdrop-filter: blur(15px);
+            z-index: 9999999; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        .def-modal.active { opacity: 1; pointer-events: auto; }
+        .def-content {
+            background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border);
+            padding: 4rem; border-radius: 24px; max-width: 800px; width: 90%;
+            text-align: center; transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,229,255,0.05);
+            position: relative;
+        }
+        .def-modal.active .def-content { transform: scale(1); }
+        .def-close {
+            position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #666;
+            background: none; border: none; outline: none; transition: color 0.3s; cursor: none;
+        }
+        .def-close:hover { color: var(--accent); }
+        .def-word {
+            font-family: 'Anton', sans-serif; font-size: clamp(3rem, 6vw, 5rem);
+            color: #fff; text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 2px;
+        }
+        .def-word span { color: var(--accent); }
+        .def-meaning {
+            font-family: 'Inter', sans-serif; font-size: 1.2rem; line-height: 1.8; color: #aab; font-weight: 400;
+        }
+
+        /* === HORIZONTAL SCROLL TIMELINE === */
         .horizontal-section { overflow: hidden; position: relative; z-index: 5; background: #030610; }
         .horizontal-wrapper { display: flex; width: 400vw; height: 100vh; }
         .panel { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0 5vw; }
@@ -272,10 +285,11 @@
         .exp-desc { font-size: 1.15rem; line-height: 1.8; color: #99a; margin-top: 1rem;}
         .exp-desc strong { color: #fff; border-bottom: 1px solid var(--accent); }
         .exp-action-buttons { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px; }
-        .action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; color: #fff; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 229, 255, 0.05); }
+        .action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; color: #fff; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 229, 255, 0.05); cursor: none;}
         .action-btn i { font-size: 1.2rem; color: var(--accent); }
         .action-btn:hover { background: var(--accent); color: #000; box-shadow: 0 5px 20px rgba(0, 229, 255, 0.4); border-color: var(--accent); transform: translateY(-3px); }
 
+        /* === BENTO GRID SECTION === */
         .bento-container { padding: 8rem 5vw; max-width: 1400px; margin: 0 auto; position: relative; z-index: 5; }
         .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; grid-auto-rows: minmax(180px, auto); }
         .bento-box { background: rgba(10, 15, 30, 0.4); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;}
@@ -285,10 +299,10 @@
         .bento-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
         .bento-title i { color: var(--accent); font-size: 2rem; }
         .pro-apps { display: flex; flex-wrap: wrap; gap: 20px; }
-        .app-card { display: flex; align-items: center; gap: 15px; background: #050a15; border: 1px solid #1a2540; padding: 1.2rem 2rem; border-radius: 16px; font-family: 'Anton', sans-serif; font-size: 1.5rem; letter-spacing: 1px; color: #fff; transition: all 0.3s ease; flex-grow: 1; justify-content: center; }
+        .app-card { display: flex; align-items: center; gap: 15px; background: #050a15; border: 1px solid #1a2540; padding: 1.2rem 2rem; border-radius: 16px; font-family: 'Anton', sans-serif; font-size: 1.5rem; letter-spacing: 1px; color: #fff; transition: all 0.3s ease; flex-grow: 1; justify-content: center; cursor: none;}
         .app-card:hover { background: var(--accent); color: #000; box-shadow: 0 10px 30px rgba(0, 229, 255, 0.3); border-color: var(--accent); transform: scale(1.05); }
         .tag-wrap { display: flex; flex-wrap: wrap; gap: 12px; }
-        .tag { padding: 10px 18px; border-radius: 8px; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); font-size: 1rem; color: #ddd; font-weight: 500; }
+        .tag { padding: 10px 18px; border-radius: 8px; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); font-size: 1rem; color: #ddd; font-weight: 500; cursor: none;}
         .tag:hover { border-color: var(--accent); color: #000; background: var(--accent); }
         .code-tag { padding: 8px 14px; border-radius: 6px; border: 1px dashed #445; color: #889; font-size: 0.9rem; font-family: monospace;}
         .info-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
@@ -296,41 +310,53 @@
         .info-list li p { color: #99a; font-size: 0.95rem; line-height: 1.5; }
         .info-list li span { display: block; font-size: 0.85rem; color: #556; margin-top: 5px; font-weight: 600;}
 
-        .footer { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; background: #010205; border-top: 1px solid var(--border); z-index: 10; }
-        .contact-label { color: var(--accent); font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 2rem; font-family: 'Space Grotesk', sans-serif;}
-        .huge-contact { font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem); color: var(--text); text-decoration: none; transition: all 0.3s; line-height: 1.1; }
+        /* === REDESIGNED PREMIUM FOOTER === */
+        .footer {
+            background: #010205; border-top: 1px solid var(--border); z-index: 10;
+            position: relative; padding: 6rem 5vw 2rem; overflow: hidden;
+        }
+        .footer-glow {
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 80%; height: 300px; background: radial-gradient(ellipse at bottom, rgba(0,229,255,0.1) 0%, transparent 70%);
+            pointer-events: none; z-index: 0;
+        }
+        .footer-content { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 4rem; }
+        .footer-top { text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4rem; }
+        .contact-label { color: var(--accent); font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1rem; font-family: 'Space Grotesk', sans-serif;}
+        .huge-contact { font-family: 'Anton', sans-serif; font-size: clamp(3rem, 8vw, 7rem); color: var(--text); text-decoration: none; transition: all 0.3s; line-height: 1.1; cursor: none;}
         .huge-contact:hover { color: transparent; -webkit-text-stroke: 2px var(--accent); text-shadow: 0 0 30px rgba(0,229,255,0.3);}
-        .social-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; margin-top: 2rem; }
-        .social-btn { display: flex; align-items: center; gap: 10px; padding: 15px 30px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; text-decoration: none; color: #fff; background: rgba(255,255,255,0.05); border: 1px solid var(--border); transition: all 0.3s ease; }
-        .social-btn i { font-size: 1.5rem; }
-        .btn-whatsapp:hover { background: #25D366; color: #fff; border-color: #25D366; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3); }
-        .btn-instagram:hover { background: #E1306C; color: #fff; border-color: #E1306C; box-shadow: 0 10px 30px rgba(225, 48, 108, 0.3); }
-        .btn-linkedin:hover { background: #0077B5; color: #fff; border-color: #0077B5; box-shadow: 0 10px 30px rgba(0, 119, 181, 0.3); }
-        .footer-details { display: flex; gap: 2rem; font-size: 1.1rem; color: #889; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;}
-        .footer-item { display: flex; align-items: center; gap: 10px; background: var(--glass); padding: 12px 25px; border-radius: 50px; border: 1px solid var(--border); color: #ddd; font-weight: 500;}
-        .footer-item i { color: var(--accent); font-size: 1.3rem;}
-        .ai-widget-btn { display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(135deg, rgba(0,229,255,0.15) 0%, rgba(0,229,255,0.05) 100%); border: 1px solid var(--accent); color: #ffffff; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; padding: 1.2rem 2.5rem; border-radius: 50px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0,229,255,0.1); }
-        .ai-widget-btn:hover { background: var(--accent); color: #000000; box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
-        .magnetic-wrap { display: inline-block; }
+        
+        .footer-middle { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; justify-items: center; text-align: center; }
+        .footer-col h4 { font-family: 'Space Grotesk', sans-serif; color: #fff; font-size: 1.2rem; margin-bottom: 1.5rem; letter-spacing: 2px; }
+        .footer-col a, .footer-col p { display: block; color: #889; text-decoration: none; margin-bottom: 1rem; font-size: 1.1rem; transition: color 0.3s; cursor: none;}
+        .footer-col a:hover { color: var(--accent); }
+        .footer-action-btn {
+            display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; padding: 12px 25px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+            margin-bottom: 1rem; text-decoration: none; transition: all 0.3s; width: 100%; cursor: none;
+        }
+        .footer-action-btn:hover { background: rgba(0,229,255,0.1); border-color: var(--accent); color: var(--accent); }
+        .footer-action-btn.solid { background: rgba(0,229,255,0.1); border-color: var(--accent); color: #fff; }
+        .footer-action-btn.solid:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.4); }
+
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; text-align: center; color: #556; font-size: 0.9rem; }
 
         @media (max-width: 768px) {
             .cursor-dot, .cursor-outline { display: none !important; }
             * { cursor: auto !important; }
-
             .cursor-selection-wrapper { flex-direction: column; overflow-y: auto; }
             .cursor-left-panel, .cursor-right-panel { width: 100%; height: auto; padding: 2rem; }
             .cursor-left-panel { border-right: none; border-bottom: 1px solid var(--border); }
             .test-board { min-height: 300px; margin-bottom: 80px; }
-
             .welcome-cutout { height: 80vh; bottom: -5%; }
             .welcome-text-left, .welcome-text-right { font-size: clamp(3rem, 15vw, 5rem); }
             .welcome-text-left { top: 20%; left: 5%; }
             .welcome-text-right { top: 60%; right: 5%; }
-
             .float-icon { font-size: clamp(2rem, 8vw, 3rem); }
             .hero-image-box { width: 75vw; height: 50vh; max-width: 280px; max-height: 400px; }
             .text-utkarsh, .text-shukla { font-size: 24vw; }
-            .hero-subtitle-badge { font-size: 0.8rem; padding: 10px 20px; bottom: 20%; letter-spacing: 3px; }
+            .hero-subtitle-badge { font-size: 0.8rem; padding: 10px 20px; bottom: 25%; letter-spacing: 3px; }
+            .hero-actions { bottom: 15%; }
             .about-section { padding: 6rem 5vw; }
             .about-text { font-size: clamp(1.2rem, 5vw, 1.8rem); line-height: 1.5; }
             .panel { padding: 0 3vw; }
@@ -342,9 +368,11 @@
             .bento-container { padding: 4rem 5vw; }
             .bento-grid { display: flex; flex-direction: column; gap: 15px; }
             .bento-box { padding: 1.5rem; border-radius: 16px; }
-            .huge-contact { font-size: clamp(2.5rem, 12vw, 4rem); }
-            .social-container { flex-direction: column; gap: 10px; width: 100%; padding: 0 5vw; }
-            .social-btn { justify-content: center; width: 100%; padding: 15px; font-size: 1rem; }
+            .def-content { padding: 2rem; }
+            .def-word { font-size: 2rem; }
+            .def-meaning { font-size: 1rem; }
+            .footer { padding: 4rem 5vw 2rem; }
+            .footer-middle { grid-template-columns: 1fr; gap: 2rem; }
         }
     </style>
 </head>
@@ -353,6 +381,15 @@
     <div style="display: none;" aria-hidden="true">
        <span class="hidden-citation"></span>
        <span class="hidden-citation"></span>
+    </div>
+
+    <!-- === DEFINITION MODAL (NEW) === -->
+    <div class="def-modal" id="def-modal">
+        <div class="def-content">
+            <button class="def-close" id="def-close"><i class="ri-close-line"></i></button>
+            <h2 class="def-word" id="def-word">WORD</h2>
+            <p class="def-meaning" id="def-meaning">Definition goes here.</p>
+        </div>
     </div>
 
     <!-- === CURSOR SELECTION SCREEN (STEP 1) === -->
@@ -415,16 +452,13 @@
 
     <!-- MAIN PORTFOLIO CONTENT (STEP 3) -->
     <div class="welcome-screen">
-        <!-- Text Behind Photo -->
         <div class="welcome-text-container">
             <h1 class="welcome-text-left gsap-welcome-left">Welcome To</h1>
             <h1 class="welcome-text-right gsap-welcome-right"><span>My Portfolio</span></h1>
         </div>
 
-        <!-- Photo in Middle -->
         <img src="welcome-photo.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
         
-        <!-- Foreground Icons & Elements -->
         <div class="welcome-content-layer">
             <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #E1306C;"></i>
             <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #FF0000;"></i>
@@ -449,6 +483,14 @@
         </div>
         <div class="text-shukla gsap-title-right">SHUKLA</div>
         <div class="hero-subtitle-badge gsap-badge">CONTENT STRATEGIST</div>
+        
+        <!-- NEW RESUME BUTTON IN HERO -->
+        <div class="hero-actions gsap-resume-btn">
+            <a href="resume.pdf" download class="hero-resume-btn magnetic-wrap">
+                <i class="ri-download-cloud-2-line"></i> Download Resume
+            </a>
+        </div>
+
         <div class="scroll-indicator">Scroll Down<div class="scroll-line"></div></div>
     </section>
 
@@ -569,20 +611,73 @@
         </div>
     </section>
 
+    <!-- === REDESIGNED PREMIUM FOOTER === -->
     <footer class="footer">
-        <div class="contact-label">Initiate Transmission</div>
-        <div class="magnetic-wrap"><a href="mailto:utkarshshukla0327@gmail.com" class="huge-contact">Let's Connect</a></div>
-        <div class="social-container">
-            <div class="magnetic-wrap"><a href="https://wa.me/919764979543" target="_blank" class="social-btn btn-whatsapp"><i class="ri-whatsapp-fill"></i> +91 9764979543</a></div>
-            <div class="magnetic-wrap"><a href="https://instagram.com/utkarshshukla____" target="_blank" class="social-btn btn-instagram"><i class="ri-instagram-fill"></i> @utkarshshukla____</a></div>
-            <div class="magnetic-wrap"><a href="https://linkedin.com/in/utkarshshukla" target="_blank" class="social-btn btn-linkedin"><i class="ri-linkedin-fill"></i> LinkedIn</a></div>
+        <div class="footer-glow"></div>
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="contact-label">Initiate Transmission</div>
+                <div class="magnetic-wrap">
+                    <a href="mailto:utkarshshukla0327@gmail.com" class="huge-contact">LET'S CONNECT</a>
+                </div>
+            </div>
+            
+            <div class="footer-middle">
+                <div class="footer-col">
+                    <h4>CONTACT</h4>
+                    <a href="mailto:utkarshshukla0327@gmail.com"><i class="ri-mail-send-line"></i> utkarshshukla0327@gmail.com</a>
+                    <a href="https://wa.me/919764979543" target="_blank"><i class="ri-whatsapp-line"></i> +91 9764979543</a>
+                    <p><i class="ri-map-pin-line"></i> Dadar (W), Mumbai 400028</p>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>SOCIALS</h4>
+                    <a href="https://instagram.com/utkarshshukla____" target="_blank"><i class="ri-instagram-line"></i> Instagram</a>
+                    <a href="https://linkedin.com/in/utkarshshukla" target="_blank"><i class="ri-linkedin-line"></i> LinkedIn</a>
+                    <a href="#" target="_blank"><i class="ri-youtube-line"></i> YouTube</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>RESOURCES</h4>
+                    <a href="resume.pdf" download class="footer-action-btn solid"><i class="ri-download-line"></i> Download Resume</a>
+                    <button id="omni-open-widget-btn" class="footer-action-btn"><i class="ri-robot-2-line"></i> AI Assistant</button>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Utkarsh Shukla. All Rights Reserved.</p>
+            </div>
         </div>
-        <div class="footer-details">
-            <a href="mailto:utkarshshukla0327@gmail.com" style="text-decoration: none;"><div class="footer-item magnetic-wrap"><i class="ri-mail-send-fill"></i> utkarshshukla0327@gmail.com</div></a>
-            <div class="footer-item magnetic-wrap"><i class="ri-map-pin-fill"></i> Dadar (W), Mumbai 400028</div>
-        </div>
-        <div class="magnetic-wrap"><button id="omni-open-widget-btn" class="ai-widget-btn" style="cursor: none; outline: none;"><i class="ri-robot-2-fill"></i> Open Utkarsh Assistant Widget</button></div>
     </footer>
+
+    <!-- ==============================================
+         MODAL LOGIC FOR HIGHLIGHTED WORDS
+         ============================================== -->
+    <script>
+        const definitions = {
+            'scripts': "I engineer highly-targeted, psychological hook-driven reel scripts that maximize viewer retention and directly engage the core demographic.",
+            'video': "From conceptualization to on-camera execution, I produce high-quality, narrative-driven video assets that elevate brand identity.",
+            'editing': "I masterfully weave raw footage into dynamic, fast-paced content using industry-standard post-production suites to keep audiences hooked.",
+            'strategy': "I build data-backed, end-to-end content pipelines and publishing calendars that guarantee consistent audience growth and brand visibility.",
+            'storytelling': "I craft compelling, emotionally resonant narratives that transform casual viewers into loyal community members and brand advocates."
+        };
+
+        const modal = document.getElementById('def-modal');
+        const modalWord = document.getElementById('def-word');
+        const modalMeaning = document.getElementById('def-meaning');
+        const modalClose = document.getElementById('def-close');
+
+        function openModal(wordKey, displayWord) {
+            modalWord.innerHTML = `<span>[</span> ${displayWord} <span>]</span>`;
+            modalMeaning.innerText = definitions[wordKey];
+            modal.classList.add('active');
+        }
+
+        modalClose.addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) modal.classList.remove('active');
+        });
+    </script>
 
     <!-- ==============================================
          SEQUENCE & TEST BOARD LOGIC
@@ -780,7 +875,6 @@
             const posX = e.clientX;
             const posY = e.clientY;
             
-            // Mask variable updater
             document.body.style.setProperty('--mx', posX + 'px');
             document.body.style.setProperty('--my', posY + 'px');
 
@@ -788,7 +882,7 @@
             if(cursorOutline) { cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 300, fill: "forwards" }); }
         });
 
-        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .action-btn');
+        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .action-btn, .about-highlight');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
                 if(window.innerWidth > 768) {
@@ -849,7 +943,6 @@
             
             gsap.to('.welcome-screen', { opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut", scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 } });
             
-            // Text Animations for the Welcome Screen Depth effect
             gsap.from(".gsap-welcome-left", { x: -100, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.5 });
             gsap.from(".gsap-welcome-right", { x: 100, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.5 });
 
@@ -857,6 +950,8 @@
             gsap.from(".gsap-title-left", { x: -150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
             gsap.from(".gsap-title-right", { x: 150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
             gsap.from(".gsap-badge", { y: 50, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.6 });
+            gsap.from(".gsap-resume-btn", { y: 50, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.8 });
+
             gsap.to(".gsap-hero-img", { y: -20, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut" });
             gsap.to(".gsap-title-left", { yPercent: -50, ease: "none", scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }});
             gsap.to(".gsap-title-right", { yPercent: 50, ease: "none", scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }});
@@ -865,8 +960,16 @@
             const words = text.innerText.split(" "); text.innerHTML = "";
             words.forEach(word => { let span = document.createElement("span"); span.innerText = word + " "; text.appendChild(span); });
             gsap.fromTo("#split-text span", { opacity: 0.1, y: 20 }, { opacity: 1, y: 0, stagger: 0.05, ease: "power2.out", scrollTrigger: { trigger: ".about-section", start: "top 70%", end: "bottom 60%", scrub: 1 } });
+            
+            // Connect Words to Modal
             const spans = document.querySelectorAll("#split-text span");
-            spans.forEach(span => { const w = span.innerText.trim().toLowerCase(); if (['scripts', 'video', 'editing', 'strategy,', 'storytelling,'].includes(w)) { span.classList.add('about-highlight'); } });
+            spans.forEach(span => { 
+                const w = span.innerText.trim().toLowerCase().replace(',', ''); 
+                if (['scripts', 'video', 'editing', 'strategy', 'storytelling'].includes(w)) { 
+                    span.classList.add('about-highlight'); 
+                    span.addEventListener('click', () => openModal(w, span.innerText.replace(',', '')));
+                } 
+            });
 
             const horizontalWrapper = document.querySelector('.horizontal-wrapper');
             const panels = gsap.utils.toArray('.panel');
