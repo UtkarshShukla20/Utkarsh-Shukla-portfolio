@@ -44,7 +44,7 @@
         /* === CURSOR SELECTION SCREEN (STEP 1) === */
         .cursor-selection-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #010205; z-index: 9999999; 
+            background: #010205; z-index: 9999999; /* Below Effects Canvas */
             display: flex; flex-direction: row; 
             transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
@@ -72,7 +72,7 @@
             color: #fff; padding: 20px 10px; border-radius: 16px;
             font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem;
             display: flex; flex-direction: column; align-items: center; gap: 10px;
-            transition: all 0.3s ease; cursor: none;
+            transition: all 0.3s ease; cursor: none; position: relative; z-index: 100;
         }
         .cursor-option-btn i { font-size: 2rem; color: var(--accent); }
         .cursor-option-btn:hover { background: rgba(0, 229, 255, 0.1); border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,229,255,0.15); }
@@ -81,14 +81,14 @@
 
         /* TEST BOARD STYLES */
         .test-board-wrapper {
-            flex-grow: 1; display: flex; flex-direction: column; width: 100%;
+            flex-grow: 1; display: flex; flex-direction: column; width: 100%; position: relative; z-index: 100;
         }
 
         .test-board {
             flex-grow: 1; border: 2px dashed var(--accent); border-radius: 24px;
             background: radial-gradient(circle at center, rgba(0,229,255,0.05) 0%, transparent 70%);
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
-            position: relative; transition: all 0.3s;
+            position: relative; transition: all 0.3s; cursor: none;
         }
 
         .test-board:hover { box-shadow: 0 0 40px rgba(0, 229, 255, 0.1) inset; background: rgba(0, 229, 255, 0.02); }
@@ -97,15 +97,15 @@
             padding: 15px 40px; background: transparent; border: 2px solid var(--accent);
             color: var(--accent); font-family: 'Space Grotesk', sans-serif; font-weight: 700;
             font-size: 1.2rem; border-radius: 50px; text-transform: uppercase; cursor: none;
-            transition: all 0.3s; z-index: 10;
+            transition: all 0.3s; z-index: 10; pointer-events: none;
         }
-        .test-element-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
-        .test-element-text { font-family: 'Anton', sans-serif; font-size: 4rem; color: #fff; opacity: 0.5; z-index: 10;}
+        
+        .test-element-text { font-family: 'Anton', sans-serif; font-size: 4rem; color: #fff; opacity: 0.5; z-index: 10; pointer-events: none;}
 
-        /* GO BUTTON */
+        /* GO BUTTON (DJ LIGHT STROBE EFFECT) */
         .go-wrapper {
             position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-            z-index: 100;
+            z-index: 1000;
         }
 
         .go-btn {
@@ -114,23 +114,27 @@
             padding: 15px 60px; border-radius: 50px; text-transform: uppercase; letter-spacing: 4px;
             display: flex; align-items: center; gap: 10px; cursor: none;
             opacity: 0; pointer-events: none; transform: translateY(20px);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: opacity 0.5s, transform 0.5s;
         }
         .go-btn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        
         .go-btn.glowing {
-            background: var(--accent); color: #000;
-            animation: ultimateGlow 1.5s infinite alternate;
+            animation: djStrobeLight 0.6s infinite;
         }
 
-        @keyframes ultimateGlow {
-            0% { box-shadow: 0 0 10px var(--accent), inset 0 0 10px rgba(255,255,255,0.5); transform: scale(1); }
-            100% { box-shadow: 0 0 40px var(--accent), 0 0 20px #fff, inset 0 0 20px #fff; transform: scale(1.05); }
+        /* FAST DJ LIGHT STROBE ANIMATION */
+        @keyframes djStrobeLight {
+            0%   { background: var(--accent); color: #000; box-shadow: 0 0 60px var(--accent), inset 0 0 20px #fff; transform: scale(1.1); }
+            25%  { background: transparent; color: var(--accent); box-shadow: 0 0 10px var(--accent); transform: scale(1); }
+            50%  { background: #fff; color: #000; box-shadow: 0 0 60px #fff, 0 0 30px var(--accent), inset 0 0 20px var(--accent); transform: scale(1.1); }
+            75%  { background: transparent; color: var(--accent); box-shadow: 0 0 10px var(--accent); transform: scale(1); }
+            100% { background: var(--accent); color: #000; box-shadow: 0 0 60px var(--accent), inset 0 0 20px #fff; transform: scale(1.1); }
         }
 
         /* === LOADING SCREEN === */
         .loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #010205; z-index: 999998; display: none; 
+            background: #010205; z-index: 9999996; display: none; 
             flex-direction: column; align-items: center; justify-content: center;
         }
         
@@ -152,11 +156,16 @@
 
         #smoke-canvas, #effects-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 0; pointer-events: none; opacity: 0.5;
+            pointer-events: none; 
         }
+        
+        #smoke-canvas { z-index: 0; opacity: 0.5; }
 
-        /* Effects Canvas spans everything, but logic handles WHEN to draw */
-        #effects-canvas { z-index: 9998; opacity: 1; mix-blend-mode: screen; }
+        /* FIXED: Brought Effects Canvas to the front so it draws over the Selection Wrapper */
+        #effects-canvas { 
+            z-index: 99999998; /* Just below the cursor, above everything else */
+            opacity: 1; mix-blend-mode: screen; 
+        }
 
         /* === CUSTOM CURSOR DEFAULTS === */
         .cursor-dot, .cursor-outline {
@@ -268,12 +277,10 @@
         @media (max-width: 768px) {
             .cursor-dot, .cursor-outline { display: none !important; }
             * { cursor: auto !important; }
-
             .cursor-selection-wrapper { flex-direction: column; overflow-y: auto; }
             .cursor-left-panel, .cursor-right-panel { width: 100%; height: auto; padding: 2rem; }
             .cursor-left-panel { border-right: none; border-bottom: 1px solid var(--border); }
             .test-board { min-height: 300px; margin-bottom: 80px; }
-
             .welcome-cutout { height: 80vh; bottom: -5%; }
             .welcome-text { font-size: clamp(2.5rem, 12vw, 4rem); }
             .float-icon { font-size: clamp(2rem, 8vw, 3rem); }
@@ -530,8 +537,8 @@
          ============================================== -->
     <script>
         let currentEffect = 'classic';
-        let isTesting = false; // Only true when hovering over Test Board
-        let hasStarted = false; // True once GO is clicked
+        let isTesting = false; 
+        let hasStarted = false; 
 
         const goBtn = document.getElementById('go-button');
         const testBoard = document.getElementById('test-board');
@@ -541,30 +548,25 @@
         const barEl = document.getElementById('loader-bar');
         const timeEl = document.getElementById('loader-time');
 
-        // Test Board Hover Logic
         testBoard.addEventListener('mouseenter', () => { isTesting = true; });
         testBoard.addEventListener('mouseleave', () => { isTesting = false; });
 
-        // Cursor Selection Logic
         document.querySelectorAll('.cursor-option-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.cursor-option-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
                 
-                // Switch effect and clear old canvas particles
                 currentEffect = btn.getAttribute('data-effect');
                 clearCanvasEffects();
 
-                // Show & Animate GO Button
                 goBtn.classList.add('visible');
                 goBtn.classList.add('glowing');
             });
         });
 
-        // GO Button Click Sequence
         goBtn.addEventListener('click', () => {
             selectionScreen.style.transform = 'translateY(-100%)';
-            hasStarted = true; // Effect will now show everywhere
+            hasStarted = true; 
             
             setTimeout(() => {
                 selectionScreen.style.display = 'none'; 
@@ -606,7 +608,6 @@
         effectsCanvas.width = window.innerWidth;
         effectsCanvas.height = window.innerHeight;
         
-        // Arrays for 9 effects
         let glitterArray = [];
         let waterArray = [];
         let neonTrail = [];
@@ -622,7 +623,6 @@
             plasmaArray = []; sparkArray = [];
         }
 
-        /* --- THE 9 EFFECT CLASSES --- */
         class Glitter {
             constructor(x,y) { this.x=x+(Math.random()*10-5); this.y=y+(Math.random()*10-5); this.size=Math.random()*2+1; this.vx=Math.random()*1-0.5; this.vy=Math.random()*1-0.5; this.color=Math.random()>0.5?'#00e5ff':'#ffffff'; this.life=100; }
             update() { this.x+=this.vx; this.y+=this.vy; this.size*=0.95; this.life-=2; }
@@ -659,9 +659,8 @@
             draw() { gCtx.fillStyle='#ffffff'; gCtx.globalAlpha=Math.max(0,this.life/100); gCtx.shadowBlur=5; gCtx.shadowColor='#ffff00'; gCtx.fillRect(this.x,this.y,2,8); gCtx.globalAlpha=1; gCtx.shadowBlur=0; }
         }
 
-        // MOUSE MOVEMENT LOGIC
         function handleCursorMovement(x, y) {
-            // ONLY SPAWN EFFECTS IF HAS_STARTED is true OR if we are hovering on TEST BOARD
+            // Check if we are ready to show the effects
             if(!hasStarted && !isTesting) return;
 
             if (currentEffect === 'glitter') glitterArray.push(new Glitter(x, y));
@@ -677,7 +676,6 @@
         window.addEventListener('mousemove', (e) => handleCursorMovement(e.clientX, e.clientY));
         window.addEventListener('touchmove', (e) => { if(e.touches.length > 0) handleCursorMovement(e.touches[0].clientX, e.touches[0].clientY); });
 
-        // MASTER ANIMATION LOOP
         function animateEffects() {
             gCtx.clearRect(0, 0, effectsCanvas.width, effectsCanvas.height);
             let currentTime = Date.now();
@@ -689,7 +687,7 @@
                 for (let i=0; i<waterArray.length; i++) { waterArray[i].update(); waterArray[i].draw(); if (waterArray[i].life<=0) { waterArray.splice(i,1); i--; } }
             } 
             else if (currentEffect === 'neon') {
-                neonTrail = neonTrail.filter(p => currentTime - p.time < 1500); // Exists for 1.5 seconds exactly
+                neonTrail = neonTrail.filter(p => currentTime - p.time < 1500); 
                 for (let i = 0; i < neonTrail.length - 1; i++) {
                     let p1 = neonTrail[i]; let p2 = neonTrail[i+1];
                     let age = currentTime - p1.time; let alpha = 1 - (age / 1500); if (alpha < 0) alpha = 0;
