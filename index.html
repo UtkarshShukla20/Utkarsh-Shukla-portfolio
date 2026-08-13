@@ -37,14 +37,14 @@
 
         ::selection { background: var(--accent); color: #000; }
 
-        .welcome-text, .text-utkarsh, .text-shukla, .hero-subtitle-badge, .float-icon {
+        .welcome-text-left, .welcome-text-right, .text-utkarsh, .text-shukla, .hero-subtitle-badge, .float-icon {
             user-select: none; -webkit-user-select: none;
         }
 
         /* === CURSOR SELECTION SCREEN (STEP 1) === */
         .cursor-selection-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #010205; z-index: 9999999; /* Below Effects Canvas */
+            background: #010205; z-index: 9999999; 
             display: flex; flex-direction: row; 
             transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
@@ -122,7 +122,6 @@
             animation: djStrobeLight 0.6s infinite;
         }
 
-        /* FAST DJ LIGHT STROBE ANIMATION */
         @keyframes djStrobeLight {
             0%   { background: var(--accent); color: #000; box-shadow: 0 0 60px var(--accent), inset 0 0 20px #fff; transform: scale(1.1); }
             25%  { background: transparent; color: var(--accent); box-shadow: 0 0 10px var(--accent); transform: scale(1); }
@@ -161,9 +160,8 @@
         
         #smoke-canvas { z-index: 0; opacity: 0.5; }
 
-        /* FIXED: Brought Effects Canvas to the front so it draws over the Selection Wrapper */
         #effects-canvas { 
-            z-index: 99999998; /* Just below the cursor, above everything else */
+            z-index: 99999998;
             opacity: 1; mix-blend-mode: screen; 
         }
 
@@ -180,27 +178,68 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(3, 5, 10, 0.98); backdrop-filter: blur(20px);
             z-index: 50; display: flex; align-items: center; justify-content: center;
-            flex-direction: column; overflow: hidden;
+            overflow: hidden;
+        }
+
+        /* 3D Depth Layout */
+        .welcome-text-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; /* Behind the photo */
+            pointer-events: none;
+        }
+
+        .welcome-text-left, .welcome-text-right {
+            position: absolute;
+            font-family: 'Anton', sans-serif; 
+            font-size: clamp(4rem, 10vw, 10rem);
+            color: var(--text); 
+            line-height: 1; 
+            text-transform: uppercase; 
+            text-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            margin: 0;
+        }
+
+        .welcome-text-left {
+            top: 30%; 
+            left: 8%;
+            text-align: left;
+        }
+
+        .welcome-text-right {
+            top: 55%; 
+            right: 8%;
+            text-align: right;
+        }
+
+        .welcome-text-right span {
+            color: var(--accent); 
+            text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000; 
+            -webkit-text-stroke: 0; 
         }
 
         .welcome-cutout {
             position: absolute; bottom: -15%; left: 50%; transform: translateX(-50%);
             height: 110vh; width: auto; z-index: 5; object-fit: contain;
-            opacity: 0.8; filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.2)); pointer-events: none;
+            opacity: 0.95; filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.4)); pointer-events: none;
         }
 
         .welcome-content-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 10; pointer-events: none;
         }
 
-        .welcome-text { font-family: 'Anton', sans-serif; font-size: clamp(3rem, 10vw, 8rem); color: var(--text); text-align: center; line-height: 1; text-transform: uppercase; position: relative; text-shadow: 0 10px 40px rgba(0,0,0,0.8); }
-        .welcome-text span { color: var(--accent); text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 5px 20px #000; -webkit-text-stroke: 0; }
+        /* Eraser Mask logic updated for new structure */
+        body.mode-eraser .welcome-content-layer,
+        body.mode-eraser .welcome-text-container,
+        body.mode-eraser .test-board {
+            -webkit-mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
+            mask-image: radial-gradient(circle 100px at var(--mx) var(--my), transparent 0%, transparent 80px, black 110px);
+        }
+
         .float-icon { position: absolute; font-size: clamp(3rem, 5vw, 6rem); filter: drop-shadow(0 0 15px currentColor); }
         .scroll-spacer { position: relative; width: 100vw; height: 100vh; z-index: 2; }
 
-        /* REST OF PORTFOLIO CLASSES (Hero, About, Bento, Footer) */
+        /* REST OF PORTFOLIO CLASSES */
         .hero { height: 100vh; width: 100vw; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; overflow: hidden; z-index: 10; }
         .text-utkarsh { position: absolute; top: 15%; width: 100%; text-align: center; font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8; color: #ffffff; z-index: 1; text-transform: uppercase; letter-spacing: -2px; }
         .hero-image-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; height: 480px; z-index: 2; border-radius: 12px; border: 2px solid var(--accent); box-shadow: 0 0 50px rgba(0, 229, 255, 0.4), inset 0 0 20px rgba(0, 229, 255, 0.2); overflow: visible; display: flex; align-items: flex-end; justify-content: center; background: transparent; }
@@ -208,7 +247,7 @@
         .text-shukla { position: absolute; bottom: 10%; width: 100%; text-align: center; font-family: 'Anton', sans-serif; font-size: 22vw; line-height: 0.8; color: var(--accent); z-index: 3; text-transform: uppercase; letter-spacing: -2px; text-shadow: 0 10px 40px rgba(0, 229, 255, 0.4); background: linear-gradient(180deg, var(--accent) 0%, #0088ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-subtitle-badge { position: absolute; bottom: 25%; z-index: 10; background: var(--accent); color: #000; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(1rem, 2vw, 1.5rem); letter-spacing: 6px; padding: 15px 40px; border-radius: 50px; text-transform: uppercase; box-shadow: 0 10px 40px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.5); animation: badgeFloat 3s ease-in-out infinite alternate; }
         @keyframes badgeFloat { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); } }
-        .scroll-indicator { position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 20; color: #888; }
+        .scroll-indicator { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 20; color: #888; }
         .scroll-line { width: 1px; height: 40px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
         .scroll-line::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: var(--accent); animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite; }
         @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
@@ -277,12 +316,17 @@
         @media (max-width: 768px) {
             .cursor-dot, .cursor-outline { display: none !important; }
             * { cursor: auto !important; }
+
             .cursor-selection-wrapper { flex-direction: column; overflow-y: auto; }
             .cursor-left-panel, .cursor-right-panel { width: 100%; height: auto; padding: 2rem; }
             .cursor-left-panel { border-right: none; border-bottom: 1px solid var(--border); }
             .test-board { min-height: 300px; margin-bottom: 80px; }
+
             .welcome-cutout { height: 80vh; bottom: -5%; }
-            .welcome-text { font-size: clamp(2.5rem, 12vw, 4rem); }
+            .welcome-text-left, .welcome-text-right { font-size: clamp(3rem, 15vw, 5rem); }
+            .welcome-text-left { top: 20%; left: 5%; }
+            .welcome-text-right { top: 60%; right: 5%; }
+
             .float-icon { font-size: clamp(2rem, 8vw, 3rem); }
             .hero-image-box { width: 75vw; height: 50vh; max-width: 280px; max-height: 400px; }
             .text-utkarsh, .text-shukla { font-size: 24vw; }
@@ -304,7 +348,7 @@
         }
     </style>
 </head>
-<body class="locked">
+<body class="locked mode-classic">
     
     <div style="display: none;" aria-hidden="true">
        <span class="hidden-citation"></span>
@@ -371,9 +415,17 @@
 
     <!-- MAIN PORTFOLIO CONTENT (STEP 3) -->
     <div class="welcome-screen">
+        <!-- Text Behind Photo -->
+        <div class="welcome-text-container">
+            <h1 class="welcome-text-left gsap-welcome-left">Welcome To</h1>
+            <h1 class="welcome-text-right gsap-welcome-right"><span>My Portfolio</span></h1>
+        </div>
+
+        <!-- Photo in Middle -->
         <img src="welcome-photo.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
+        
+        <!-- Foreground Icons & Elements -->
         <div class="welcome-content-layer">
-            <h1 class="welcome-text">Welcome To <br><span>My Portfolio</span></h1>
             <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #E1306C;"></i>
             <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #FF0000;"></i>
             <i class="ri-camera-lens-fill float-icon f-icon" style="top: 70%; left: 10%; color: #a334fa;"></i>
@@ -557,6 +609,7 @@
                 btn.classList.add('selected');
                 
                 currentEffect = btn.getAttribute('data-effect');
+                document.body.className = `locked mode-${currentEffect}`;
                 clearCanvasEffects();
 
                 goBtn.classList.add('visible');
@@ -660,7 +713,6 @@
         }
 
         function handleCursorMovement(x, y) {
-            // Check if we are ready to show the effects
             if(!hasStarted && !isTesting) return;
 
             if (currentEffect === 'glitter') glitterArray.push(new Glitter(x, y));
@@ -727,6 +779,11 @@
         window.addEventListener('mousemove', (e) => {
             const posX = e.clientX;
             const posY = e.clientY;
+            
+            // Mask variable updater
+            document.body.style.setProperty('--mx', posX + 'px');
+            document.body.style.setProperty('--my', posY + 'px');
+
             if(cursorDot) { cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`; }
             if(cursorOutline) { cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 300, fill: "forwards" }); }
         });
@@ -789,7 +846,13 @@
         document.addEventListener("DOMContentLoaded", () => {
             gsap.utils.toArray('.f-icon').forEach(icon => { gsap.to(icon, { y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)", duration: "random(2.5, 4.5)", repeat: -1, yoyo: true, ease: "sine.inOut" }); });
             gsap.to(".gsap-welcome-photo", { y: -15, duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
+            
             gsap.to('.welcome-screen', { opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut", scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 } });
+            
+            // Text Animations for the Welcome Screen Depth effect
+            gsap.from(".gsap-welcome-left", { x: -100, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.5 });
+            gsap.from(".gsap-welcome-right", { x: 100, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.5 });
+
             gsap.from(".gsap-hero-img-box", { scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out", scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 } });
             gsap.from(".gsap-title-left", { x: -150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
             gsap.from(".gsap-title-right", { x: 150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
