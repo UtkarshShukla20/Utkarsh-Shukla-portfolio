@@ -203,7 +203,38 @@
         .bento-box { background: rgba(15, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;}
         .bento-box:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 0, 0, 0.15); }
         .box-editing { grid-column: span 12; background: linear-gradient(135deg, rgba(255, 0, 0, 0.08) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(255, 0, 0, 0.4); }
-        .box-media { grid-column: span 7; } .box-code { grid-column: span 5; } .box-projects { grid-column: span 6; } .box-education { grid-column: span 6; }
+        .box-media { grid-column: span 7; } 
+        .box-code { grid-column: span 5; } 
+        
+        /* === NEW 3 VIDEO SHOWCASE SECTIONS === */
+        .box-video { 
+            grid-column: span 4; 
+            padding: 1.8rem; 
+            justify-content: flex-start;
+        }
+        .video-wrapper {
+            width: 100%;
+            aspect-ratio: 9 / 16;
+            background: #050000;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 0, 0, 0.25);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .box-video:hover .video-wrapper {
+            border-color: var(--accent);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
+        }
+        .portfolio-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            cursor: none;
+        }
+
         .bento-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
         .bento-title i { color: var(--accent); font-size: 2rem; }
         .pro-apps { display: flex; flex-wrap: wrap; gap: 20px; }
@@ -214,10 +245,6 @@
         .tag { padding: 10px 18px; border-radius: 8px; background: rgba(255, 0, 0, 0.05); border: 1px solid rgba(255, 0, 0, 0.2); font-size: 1rem; color: #ddd; font-weight: 500; cursor: none;}
         .tag:hover { border-color: var(--accent); color: #fff; background: var(--accent); }
         .code-tag { padding: 8px 14px; border-radius: 6px; border: 1px dashed #666; color: #aaa; font-size: 0.9rem; font-family: monospace;}
-        .info-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
-        .info-list li h4 { color: #ffffff; font-size: 1.2rem; margin-bottom: 5px; font-weight: 700; }
-        .info-list li p { color: #bbb; font-size: 0.95rem; line-height: 1.5; }
-        .info-list li span { display: block; font-size: 0.85rem; color: #777; margin-top: 5px; font-weight: 600;}
 
         /* === REDESIGNED PREMIUM FOOTER === */
         .footer {
@@ -466,21 +493,27 @@
                     <span class="code-tag">WordPress</span><span class="code-tag">Git/GitHub</span>
                 </div>
             </div>
-            <div class="bento-box box-projects gsap-fade-up">
-                <div class="bento-title"><i class="ri-folder-add-fill"></i> Dev Projects</div>
-                <ul class="info-list">
-                    <li><h4>Pawfect Buddy</h4><p>Complete pet care & shop management web app connecting owners and vendors.</p></li>
-                    <li><h4>Library Book Management</h4><p>Digital system for managing records efficiently.</p></li>
-                    <li><h4>Responsive Web Design & Duck Jump Game</h4><p>Mobile-friendly interface and simple interactive game built using core logic.</p></li>
-                </ul>
+            
+            <!-- === 3 EDITED VIDEOS SHOWCASE === -->
+            <div class="bento-box box-video gsap-fade-up">
+                <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-play-circle-fill"></i> Edit 01 // Brand Reel</div>
+                <div class="video-wrapper">
+                    <video src="video1.mp4" controls preload="metadata" playsinline class="portfolio-video"></video>
+                </div>
             </div>
-            <div class="bento-box box-education gsap-fade-up">
-                <div class="bento-title"><i class="ri-graduation-cap-fill"></i> Education & Credentials</div>
-                <ul class="info-list">
-                    <li><h4>BSc Information Technology</h4><p>Thakur College of Science and Commerce</p><span>SGPA 7.30 | 2021 — 2024</span></li>
-                    <li><h4>Secondary (XII) & Schooling (X)</h4><p>Adarsh Education Society (78.0%) | St Willibrords Innovative School (64.80%)</p></li>
-                    <li><h4>Certifications</h4><p>The Complete Python Developer (Udemy) • Graphic Designing (Thakur College) • Ethical Hacking Level 1 (MrWebsecure)</p></li>
-                </ul>
+
+            <div class="bento-box box-video gsap-fade-up">
+                <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-play-circle-fill"></i> Edit 02 // Commercial</div>
+                <div class="video-wrapper">
+                    <video src="video2.mp4" controls preload="metadata" playsinline class="portfolio-video"></video>
+                </div>
+            </div>
+
+            <div class="bento-box box-video gsap-fade-up">
+                <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-play-circle-fill"></i> Edit 03 // Visuals</div>
+                <div class="video-wrapper">
+                    <video src="video3.mp4" controls preload="metadata" playsinline class="portfolio-video"></video>
+                </div>
             </div>
         </div>
     </section>
@@ -640,7 +673,7 @@
             if(cursorOutline) { cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 300, fill: "forwards" }); }
         });
 
-        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .action-btn, .about-highlight');
+        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .action-btn, .about-highlight, .portfolio-video');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
                 if(window.innerWidth > 768) {
