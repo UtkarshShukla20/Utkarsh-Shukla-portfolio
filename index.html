@@ -16,11 +16,11 @@
     <style>
         /* === BASE & RESET === */
         :root {
-            --bg: #0b0b0b; 
+            --bg: #050505; 
             --text: #ffffff;
             --accent: #ffd600; 
-            --glass: rgba(255, 214, 0, 0.02);
-            --border: #ffd600;
+            --box-bg: rgba(18, 18, 18, 0.85);
+            --box-border: rgba(255, 214, 0, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -34,14 +34,10 @@
         }
 
         body.locked { overflow: hidden !important; height: 100vh; }
-
         ::selection { background: var(--accent); color: #000; }
+        .no-select { user-select: none; -webkit-user-select: none; }
 
-        .welcome-text-left, .welcome-text-right, .text-utkarsh, .text-shukla, .hero-subtitle-badge, .float-icon {
-            user-select: none; -webkit-user-select: none;
-        }
-
-        /* === MULTI-PANEL LOADER SCREEN === */
+        /* === 1. ORIGINAL MULTI-PANEL LOADER SCREEN (RESTORED) === */
         .loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: #050505; z-index: 9999996;
@@ -104,12 +100,6 @@
         .loader-bar { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
         .loader-details { display: flex; justify-content: space-between; width: 100%; margin-top: 15px; font-family: monospace; font-size: 1rem; color: #fff; }
 
-        @media (max-width: 1024px) {
-            .loader-wrapper { grid-template-columns: 1fr; grid-template-rows: auto; display: flex; flex-direction: column; }
-            .loader-panel:not(.panel-center) { display: none; }
-            .panel-center { flex-grow: 1; height: 100vh; border: none; box-shadow: none; }
-        }
-
         /* === CANVASES === */
         .noise-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9996; opacity: 0.06; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
         #smoke-canvas, #effects-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }
@@ -142,20 +132,24 @@
         .hero-subtitle-badge { position: absolute; bottom: 25%; z-index: 10; background: var(--accent); color: #000; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(1rem, 2vw, 1.5rem); letter-spacing: 6px; padding: 15px 40px; border-radius: 50px; text-transform: uppercase; box-shadow: 0 10px 35px rgba(255, 214, 0, 0.5); animation: badgeFloat 3s ease-in-out infinite alternate; }
         @keyframes badgeFloat { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); } }
         
-        .hero-actions { position: absolute; bottom: 12%; z-index: 15; }
+        .hero-actions { position: absolute; bottom: 10%; z-index: 15; display: flex; flex-direction: column; align-items: center; gap: 15px; }
         
-        /* UPDATED: WHATSAPP BUTTON */
-        .hero-resume-btn { 
-            display: inline-flex; align-items: center; gap: 10px; 
-            background: rgba(10, 10, 10, 0.95); border: 2px solid var(--accent); 
-            color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 700; 
-            padding: 14px 35px; border-radius: 50px; text-decoration: none; text-transform: uppercase; 
-            letter-spacing: 2px; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(255, 214, 0, 0.15); 
-            cursor: none; 
+        /* WHATSAPP BUTTON HERO */
+        .whatsapp-btn-hero { 
+            display: inline-flex; align-items: center; justify-content: center; gap: 12px; 
+            background: rgba(15, 15, 15, 0.95); border: 2px solid #25D366; 
+            color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 800; 
+            padding: 16px 40px; border-radius: 50px; text-decoration: none; text-transform: uppercase; 
+            letter-spacing: 2px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2), inset 0 0 15px rgba(37, 211, 102, 0.1); 
+            cursor: none; font-size: 1.1rem; position: relative; overflow: hidden;
         }
-        .hero-resume-btn i { font-size: 1.6rem; color: #25D366; text-shadow: 0 0 10px rgba(37,211,102,0.5); }
-        .hero-resume-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); box-shadow: 0 0 40px rgba(255, 214, 0, 0.6); transform: translateY(-3px) scale(1.02); }
-        .hero-resume-btn:hover i { color: #000; text-shadow: none; }
+        .whatsapp-btn-hero::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(37, 211, 102, 0.4), transparent); transition: all 0.5s ease; z-index: 1; }
+        .whatsapp-btn-hero:hover::before { left: 100%; }
+        .whatsapp-btn-hero i { font-size: 1.8rem; color: #25D366; text-shadow: 0 0 15px rgba(37,211,102,0.8); z-index: 2; transition: all 0.3s; }
+        .whatsapp-btn-hero span { z-index: 2; position: relative; }
+        .whatsapp-btn-hero:hover { background: #25D366; color: #000; box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6); transform: translateY(-5px) scale(1.05); }
+        .whatsapp-btn-hero:hover i { color: #000; text-shadow: none; transform: scale(1.1) rotate(10deg); }
 
         .scroll-indicator { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 20; color: #aaa; }
         .scroll-line { width: 1px; height: 40px; background: rgba(255,255,255,0.15); position: relative; overflow: hidden; }
@@ -210,18 +204,24 @@
         .cap-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(255, 214, 0, 0.15); background: rgba(20, 20, 20, 0.95); }
         .cap-card h3 { font-family: 'Inter', sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--accent); margin-bottom: 1rem; letter-spacing: 0.5px; }
         .cap-card-line { width: 85px; height: 3px; background: var(--accent); margin-bottom: 2.5rem; }
-        .cap-list { list-style: none; display: flex; flex-direction: column; gap: 1.4rem; }
+        .cap-list { list-style: none; display: flex; flex-direction: column; gap: 1.4rem; padding-left: 0;}
         .cap-list li { font-family: 'Inter', sans-serif; font-size: 1.1rem; color: #ffffff; font-weight: 400; letter-spacing: 0.2px; transition: color 0.25s ease, transform 0.25s ease; }
         .cap-card:hover .cap-list li:hover { color: var(--accent); transform: translateX(5px); }
 
-        /* === BENTO GRID SECTION === */
+        /* === 2. BENTO GRID (WITH ORIGINAL 6 HIGHDENSITY ANIMATED PANELS) === */
         .bento-container { padding: 6rem 5vw 8rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 5; }
-        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; grid-auto-rows: minmax(180px, auto); }
-        .bento-box { background: rgba(18, 18, 18, 0.85); border: 1.5px solid var(--accent); border-radius: 20px; padding: 2.5rem; backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; transition: transform 0.3s, box-shadow 0.3s; }
-        .bento-box:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 214, 0, 0.15); }
-        .box-editing { grid-column: span 12; } .box-media { grid-column: span 7; } .box-code { grid-column: span 5; } 
         
-        .bento-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); margin-bottom: 1.8rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; position: relative; padding-bottom: 12px; }
+        /* Fixed Grid Layout */
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; grid-auto-rows: minmax(180px, auto); }
+        
+        .bento-box { background: rgba(18, 18, 18, 0.85); border: 1.5px solid var(--accent); border-radius: 20px; padding: 2.5rem; backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; }
+        .bento-box:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 214, 0, 0.15); }
+        
+        .box-editing { grid-column: span 12; } 
+        .box-media { grid-column: span 7; } 
+        .box-code { grid-column: span 5; } 
+
+        .bento-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); margin-bottom: 1.8rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; position: relative; padding-bottom: 12px; z-index: 2; text-shadow: 0 0 10px rgba(0,0,0,0.8);}
         .bento-title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 55px; height: 3px; background: var(--accent); }
         .bento-title i { color: var(--accent); font-size: 1.8rem; }
         .pro-apps { display: flex; flex-wrap: wrap; gap: 20px; }
@@ -233,116 +233,189 @@
         .tag:hover { border-color: var(--accent); color: #000; background: var(--accent); font-weight: 600; }
         .code-tag { padding: 8px 14px; border-radius: 6px; border: 1px dashed var(--accent); color: #ffffff; font-size: 0.9rem; font-family: monospace; background: rgba(255, 214, 0, 0.03);}
 
-        /* === 3 HYPER-ANIMATED CREATIVE PANELS === */
-        .box-video { grid-column: span 4; padding: 1.8rem; justify-content: flex-start; }
-        .anim-wrapper { width: 100%; aspect-ratio: 9 / 16; background: radial-gradient(circle at center, #151515 0%, #030303 100%); border-radius: 14px; overflow: hidden; border: 1.5px solid var(--accent); position: relative; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255,214,0,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.4s ease; }
-        .box-video:hover .anim-wrapper { box-shadow: 0 15px 40px rgba(255,214,0,0.2), inset 0 0 40px rgba(255,214,0,0.2); transform: translateY(-5px); border-color: #fff; }
+        /* 6 HIGH DENSITY ANIMATED PANELS */
+        /* Span 4 means 3 boxes will fit in 12 columns perfectly */
+        .box-video { grid-column: span 4; padding: 1.5rem; justify-content: flex-start; }
 
-        /* 1. Viral Hooks (Double Animated) */
-        .phone-frame { width: 65%; height: 75%; border: 4px solid #333; border-radius: 20px; position: relative; overflow: hidden; background: #0a0a0a; box-shadow: 0 0 30px rgba(0,0,0,0.9), 0 0 15px rgba(255,214,0,0.3); animation: phonePulse 3s infinite alternate; }
-        @keyframes phonePulse { 0% { border-color: #333; box-shadow: 0 0 30px rgba(0,0,0,0.9), 0 0 5px rgba(255,214,0,0.1); } 100% { border-color: var(--accent); box-shadow: 0 0 30px rgba(0,0,0,0.9), 0 0 25px rgba(255,214,0,0.6); } }
-        .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40%; height: 12px; background: #333; border-radius: 0 0 10px 10px; z-index: 10; transition: background 0.3s; }
-        .phone-frame:hover .phone-notch { background: var(--accent); }
-        .reel-scroll { width: 100%; height: 400%; display: flex; flex-direction: column; animation: scrollReels 4s cubic-bezier(0.8, 0, 0.2, 1) infinite; }
-        .r-item { flex: 1; width: 100%; position: relative; border-bottom: 2px solid #1a1a1a; display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(45deg, #050505, #151515); }
-        .play-icon { font-size: 2.5rem; color: rgba(255,214,0,0.5); text-shadow: 0 0 15px rgba(255,214,0,0.5); animation: pulsePlay 1s infinite alternate; }
-        @keyframes pulsePlay { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.3); opacity: 1; text-shadow: 0 0 25px var(--accent); } }
+        .anim-wrapper { width: 100%; aspect-ratio: 9 / 12; background: radial-gradient(circle at center, #151515 0%, #030303 100%); border-radius: 14px; overflow: hidden; border: 1.5px solid rgba(255,214,0,0.5); position: relative; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255,214,0,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.4s ease; z-index: 1;}
+        .box-video:hover .anim-wrapper { box-shadow: 0 15px 40px rgba(255,214,0,0.3), inset 0 0 50px rgba(255,214,0,0.2); transform: translateY(-5px); border-color: var(--accent); }
+        .anim-wrapper::before { content:''; position:absolute; width: 200%; height: 200%; background: linear-gradient(rgba(255,214,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,214,0,0.03) 1px, transparent 1px); background-size: 20px 20px; animation: panGrid 15s linear infinite; z-index: 0; pointer-events: none; opacity: 0.5;}
+        @keyframes panGrid { 0% { transform: translate(0,0); } 100% { transform: translate(-40px, -40px); } }
+
+        /* A) Viral Hooks */
+        .phone-frame { width: 55%; height: 75%; border: 4px solid #444; border-radius: 20px; position: relative; overflow: hidden; background: #0a0a0a; box-shadow: 0 0 30px rgba(0,0,0,0.9), 0 0 20px rgba(255,214,0,0.2); animation: phonePulse 2s infinite alternate; z-index: 2;}
+        @keyframes phonePulse { 0% { border-color: #333; transform: scale(1); } 100% { border-color: var(--accent); transform: scale(1.02); } }
+        .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40%; height: 12px; background: #222; border-radius: 0 0 10px 10px; z-index: 10; }
+        .marquee-top { position: absolute; top: 20px; width: 100%; font-family: 'Anton'; font-size: 1.5rem; color: rgba(255,214,0,0.8); white-space: nowrap; animation: slideLeft 3s linear infinite; z-index: 5; text-shadow: 0 0 10px var(--accent); opacity: 0.5;}
+        @keyframes slideLeft { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .reel-scroll { width: 100%; height: 400%; display: flex; flex-direction: column; animation: scrollReels 3s cubic-bezier(0.8, 0, 0.2, 1) infinite; }
+        .r-item { flex: 1; width: 100%; position: relative; border-bottom: 2px solid #1a1a1a; display: flex; align-items: center; justify-content: center; background: linear-gradient(45deg, #050505, #111); }
+        .play-icon { font-size: 2.5rem; color: rgba(255,214,0,0.8); text-shadow: 0 0 15px rgba(255,214,0,0.8); animation: pulsePlay 0.5s infinite alternate; }
+        @keyframes pulsePlay { 0% { transform: scale(0.9); } 100% { transform: scale(1.2); } }
         @keyframes scrollReels { 0%, 15% { transform: translateY(0); } 25%, 40% { transform: translateY(-25%); } 50%, 65% { transform: translateY(-50%); } 75%, 90% { transform: translateY(-75%); } 100% { transform: translateY(0); } }
-        .social-sidebar { position: absolute; right: 5px; bottom: 15px; display: flex; flex-direction: column; gap: 12px; z-index: 5; }
-        .social-sidebar i { color: #fff; font-size: 1.2rem; filter: drop-shadow(0 2px 5px #000); animation: popIcon 2s infinite; }
-        .social-sidebar i:nth-child(1) { color: #ff3040; animation-delay: 0s; }
-        .social-sidebar i:nth-child(2) { animation-delay: 0.3s; }
-        .social-sidebar i:nth-child(3) { animation-delay: 0.6s; }
-        @keyframes popIcon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
-        .floating-reactions { position: absolute; right: 10px; bottom: 20px; z-index: 10; width: 40px; height: 150px; pointer-events: none; }
-        .f-react { position: absolute; bottom: 0; right: 0; font-size: 1.2rem; opacity: 0; animation: floatReaction 1.5s linear infinite; }
-        .f-react.c-red { color: #ff3040; } .f-react.c-yellow { color: var(--accent); } .f-react.c-blue { color: #00e5ff; }
-        .f-react:nth-child(1) { animation-delay: 0s; right: 5px; }
-        .f-react:nth-child(2) { animation-delay: 0.4s; right: 15px; font-size: 1rem; }
-        .f-react:nth-child(3) { animation-delay: 0.8s; right: 0px; font-size: 1.5rem; }
-        .f-react:nth-child(4) { animation-delay: 1.1s; right: 10px; font-size: 0.9rem; }
-        @keyframes floatReaction { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { opacity: 1; transform: translateY(-20px) scale(1.2); } 100% { transform: translateY(-120px) scale(1); opacity: 0; } }
-        .live-count { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 10px; font-size: 0.65rem; color: #fff; font-family: monospace; display: flex; align-items: center; gap: 4px; z-index: 10; border: 1px solid rgba(255,48,64,0.5); }
-        .live-dot { width: 6px; height: 6px; background: #ff3040; border-radius: 50%; box-shadow: 0 0 5px #ff3040; animation: blinkLive 1s infinite; }
-        @keyframes blinkLive { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .social-sidebar { position: absolute; right: 5px; bottom: 15px; display: flex; flex-direction: column; gap: 8px; z-index: 5; }
+        .social-sidebar i { color: #fff; font-size: 1.2rem; filter: drop-shadow(0 2px 5px #000); animation: popIcon 1s infinite alternate; }
+        .social-sidebar i:nth-child(1) { color: #ff3040; animation-delay: 0s; } .social-sidebar i:nth-child(2) { animation-delay: 0.2s; color: #00e5ff;} .social-sidebar i:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes popIcon { 0% { transform: scale(1); } 100% { transform: scale(1.4); } }
+        .floating-reactions { position: absolute; right: -20px; bottom: 10px; z-index: 10; width: 60px; height: 180px; pointer-events: none; }
+        .f-react { position: absolute; bottom: 0; font-size: 1.2rem; opacity: 0; animation: floatReaction 1.2s linear infinite; }
+        .c-red { color: #ff3040; text-shadow: 0 0 10px #ff3040;} .c-yellow { color: var(--accent); text-shadow: 0 0 10px var(--accent);} .c-blue { color: #00e5ff; text-shadow: 0 0 10px #00e5ff;}
+        .f-react:nth-child(1) { animation-delay: 0s; left: 10px; } .f-react:nth-child(2) { animation-delay: 0.3s; left: 25px; font-size: 1.5rem; } .f-react:nth-child(3) { animation-delay: 0.6s; left: 5px; font-size: 1rem; } .f-react:nth-child(4) { animation-delay: 0.9s; left: 20px; font-size: 1.8rem; }
+        @keyframes floatReaction { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { opacity: 1; transform: translateY(-30px) scale(1.2); } 100% { transform: translateY(-150px) scale(1); opacity: 0; } }
+        .live-count { position: absolute; top: 15px; left: 5px; background: rgba(255,48,64,0.2); padding: 2px 6px; border-radius: 5px; font-size: 0.6rem; color: #fff; font-family: monospace; display: flex; align-items: center; gap: 4px; z-index: 10; border: 1px solid #ff3040; box-shadow: 0 0 10px rgba(255,48,64,0.5);}
+        .live-dot { width: 5px; height: 5px; background: #fff; border-radius: 50%; animation: blinkLive 0.5s infinite; }
+        @keyframes blinkLive { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .follower-popup { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: #fff; color: #000; padding: 4px 8px; border-radius: 20px; font-size: 0.6rem; font-family: 'Space Grotesk'; font-weight: bold; opacity: 0; animation: popUpMsg 3s infinite; z-index: 15; box-shadow: 0 0 20px rgba(255,255,255,0.8);}
+        @keyframes popUpMsg { 0%, 80% { opacity: 0; transform: translate(-50%, -30%);} 85% { opacity: 1; transform: translate(-50%, -50%) scale(1.2);} 95% { opacity: 1; transform: translate(-50%, -50%) scale(1);} 100% { opacity: 0; transform: translate(-50%, -60%);} }
 
-        /* 2. Creative Strategy (Triple Animated Orbits) */
+        /* B) Strategy Orbit */
         .strategy-anim { overflow: hidden; perspective: 800px; }
-        .orbit-container { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: tiltContainer 10s infinite alternate ease-in-out; }
-        @keyframes tiltContainer { 0% { transform: rotateX(10deg) rotateY(-10deg); } 100% { transform: rotateX(-10deg) rotateY(10deg); } }
-        .core-node { width: 45px; height: 45px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--accent), inset 0 0 10px #fff; z-index: 10; font-size: 1.5rem; color: #000; animation: pulseCore 1s infinite alternate; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        @keyframes pulseCore { 0% { transform: translate(-50%, -50%) scale(0.85); box-shadow: 0 0 15px var(--accent); } 100% { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 60px var(--accent), 0 0 20px #fff; } }
+        .orbit-container { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: tiltContainer 8s infinite alternate ease-in-out; z-index: 2;}
+        @keyframes tiltContainer { 0% { transform: rotateX(20deg) rotateY(-15deg); } 100% { transform: rotateX(-20deg) rotateY(15deg); } }
+        .core-node { width: 50px; height: 50px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px var(--accent), inset 0 0 15px #fff; z-index: 10; font-size: 1.8rem; color: #000; animation: pulseCoreNode 0.8s infinite alternate; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        @keyframes pulseCoreNode { 0% { box-shadow: 0 0 20px var(--accent); transform: translate(-50%, -50%) scale(0.9); } 100% { box-shadow: 0 0 80px var(--accent), 0 0 30px #fff; transform: translate(-50%, -50%) scale(1.1); } }
         .orbit { position: absolute; border-radius: 50%; top: 50%; left: 50%; transform-style: preserve-3d; }
-        .orb-1 { width: 110px; height: 110px; border: 2px dashed rgba(255,214,0,0.5); animation: spinOrb3D 5s linear infinite; }
-        .orb-2 { width: 180px; height: 180px; border: 1.5px solid rgba(0,229,255,0.4); animation: spinOrb3D 8s linear infinite reverse; }
-        .orb-3 { width: 250px; height: 250px; border: 2px dotted rgba(255,48,64,0.4); animation: spinOrb3D 12s linear infinite; }
-        @keyframes spinOrb3D { 0% { transform: translate(-50%, -50%) rotateZ(0deg) rotateX(0deg); } 100% { transform: translate(-50%, -50%) rotateZ(360deg) rotateX(0deg); } }
-        .orb-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; border: 1px solid var(--accent); padding: 4px 10px; font-size: 0.65rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; border-radius: 20px; letter-spacing: 1px; box-shadow: 0 0 10px rgba(255,214,0,0.3); }
-        .orb-1 .orb-tag { border-color: var(--accent); color: var(--accent); }
-        .orb-2 .orb-tag { border-color: #00e5ff; color: #00e5ff; top: auto; bottom: -12px; }
-        .orb-3 .orb-tag { border-color: #ff3040; color: #ff3040; left: -15px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
-        .orb-particle { width: 8px; height: 8px; background: #fff; border-radius: 50%; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 15px #fff; }
-        .orb-2 .orb-particle { background: #00e5ff; box-shadow: 0 0 15px #00e5ff; top: auto; bottom: -5px; }
+        .orb-1 { width: 100px; height: 100px; border: 2px dashed rgba(255,214,0,0.6); animation: spinOrb3D 4s linear infinite; }
+        .orb-2 { width: 160px; height: 160px; border: 1.5px solid rgba(0,229,255,0.5); animation: spinOrb3D 6s linear infinite reverse; }
+        .orb-3 { width: 220px; height: 220px; border: 2px dotted rgba(255,48,64,0.5); animation: spinOrb3D 8s linear infinite; }
+        .orb-4 { width: 280px; height: 280px; border: 1px solid rgba(255,255,255,0.2); animation: spinOrb3D 12s linear infinite reverse; }
+        @keyframes spinOrb3D { 0% { transform: translate(-50%, -50%) rotateZ(0deg); } 100% { transform: translate(-50%, -50%) rotateZ(360deg); } }
+        .orb-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #000; font-size: 0.65rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; border-radius: 20px; letter-spacing: 1px; padding: 2px 8px; }
+        .orb-1 .orb-tag { border: 1px solid var(--accent); color: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        .orb-2 .orb-tag { border: 1px solid #00e5ff; color: #00e5ff; top: auto; bottom: -12px; box-shadow: 0 0 15px #00e5ff;}
+        .orb-3 .orb-tag { border: 1px solid #ff3040; color: #ff3040; left: -10px; top: 50%; transform: translateY(-50%) rotate(-90deg); box-shadow: 0 0 15px #ff3040;}
+        .orb-4 .orb-tag { border: 1px solid #fff; color: #fff; right: -10px; left: auto; top: 50%; transform: translateY(-50%) rotate(90deg); box-shadow: 0 0 15px #fff;}
+        .data-packet { width: 10px; height: 10px; border-radius: 50%; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 20px 5px currentColor; }
+        .orb-1 .data-packet { background: #fff; color: #fff; animation: packetFlash 1s infinite alternate;}
+        .orb-2 .data-packet { background: #00e5ff; color: #00e5ff; top: auto; bottom: -5px; }
+        .orb-3 .data-packet { background: #ff3040; color: #ff3040; left: -5px; top: 50%; }
+        @keyframes packetFlash { 0% { opacity: 0.5; transform: translateX(-50%) scale(1); } 100% { opacity: 1; transform: translateX(-50%) scale(1.5); } }
 
-        /* 3. Hyper Growth (High Energy Metrics) */
-        .growth-wrapper { display: flex; align-items: flex-end; justify-content: center; gap: 12px; width: 100%; height: 75%; position: relative; padding-bottom: 25px; border-bottom: 1.5px solid rgba(255,214,0,0.3); border-left: 1.5px solid rgba(255,214,0,0.3); margin-left: 15px; margin-bottom: -15px;}
-        .g-bar { width: 28px; background: linear-gradient(to top, rgba(255,214,0,0.1), var(--accent)); border-radius: 4px 4px 0 0; transform-origin: bottom; animation: growBarEnergy 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate; box-shadow: 0 -5px 20px rgba(255,214,0,0.3); position: relative; }
-        .g-bar::before { content: attr(data-val); position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-family: monospace; color: #fff; font-size: 0.75rem; font-weight: bold; opacity: 0; animation: fadeValUp 1.5s infinite alternate; text-shadow: 0 0 5px #000; }
-        .g-bar:nth-child(1) { height: 25%; animation-delay: 0s; } .g-bar:nth-child(1)::before { animation-delay: 0s; }
+        /* C) Hyper Growth */
+        .growth-wrapper { display: flex; align-items: flex-end; justify-content: space-evenly; width: 100%; height: 100%; position: absolute; bottom: 0; padding: 0 10px; z-index: 2;}
+        .g-bar { width: 15%; background: linear-gradient(to top, rgba(255,214,0,0.1), var(--accent)); border-radius: 4px 4px 0 0; transform-origin: bottom; animation: growBarEnergy 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate; box-shadow: 0 -5px 25px rgba(255,214,0,0.4); position: relative; border-top: 2px solid #fff;}
+        .g-bar::before { content: attr(data-val); position: absolute; top: -30px; left: 50%; transform: translateX(-50%); font-family: 'Anton'; color: #fff; font-size: 1rem; letter-spacing: 1px; opacity: 0; animation: fadeValUp 1.2s infinite alternate; text-shadow: 0 0 10px var(--accent); }
+        .g-bar:nth-child(1) { height: 30%; animation-delay: 0s; } .g-bar:nth-child(1)::before { animation-delay: 0s; }
         .g-bar:nth-child(2) { height: 45%; animation-delay: 0.2s; } .g-bar:nth-child(2)::before { animation-delay: 0.2s; }
-        .g-bar:nth-child(3) { height: 60%; animation-delay: 0.4s; } .g-bar:nth-child(3)::before { animation-delay: 0.4s; }
-        .g-bar:nth-child(4) { height: 85%; animation-delay: 0.6s; } .g-bar:nth-child(4)::before { animation-delay: 0.6s; }
-        .g-bar:nth-child(5) { height: 100%; animation-delay: 0.8s; } .g-bar:nth-child(5)::before { animation-delay: 0.8s; }
-        @keyframes growBarEnergy { 0% { transform: scaleY(0.5); filter: brightness(0.7); box-shadow: 0 -2px 10px rgba(255,214,0,0.1); } 100% { transform: scaleY(1.05); filter: brightness(1.2); box-shadow: 0 -10px 30px rgba(255,214,0,0.6); } }
-        @keyframes fadeValUp { 0% { opacity: 0; transform: translate(-50%, 10px); } 100% { opacity: 1; transform: translate(-50%, -10px); color: var(--accent); } }
-        .g-line { position: absolute; bottom: 25px; left: 8%; width: 85%; height: 100%; pointer-events: none; }
-        .g-line svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 5px 10px rgba(0,229,255,0.8)); }
-        .g-path { stroke-dasharray: 400; stroke-dashoffset: 400; animation: drawLineZap 2s linear infinite; }
+        .g-bar:nth-child(3) { height: 65%; animation-delay: 0.4s; } .g-bar:nth-child(3)::before { animation-delay: 0.4s; }
+        .g-bar:nth-child(4) { height: 80%; animation-delay: 0.6s; } .g-bar:nth-child(4)::before { animation-delay: 0.6s; }
+        .g-bar:nth-child(5) { height: 95%; animation-delay: 0.8s; } .g-bar:nth-child(5)::before { animation-delay: 0.8s; }
+        @keyframes growBarEnergy { 0% { transform: scaleY(0.7); filter: brightness(0.8); } 100% { transform: scaleY(1.05); filter: brightness(1.3); } }
+        @keyframes fadeValUp { 0%, 50% { opacity: 0; transform: translate(-50%, 15px); } 100% { opacity: 1; transform: translate(-50%, -5px); color: var(--accent); } }
+        .g-line { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3;}
+        .g-line svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 5px 15px rgba(0,229,255,0.9)); }
+        .g-path { stroke-dasharray: 400; stroke-dashoffset: 400; animation: drawLineZap 1.5s linear infinite; }
         @keyframes drawLineZap { 0% { stroke-dashoffset: 400; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -400; } }
-        .moon-target { position: absolute; top: 10%; right: 10%; font-size: 2.5rem; color: #00e5ff; animation: spinTarget 4s linear infinite; text-shadow: 0 0 20px #00e5ff; }
-        @keyframes spinTarget { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(360deg) scale(1); } }
+        .bg-metrics { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; opacity: 0.3; z-index: 1;}
+        .float-num { position: absolute; color: #00ff88; font-family: monospace; font-size: 0.8rem; font-weight: bold; animation: flyUp 2s linear infinite;}
+        .float-num:nth-child(1) { left: 10%; bottom: 0; animation-delay: 0.1s; } .float-num:nth-child(2) { left: 40%; bottom: 0; animation-delay: 0.5s; font-size: 1.2rem; } .float-num:nth-child(3) { left: 70%; bottom: 0; animation-delay: 0.9s; }
+        @keyframes flyUp { 0% { transform: translateY(0); opacity: 1;} 100% { transform: translateY(-200px); opacity: 0;} }
 
-        /* === REDESIGNED PREMIUM FOOTER === */
-        .footer { background: #080808; border-top: 1.5px solid var(--accent); z-index: 10; position: relative; padding: 6rem 5vw 2rem; overflow: hidden; }
+        /* D) Precision Edit */
+        .timeline-ui { width: 90%; height: 80%; display: flex; flex-direction: column; gap: 8px; justify-content: center; position: relative; z-index: 2;}
+        .t-track { width: 100%; height: 20px; background: rgba(255,255,255,0.05); border-radius: 4px; display: flex; align-items: center; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);}
+        .t-clip { height: 100%; border-radius: 2px; position: absolute; }
+        .clip-vid { background: rgba(0,229,255,0.6); border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+        .clip-aud { background: rgba(0,255,136,0.6); border: 1px solid #00ff88; display: flex; align-items: center; gap: 2px; padding: 0 2px;}
+        .waveform { flex: 1; background: #fff; animation: audioDance 0.2s infinite alternate; }
+        @keyframes audioDance { 0% { height: 20%; } 100% { height: 80%; } }
+        .t-track:nth-child(1) .t-clip { width: 40%; left: 10%; } .t-track:nth-child(2) .t-clip { width: 30%; left: 55%; }
+        .t-track:nth-child(3) .t-clip:nth-child(1) { width: 20%; left: 5%; } .t-track:nth-child(3) .t-clip:nth-child(2) { width: 45%; left: 30%; }
+        .t-track:nth-child(4) .t-clip { width: 60%; left: 20%; }
+        .playhead { position: absolute; top: -10%; height: 120%; width: 2px; background: #ff3040; box-shadow: 0 0 15px #ff3040; animation: scanTimeline 3s linear infinite; z-index: 10;}
+        .playhead::before { content: ''; position: absolute; top: 0; left: -5px; width: 12px; height: 12px; background: #ff3040; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+        @keyframes scanTimeline { 0% { left: 0%; } 100% { left: 100%; } }
+        .color-wheels { position: absolute; bottom: 10px; right: 10px; display: flex; gap: 5px; opacity: 0.8;}
+        .c-wheel { width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); animation: spinOrb3D 4s linear infinite; border: 1px solid #fff;}
+        .c-wheel:nth-child(2) { animation-direction: reverse; animation-duration: 2s;}
+
+        /* E) Demographics */
+        .psy-wrapper { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 2;}
+        .psy-core { font-size: 3.5rem; color: #fff; text-shadow: 0 0 30px #fff; animation: pulseBrain 1.5s infinite alternate; z-index: 5;}
+        @keyframes pulseBrain { 0% { transform: scale(0.9); filter: drop-shadow(0 0 10px var(--accent)); } 100% { transform: scale(1.1); filter: drop-shadow(0 0 40px var(--accent)); color: var(--accent); } }
+        .psy-ring { position: absolute; border-radius: 50%; border: 2px solid var(--accent); opacity: 0; animation: sonarRing 2s infinite ease-out; }
+        .psy-ring:nth-child(2) { animation-delay: 0.6s; } .psy-ring:nth-child(3) { animation-delay: 1.2s; }
+        @keyframes sonarRing { 0% { width: 40px; height: 40px; opacity: 1; } 100% { width: 250px; height: 250px; opacity: 0; border-width: 0px; } }
+        .psy-badge { position: absolute; background: rgba(15,15,15,0.9); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-family: 'Space Grotesk'; font-size: 0.75rem; padding: 5px 12px; border-radius: 20px; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.8); animation: floatBadge 3s infinite alternate ease-in-out; z-index: 10;}
+        .psy-badge:nth-child(4) { top: 15%; left: 15%; animation-delay: 0s; border-color: #00e5ff; color: #00e5ff;}
+        .psy-badge:nth-child(5) { top: 15%; right: 15%; animation-delay: 0.5s; border-color: #ff3040; color: #ff3040;}
+        .psy-badge:nth-child(6) { bottom: 15%; left: 15%; animation-delay: 1s; border-color: var(--accent); color: var(--accent);}
+        .psy-badge:nth-child(7) { bottom: 15%; right: 15%; animation-delay: 1.5s; border-color: #00ff88; color: #00ff88;}
+        @keyframes floatBadge { 0% { transform: translateY(0px) scale(0.95); } 100% { transform: translateY(-15px) scale(1.05); box-shadow: 0 15px 25px rgba(255,214,0,0.2); } }
+
+        /* F) Global Reach */
+        .radar-container { width: 180px; height: 180px; border-radius: 50%; border: 2px solid rgba(0,229,255,0.3); position: relative; overflow: hidden; background: radial-gradient(circle, rgba(0,229,255,0.1) 0%, transparent 70%); z-index: 2; box-shadow: 0 0 30px rgba(0,229,255,0.2);}
+        .radar-grid { position: absolute; width: 100%; height: 100%; border-radius: 50%; background-image: linear-gradient(rgba(0,229,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.2) 1px, transparent 1px); background-size: 20px 20px; }
+        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 50%; height: 50%; background: conic-gradient(from 0deg, rgba(0,229,255,0) 0deg, rgba(0,229,255,0.8) 90deg, rgba(0,229,255,0) 90deg); transform-origin: 0% 0%; animation: sweep 2s linear infinite; z-index: 5;}
+        @keyframes sweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .map-ping { position: absolute; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 15px var(--accent); opacity: 0; animation: pingFade 2s infinite; z-index: 10;}
+        .map-ping::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid var(--accent); border-radius: 50%; animation: ripplePing 2s infinite; }
+        .map-ping:nth-child(3) { top: 30%; left: 40%; animation-delay: 0.5s; } .map-ping:nth-child(4) { top: 60%; left: 70%; animation-delay: 1.2s; }
+        .map-ping:nth-child(5) { top: 75%; left: 25%; animation-delay: 0.8s; } .map-ping:nth-child(6) { top: 20%; left: 75%; animation-delay: 1.8s; } .map-ping:nth-child(7) { top: 50%; left: 15%; animation-delay: 0.2s; }
+        @keyframes pingFade { 0% { opacity: 0; transform: scale(0); } 10% { opacity: 1; transform: scale(1.5); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; } }
+        @keyframes ripplePing { 0% { width: 8px; height: 8px; opacity: 1; } 100% { width: 40px; height: 40px; opacity: 0; } }
+
+        /* === 3. SERVICES SECTION === */
+        .services-section { padding: 4rem 5vw 8rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 5; border-top: 1px solid #1a1a1a;}
+        .srv-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 40px; }
+        .srv-card { background: var(--box-bg); border: 1px solid var(--box-border); border-radius: 20px; padding: 2.5rem; display: flex; flex-direction: column; transition: transform 0.3s; }
+        .srv-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .srv-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px;}
+        .srv-icon { width: 50px; height: 50px; background: rgba(255,214,0,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--accent); }
+        .srv-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; margin: 0;}
+        .srv-points { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .srv-points li { display: flex; align-items: flex-start; gap: 10px; font-size: 1.05rem; color: #bbb; line-height: 1.5;}
+        .srv-points li i { color: var(--accent); font-size: 1.2rem; margin-top: 2px;}
+
+        /* === 4. PREMIUM SOFTWARE LIST (TABLE FORMAT + 500 INR) === */
+        .table-container { width: 100%; overflow-x: auto; background: #0a0a0a; border: 1px solid #222; border-radius: 12px; margin-top: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+        .premium-table { width: 100%; border-collapse: collapse; font-family: 'Inter', sans-serif; text-align: left; }
+        .premium-table th { background: #111; color: var(--accent); padding: 18px 20px; font-family: 'Space Grotesk'; font-size: 1rem; text-transform: uppercase; border-bottom: 2px solid var(--accent); white-space: nowrap; }
+        .premium-table td { padding: 14px 20px; border-bottom: 1px solid #1a1a1a; color: #ccc; font-size: 0.95rem; }
+        .premium-table tr:hover td { background: rgba(255,214,0,0.05); }
+        .cat-row td { background: #151515 !important; color: #fff; font-family: 'Anton'; font-size: 1.4rem; letter-spacing: 1px; border-left: 4px solid var(--accent); padding-top: 25px; padding-bottom: 15px;}
+        .price-col { text-align: right; }
+        .premium-table .price { text-align: right; color: #fff; font-family: monospace; font-size: 1.15rem; font-weight: bold; }
+        .status-av { color: #00ff88; font-weight: bold; font-size: 0.85rem;}
+        .status-os { color: #ff3040; font-weight: bold; font-size: 0.85rem;}
+
+        /* === 5. ORIGINAL FOOTER (LET'S CONNECT RESTORED) === */
+        .footer { background: #080808; border-top: 1px solid #1a1a1a; position: relative; padding: 6rem 5vw 2rem; overflow: hidden; }
         .footer-glow { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80%; height: 300px; background: radial-gradient(ellipse at bottom, rgba(255, 214, 0, 0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
-        .footer-content { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 4rem; }
-        .footer-top { text-align: center; border-bottom: 1px solid rgba(255, 214, 0, 0.2); padding-bottom: 4rem; }
-        .contact-label { color: var(--accent); font-weight: 700; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1rem; font-family: 'Space Grotesk', sans-serif;}
-        .huge-contact { font-family: 'Anton', sans-serif; font-size: clamp(3rem, 8vw, 7rem); color: var(--accent); text-decoration: none; transition: all 0.3s; line-height: 1.1; cursor: none;}
-        .huge-contact:hover { color: #ffffff; text-shadow: 0 0 30px rgba(255, 214, 0, 0.4);}
+        .footer-content { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 4rem; position: relative; z-index: 2;}
+        .footer-top { text-align: center; border-bottom: 1px solid #1a1a1a; padding-bottom: 4rem; }
+        .contact-label { color: #666; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1rem; font-family: 'Space Grotesk', sans-serif;}
+        .huge-contact { font-family: 'Anton', sans-serif; font-size: clamp(3rem, 8vw, 7rem); color: #fff; text-decoration: none; transition: color 0.3s; }
+        .huge-contact:hover { color: var(--accent); }
         .footer-middle { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; justify-items: center; text-align: center; }
-        .footer-col h4 { font-family: 'Space Grotesk', sans-serif; color: var(--accent); font-size: 1.2rem; margin-bottom: 1.5rem; letter-spacing: 2px; position: relative; display: inline-block; padding-bottom: 8px; }
-        .footer-col h4::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 2px; background: var(--accent); }
-        .footer-col a, .footer-col p { display: block; color: #fff; text-decoration: none; margin-bottom: 1rem; font-size: 1.1rem; transition: color 0.3s; cursor: none;}
+        .footer-col h4 { font-family: 'Space Grotesk', sans-serif; color: #888; font-size: 1.1rem; margin-bottom: 1.5rem; letter-spacing: 2px; }
+        .footer-col a, .footer-col p { display: block; color: #ddd; text-decoration: none; margin-bottom: 1rem; font-size: 1.1rem; transition: color 0.3s; cursor: none;}
         .footer-col a:hover { color: var(--accent); }
-        .footer-action-btn { display: inline-block; background: #141414; border: 1.5px solid var(--accent); color: #fff; padding: 12px 25px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; margin-bottom: 1rem; text-decoration: none; transition: all 0.3s; width: 100%; cursor: none; }
-        .footer-action-btn:hover { background: var(--accent); color: #000; }
-        .footer-action-btn.solid { background: var(--accent); border-color: var(--accent); color: #000; }
-        .footer-action-btn.solid:hover { background: #fff; border-color: #fff; color: #000; box-shadow: 0 0 20px rgba(255, 214, 0, 0.5); }
-        .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 2rem; text-align: center; color: #888; font-size: 0.9rem; }
+        .footer-bottom { border-top: 1px solid #1a1a1a; padding-top: 2rem; text-align: center; color: #555; font-size: 0.9rem; }
 
+        /* === RESPONSIVE === */
         @media (max-width: 1024px) { 
-            .capabilities-grid { grid-template-columns: repeat(2, 1fr); } .box-video { grid-column: span 6; } 
-            .loader-wrapper { grid-template-columns: 1fr; grid-template-rows: auto; display: flex; flex-direction: column; }
-            .loader-panel:not(.panel-center) { display: none; }
-            .panel-center { flex-grow: 1; height: 100vh; border: none; box-shadow: none; }
+            .capabilities-grid { grid-template-columns: repeat(2, 1fr); } 
+            .box-video { grid-column: span 6; }
+            .srv-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 768px) {
             .cursor-dot, .cursor-outline { display: none !important; } * { cursor: auto !important; }
             .welcome-cutout { height: 80vh; bottom: -5%; } .welcome-text-left, .welcome-text-right { font-size: clamp(3rem, 15vw, 5rem); }
             .welcome-text-left { top: 20%; left: 5%; } .welcome-text-right { top: 60%; right: 5%; }
-            .float-icon { font-size: clamp(2rem, 8vw, 3rem); } .hero-image-box { width: 75vw; height: 50vh; max-width: 280px; max-height: 400px; }
-            .text-utkarsh, .text-shukla { font-size: 24vw; } .hero-subtitle-badge { font-size: 0.8rem; padding: 10px 20px; bottom: 25%; letter-spacing: 3px; }
-            .hero-actions { bottom: 15%; } .about-section { padding: 6rem 5vw; } .about-text { font-size: clamp(1.2rem, 5vw, 1.8rem); line-height: 1.5; }
-            .panel { padding: 0 3vw; } .exp-card { padding: 2rem; border-radius: 16px; gap: 1rem; max-width: 100%; overflow: hidden; }
-            .exp-year { font-size: 2rem; } .exp-title { font-size: 1.5rem; line-height: 1.2; } .exp-action-buttons { flex-direction: row; gap: 10px; justify-content: flex-start; }
-            .action-btn { padding: 10px 20px; font-size: 0.9rem; } .capabilities-container { padding: 4rem 5vw 2rem; } .capabilities-grid { grid-template-columns: 1fr; gap: 20px; }
-            .cap-card { padding: 2rem 1.8rem; border-radius: 16px; } .bento-container { padding: 4rem 5vw; } .bento-grid { display: flex; flex-direction: column; gap: 15px; }
-            .bento-box { padding: 1.5rem; border-radius: 16px; } .def-content { padding: 2rem; } .def-word { font-size: 2rem; } .def-meaning { font-size: 1rem; }
-            .footer { padding: 4rem 5vw 2rem; } .footer-middle { grid-template-columns: 1fr; gap: 2rem; }
-            .box-video { grid-column: span 12; }
-            .hero-resume-btn { padding: 12px 25px; font-size: 0.9rem; }
-            .hero-resume-btn i { font-size: 1.3rem; }
+            .hero-image-box { width: 75vw; height: 50vh; max-width: 280px; max-height: 400px; }
+            .text-utkarsh, .text-shukla { font-size: 24vw; } .hero-subtitle-badge { font-size: 0.8rem; padding: 10px 20px; bottom: 25%; }
+            .hero-actions { bottom: 10%; } .about-section { padding: 6rem 5vw; } .about-text { font-size: clamp(1.2rem, 5vw, 1.8rem); line-height: 1.5; }
+            .panel { padding: 0 3vw; } .exp-card { padding: 2rem; border-radius: 16px; gap: 1rem; }
+            .exp-year { font-size: 2rem; } .exp-title { font-size: 1.5rem; line-height: 1.2; }
+            
+            .capabilities-container, .bento-container, .services-section { padding: 4rem 5vw 2rem; } 
+            .capabilities-grid { grid-template-columns: 1fr; gap: 20px; }
+            .bento-grid { display: flex; flex-direction: column; gap: 15px; }
+            .box-editing, .box-media, .box-code, .box-video { grid-column: span 12; }
+            
+            .bento-box { padding: 1.5rem; } .def-content { padding: 2rem; } .def-word { font-size: 2rem; } 
+            .whatsapp-btn-hero { padding: 14px 30px; font-size: 1rem; } .whatsapp-btn-hero i { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -357,7 +430,7 @@
         </div>
     </div>
 
-    <!-- === MULTI-PANEL VIRAL GROWTH LOADER === -->
+    <!-- === ORIGINAL 5-PANEL HUD LOADER (RESTORED DYNAMIC TEXT) === -->
     <div id="loader-wrapper" class="loader-wrapper">
         <div class="loader-panel">
             <div class="panel-title">POST-PRODUCTION QUEUE</div>
@@ -366,16 +439,13 @@
                 <div class="term-row"><span>> color_grade.cube</span><span class="t-green">DONE</span></div>
                 <div class="term-row"><span>> reel_v2_final.mov</span><span class="t-yellow blink">ENCODING</span></div>
             </div>
-            <div class="render-box">
-                <div class="r-track"><div class="r-fill"></div></div>
-                <div class="r-track"><div class="r-fill fast"></div></div>
-            </div>
+            <div class="render-box"><div class="r-track"><div class="r-fill"></div></div><div class="r-track"><div class="r-fill fast"></div></div></div>
         </div>
 
         <div class="loader-panel panel-center">
             <div class="loader-content">
                 <div class="loader-header" id="dynamic-loader-text">
-                    <i class="ri-user-add-fill" style="color: #00e5ff;"></i> <span style="color: var(--accent);">GENERATING QUALIFIED LEADS...</span>
+                    <i class="ri-edit-circle-fill" style="animation: spin 2s linear infinite;"></i> <span style="color: var(--accent);">RENDERING FINAL EDIT...</span>
                 </div>
                 <div class="loader-percentage" id="loader-percentage">0%</div>
                 <div class="loader-bar-container"><div class="loader-bar" id="loader-bar"></div></div>
@@ -394,10 +464,7 @@
                 <div class="term-row"><span>Reach Map:</span><span class="t-yellow">EXPANDING</span></div><br>
                 <div class="term-row"><span>Creator Network:</span><span class="t-green">ONLINE</span></div>
             </div>
-            <div class="network-box">
-                <div class="net-line"></div>
-                <div class="node"></div><div class="node"></div><div class="node"></div>
-            </div>
+            <div class="network-box"><div class="net-line"></div><div class="node"></div><div class="node"></div><div class="node"></div></div>
         </div>
 
         <div class="loader-panel">
@@ -407,10 +474,7 @@
                 <div class="term-row"><span>Retention:</span><span id="term-ret" class="t-cyan">0%</span></div>
                 <div class="term-row"><span>Viral Velocity:</span><span id="term-vel" class="t-red">0.0x</span></div>
             </div>
-            <div class="equalizer">
-                <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
-                <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
-            </div>
+            <div class="equalizer"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
         </div>
 
         <div class="loader-panel">
@@ -437,41 +501,30 @@
 
     <!-- MAIN PORTFOLIO CONTENT -->
     <div class="welcome-screen">
-        <div class="welcome-text-container">
-            <h1 class="welcome-text-left gsap-welcome-left">Welcome To</h1>
-            <h1 class="welcome-text-right gsap-welcome-right"><span>My Portfolio</span></h1>
-        </div>
+        <h1 class="welcome-text-left gsap-welcome-left no-select">Welcome To</h1>
+        <h1 class="welcome-text-right gsap-welcome-right no-select"><span>My Portfolio</span></h1>
         <img src="welcome-photo.png" alt="Utkarsh Shukla" class="welcome-cutout gsap-welcome-photo">
-        <div class="welcome-content-layer">
-            <i class="ri-instagram-fill float-icon f-icon" style="top: 15%; left: 15%; color: #ffffff;"></i>
-            <i class="ri-youtube-fill float-icon f-icon" style="top: 25%; right: 20%; color: #ffd600;"></i>
-            <i class="ri-camera-lens-fill float-icon f-icon" style="top: 70%; left: 10%; color: #ffffff;"></i>
-            <i class="ri-clapperboard-fill float-icon f-icon" style="top: 60%; right: 15%; color: #ffd600;"></i>
-            <i class="ri-edit-box-fill float-icon f-icon" style="top: 80%; left: 35%; color: #ffffff;"></i>
-            <i class="ri-mac-fill float-icon f-icon" style="top: 15%; right: 40%; color: #ffd600;"></i>
-            <i class="ri-video-chat-fill float-icon f-icon" style="top: 85%; right: 40%; color: #ffffff;"></i>
-            <div class="scroll-indicator" style="bottom: 50px;">Scroll to Enter<div class="scroll-line"></div></div>
-        </div>
     </div>
-
     <div class="scroll-spacer"></div>
 
+    <!-- HERO SECTION -->
     <section class="hero" id="hero-main">
-        <div class="text-utkarsh gsap-title-left">UTKARSH</div>
+        <div class="text-utkarsh gsap-title-left no-select">UTKARSH</div>
         <div class="hero-image-box gsap-hero-img-box"><img src="cutout.png" alt="Utkarsh Shukla" class="gsap-hero-img holographic-cutout"></div>
-        <div class="text-shukla gsap-title-right">SHUKLA</div>
-        <div class="hero-subtitle-badge gsap-badge">CONTENT STRATEGIST</div>
+        <div class="text-shukla gsap-title-right no-select">SHUKLA</div>
+        <div class="hero-subtitle-badge gsap-badge no-select">CONTENT STRATEGIST</div>
         
-        <!-- UPDATED: DIRECT WHATSAPP BUTTON[cite: 2] -->
         <div class="hero-actions gsap-resume-btn">
-            <a href="https://wa.me/919764979543" target="_blank" class="hero-resume-btn magnetic-wrap">
-                <i class="ri-whatsapp-fill"></i> Chat on WhatsApp
+            <a href="https://wa.me/919764979543" target="_blank" class="whatsapp-btn-hero">
+                <i class="ri-whatsapp-line"></i>
+                <span>Chat on WhatsApp</span>
             </a>
         </div>
         
         <div class="scroll-indicator">Scroll Down<div class="scroll-line"></div></div>
     </section>
 
+    <!-- ABOUT SECTION -->
     <section class="about-section">
         <div class="section-tag">THE STRATEGIST</div>
         <p class="about-text" id="split-text">
@@ -479,95 +532,47 @@
         </p>
     </section>
 
+    <!-- TIMELINE SECTION -->
     <section class="horizontal-section">
         <div class="horizontal-wrapper">
             <div class="panel">
                 <div class="exp-card">
                     <div class="card-top-row">
-                        <div>
-                            <i class="ri-rocket-2-fill exp-icon"></i>
-                            <div class="exp-year">FEB 2026 - PRESENT</div>
-                            <div class="exp-title">Social Media Manager & Strategist</div>
-                            <div class="exp-company">eSamparkTech Solutions & MEDH</div>
-                        </div>
-                        <div class="exp-action-buttons">
-                            <div class="magnetic-wrap"><a href="https://esampark.biz/" target="_blank" class="action-btn" title="Visit eSampark"><i class="ri-external-link-line"></i> eSampark.biz</a></div>
-                            <div class="magnetic-wrap"><a href="https://medh.co/" target="_blank" class="action-btn" title="Visit MEDH"><i class="ri-external-link-line"></i> MEDH.co</a></div>
-                        </div>
+                        <div><i class="ri-rocket-2-fill exp-icon"></i><div class="exp-year">FEB 2026 - PRESENT</div><div class="exp-title">Social Media Manager</div><div class="exp-company">eSamparkTech & MEDH</div></div>
+                        <div class="exp-action-buttons"><a href="https://esampark.biz/" target="_blank" class="action-btn"><i class="ri-external-link-line"></i> eSampark.biz</a><a href="https://medh.co/" target="_blank" class="action-btn"><i class="ri-external-link-line"></i> MEDH.co</a></div>
                     </div>
-                    <div class="exp-desc">
-                        Owning the end-to-end content strategy, ideation, shoot planning, and publishing calendars. I write highly-targeted reel scripts specifically engineered for <strong>parents</strong> and perform as the <strong>primary on-camera talent</strong> for brand videos.
-                        <br><br>
-                        <em>Highlight:</em> Managed a promotional summer campaign for the MEDH brand featuring interactive games at a mall stall location, designing printable registration forms, feedback slips, and interactive game rules with a strict <strong>3 seconds timer</strong>.
-                    </div>
+                    <div class="exp-desc">Owning the end-to-end content strategy, ideation, shoot planning, and publishing calendars. I write highly-targeted reel scripts specifically engineered for <strong>parents</strong> and perform as the <strong>primary on-camera talent</strong> for brand videos.</div>
                 </div>
             </div>
             <div class="panel">
-                <div class="exp-card">
-                    <i class="ri-clapperboard-fill exp-icon"></i>
-                    <div class="exp-year">AUG 2024 - PRESENT</div>
-                    <div class="exp-title">Freelance Editor & Growth Manager</div>
-                    <div class="exp-company">Independent Clients | Skybags | Dell Laptops</div>
-                    <div class="exp-desc">
-                        Editing and managing social media handles, driving follower growth and engagement through consistent, high-retention content upkeep. 
-                        <br><br>
-                        Also volunteered as on-ground support for major brand campaign activations including <strong>Skybags</strong> and <strong>Dell Laptops</strong>.
-                    </div>
-                </div>
+                <div class="exp-card"><i class="ri-clapperboard-fill exp-icon"></i><div class="exp-year">AUG 2024 - PRESENT</div><div class="exp-title">Freelance Editor</div><div class="exp-company">Independent | Skybags | Dell</div><div class="exp-desc">Editing and managing social media handles, driving follower growth and engagement through consistent, high-retention content upkeep. Volunteered as on-ground support for major brand campaign activations.</div></div>
             </div>
             <div class="panel">
-                <div class="exp-card">
-                    <i class="ri-mic-2-fill exp-icon"></i>
-                    <div class="exp-year">FEB 2025 - FEB 2026</div>
-                    <div class="exp-title">Field Reporter</div>
-                    <div class="exp-company">Anti-Corruption News and Views, Mumbai</div>
-                    <div class="exp-desc">
-                        Reported on local and regional corruption cases, conducting live interviews and writing critical news articles for print and digital platforms.
-                        <br><br>
-                        Applied journalism-grade research and fact-checking. Structured stories and crafted supporting social content to drastically boost engagement.
-                    </div>
-                </div>
+                <div class="exp-card"><i class="ri-mic-2-fill exp-icon"></i><div class="exp-year">FEB 2025 - FEB 2026</div><div class="exp-title">Field Reporter</div><div class="exp-company">Anti-Corruption News, Mumbai</div><div class="exp-desc">Reported on local corruption cases, conducting live interviews and writing critical news articles. Applied journalism-grade research and fact-checking to drastically boost digital engagement.</div></div>
             </div>
             <div class="panel">
-                <div class="exp-card">
-                    <i class="ri-code-box-fill exp-icon"></i>
-                    <div class="exp-year">JUN 2024 - AUG 2024</div>
-                    <div class="exp-title">Web Development Intern</div>
-                    <div class="exp-company">TechOctanet Services Pvt Ltd</div>
-                    <div class="exp-desc">
-                        Gained hands-on experience building responsive web applications using modern technologies. Strengthened core problem-solving skills on real-world projects.
-                    </div>
-                </div>
+                <div class="exp-card"><i class="ri-code-box-fill exp-icon"></i><div class="exp-year">JUN 2024 - AUG 2024</div><div class="exp-title">Web Dev Intern</div><div class="exp-company">TechOctanet Services Pvt Ltd</div><div class="exp-desc">Gained hands-on experience building responsive web applications using modern technologies. Strengthened core problem-solving skills on real-world projects.</div></div>
             </div>
         </div>
     </section>
 
+    <!-- CAPABILITIES SECTION -->
     <section class="capabilities-container" id="capabilities">
         <h2 class="capabilities-heading gsap-fade-up">OUR CAPABILITIES</h2>
         <div class="capabilities-heading-line gsap-fade-up"></div>
         <div class="capabilities-grid">
-            <div class="cap-card gsap-fade-up">
-                <h3>Awareness</h3><div class="cap-card-line"></div>
-                <ul class="cap-list"><li>Meme Marketing</li><li>Creator Campaigns</li><li>PR</li><li>Communities</li></ul>
-            </div>
-            <div class="cap-card gsap-fade-up">
-                <h3>Influence</h3><div class="cap-card-line"></div>
-                <ul class="cap-list"><li>LinkedIn</li><li>Reddit</li><li>Thought Leadership</li><li>Founder Branding</li></ul>
-            </div>
-            <div class="cap-card gsap-fade-up">
-                <h3>Culture</h3><div class="cap-card-line"></div>
-                <ul class="cap-list"><li>Twitter | Trend Marketing</li><li>Moment Marketing</li><li>UGC</li><li>Content</li></ul>
-            </div>
-            <div class="cap-card gsap-fade-up">
-                <h3>Growth</h3><div class="cap-card-line"></div>
-                <ul class="cap-list"><li>Launch Campaigns</li><li>Social Media</li><li>Brand Collaborations</li><li>Performance Creatives</li></ul>
-            </div>
+            <div class="cap-card gsap-fade-up"><h3>Awareness</h3><div class="cap-card-line"></div><ul class="cap-list"><li>Meme Marketing</li><li>Creator Campaigns</li><li>PR</li><li>Communities</li></ul></div>
+            <div class="cap-card gsap-fade-up"><h3>Influence</h3><div class="cap-card-line"></div><ul class="cap-list"><li>LinkedIn</li><li>Reddit</li><li>Thought Leadership</li><li>Founder Branding</li></ul></div>
+            <div class="cap-card gsap-fade-up"><h3>Culture</h3><div class="cap-card-line"></div><ul class="cap-list"><li>Twitter | Trend Marketing</li><li>Moment Marketing</li><li>UGC</li><li>Content</li></ul></div>
+            <div class="cap-card gsap-fade-up"><h3>Growth</h3><div class="cap-card-line"></div><ul class="cap-list"><li>Launch Campaigns</li><li>Social Media</li><li>Brand Collaborations</li><li>Performance Creatives</li></ul></div>
         </div>
     </section>
 
+    <!-- BENTO GRID SECTION WITH ORIGINAL 6 ANIMATIONS -->
     <section class="bento-container" id="arsenal">
         <div class="section-tag" style="justify-content: center; margin-bottom: 2.5rem;">THE ARSENAL</div>
         <div class="bento-grid">
+            
             <div class="bento-box box-editing gsap-fade-up">
                 <div class="bento-title"><i class="ri-film-fill"></i> Master Post-Production Suite</div>
                 <div class="pro-apps">
@@ -577,6 +582,7 @@
                     <div class="app-card"><img src="capcut-logo.png" alt="CapCut Pro" class="app-logo"> CapCut Pro</div>
                 </div>
             </div>
+            
             <div class="bento-box box-media gsap-fade-up">
                 <div class="bento-title"><i class="ri-quill-pen-fill"></i> Content & Strategy</div>
                 <div class="tag-wrap">
@@ -586,6 +592,7 @@
                     <span class="tag">UI/UX & Graphic Design</span><span class="tag">Videography & Photography</span>
                 </div>
             </div>
+            
             <div class="bento-box box-code gsap-fade-up">
                 <div class="bento-title"><i class="ri-terminal-box-line"></i> Web & Tech Stack</div>
                 <div class="tag-wrap">
@@ -596,75 +603,259 @@
                 </div>
             </div>
             
-            <!-- === 3 HYPER-ANIMATED CREATIVE PANELS === -->
+            <!-- 🔥 ORIGINAL 6 ANIMATED BOXES (GRID FIXED) 🔥 -->
             <div class="bento-box box-video gsap-fade-up">
                 <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-smartphone-line"></i> Viral Hooks</div>
                 <div class="anim-wrapper">
                     <div class="phone-frame">
                         <div class="phone-notch"></div>
                         <div class="live-count"><span class="live-dot"></span> 18.5K LIVE</div>
+                        <div class="marquee-top">VIRAL • HOOKED • TRENDING •</div>
+                        <div class="follower-popup">🚀 +5,000 FOLLOWERS</div>
                         <div class="reel-scroll">
-                            <div class="r-item"><i class="ri-play-fill play-icon"></i></div>
-                            <div class="r-item"><i class="ri-play-fill play-icon"></i></div>
-                            <div class="r-item"><i class="ri-play-fill play-icon"></i></div>
-                            <div class="r-item"><i class="ri-play-fill play-icon"></i></div>
+                            <div class="r-item"><i class="ri-play-fill play-icon"></i></div><div class="r-item"><i class="ri-play-fill play-icon"></i></div>
+                            <div class="r-item"><i class="ri-play-fill play-icon"></i></div><div class="r-item"><i class="ri-play-fill play-icon"></i></div>
                         </div>
-                        <div class="social-sidebar">
-                            <i class="ri-heart-3-fill"></i>
-                            <i class="ri-chat-3-fill"></i>
-                            <i class="ri-share-forward-fill"></i>
-                        </div>
+                        <div class="social-sidebar"><i class="ri-heart-3-fill"></i><i class="ri-chat-3-fill"></i><i class="ri-share-forward-fill"></i></div>
                         <div class="floating-reactions">
-                            <i class="ri-heart-3-fill f-react c-red"></i>
-                            <i class="ri-thumb-up-fill f-react c-blue"></i>
-                            <i class="ri-fire-fill f-react c-yellow"></i>
-                            <i class="ri-heart-3-fill f-react c-red"></i>
+                            <i class="ri-heart-3-fill f-react c-red"></i><i class="ri-thumb-up-fill f-react c-blue"></i>
+                            <i class="ri-fire-fill f-react c-yellow"></i><i class="ri-heart-3-fill f-react c-red"></i>
                         </div>
                     </div>
                 </div>
+                <p class="box-desc">Crafting highly-targeted, psychological hook-driven reel scripts that maximize viewer retention.</p>
             </div>
 
             <div class="bento-box box-video gsap-fade-up">
-                <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-lightbulb-flash-line"></i> Creative Strategy</div>
+                <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-lightbulb-flash-line"></i> Content Strategy</div>
                 <div class="anim-wrapper strategy-anim">
                     <div class="orbit-container">
                         <div class="core-node"><i class="ri-flashlight-fill"></i></div>
-                        <div class="orb-1 orbit"><div class="orb-tag">HOOK</div><div class="orb-particle"></div></div>
-                        <div class="orb-2 orbit"><div class="orb-tag">VALUE</div><div class="orb-particle"></div></div>
-                        <div class="orb-3 orbit"><div class="orb-tag">CTA</div><div class="orb-particle"></div></div>
+                        <div class="orb-1 orbit"><div class="orb-tag">HOOK</div><div class="data-packet"></div></div>
+                        <div class="orb-2 orbit"><div class="orb-tag">VALUE</div><div class="data-packet"></div></div>
+                        <div class="orb-3 orbit"><div class="orb-tag">STORY</div><div class="data-packet"></div></div>
+                        <div class="orb-4 orbit"><div class="orb-tag">CTA</div></div>
                     </div>
                 </div>
+                <p class="box-desc">Building data-backed, end-to-end content pipelines and precise publishing calendars.</p>
             </div>
 
             <div class="bento-box box-video gsap-fade-up">
                 <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-rocket-2-line"></i> Hyper Growth</div>
                 <div class="anim-wrapper">
-                    <i class="ri-focus-3-line moon-target"></i>
+                    <div class="bg-metrics">
+                        <span class="float-num">+50K</span><span class="float-num">+1M VIEWS</span><span class="float-num">+1200 LEADS</span>
+                    </div>
                     <div class="growth-wrapper">
-                        <div class="g-bar" data-val="+12k"></div>
-                        <div class="g-bar" data-val="+35k"></div>
-                        <div class="g-bar" data-val="+80k"></div>
-                        <div class="g-bar" data-val="+150k"></div>
+                        <div class="g-bar" data-val="+12k"></div><div class="g-bar" data-val="+35k"></div>
+                        <div class="g-bar" data-val="+80k"></div><div class="g-bar" data-val="+150k"></div>
                         <div class="g-bar" data-val="1M+"></div>
-                        <div class="g-line">
-                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                                <path class="g-path" d="M0,100 L20,80 L40,85 L60,40 L80,45 L100,0" fill="none" stroke="#00e5ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
+                        <div class="g-line"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path class="g-path" d="M0,100 L20,80 L40,85 L60,40 L80,45 L100,0" fill="none" stroke="#00e5ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                     </div>
                 </div>
+                <p class="box-desc">Scaling social metrics exponentially by engineering viral loops and community tactics.</p>
+            </div>
+
+            <div class="bento-box box-video gsap-fade-up">
+                <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-scissors-cut-fill"></i> Precision Edit</div>
+                <div class="anim-wrapper">
+                    <div class="timeline-ui">
+                        <div class="playhead"></div>
+                        <div class="t-track"><div class="t-clip clip-vid"></div></div><div class="t-track"><div class="t-clip clip-vid"></div></div>
+                        <div class="t-track"><div class="t-clip clip-aud"><div class="waveform"></div><div class="waveform"></div><div class="waveform"></div></div><div class="t-clip clip-aud"><div class="waveform"></div><div class="waveform"></div></div></div>
+                        <div class="t-track"><div class="t-clip clip-aud"><div class="waveform"></div><div class="waveform"></div><div class="waveform"></div><div class="waveform"></div></div></div>
+                    </div>
+                    <div class="color-wheels"><div class="c-wheel"></div><div class="c-wheel"></div><div class="c-wheel"></div></div>
+                </div>
+                <p class="box-desc">Masterfully weaving raw footage into dynamic, fast-paced content using industry-standard suites.</p>
+            </div>
+
+            <div class="bento-box box-video gsap-fade-up">
+                <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-brain-line"></i> Target Demographics</div>
+                <div class="anim-wrapper">
+                    <div class="psy-wrapper">
+                        <i class="ri-user-3-line psy-core"></i>
+                        <div class="psy-ring"></div><div class="psy-ring"></div><div class="psy-ring"></div>
+                        <div class="psy-badge">GEN-Z</div><div class="psy-badge">PARENTS</div><div class="psy-badge">B2B</div><div class="psy-badge">TECHIES</div>
+                    </div>
+                </div>
+                <p class="box-desc">Deep-diving into audience psychology to tailor messaging that directly resonates with niches.</p>
+            </div>
+
+            <div class="bento-box box-video gsap-fade-up">
+                <div class="bento-title" style="font-size: 1.2rem;"><i class="ri-earth-line"></i> Global Reach</div>
+                <div class="anim-wrapper">
+                    <div class="radar-container">
+                        <div class="radar-grid"></div><div class="radar-sweep"></div>
+                        <div class="map-ping"></div><div class="map-ping"></div><div class="map-ping"></div><div class="map-ping"></div><div class="map-ping"></div>
+                    </div>
+                </div>
+                <p class="box-desc">Expanding brand presence across borders through localized content strategies.</p>
             </div>
             
         </div>
     </section>
 
-    <!-- === REDESIGNED PREMIUM FOOTER === -->
+    <!-- === NEW SERVICES SECTION === -->
+    <section class="services-section">
+        <div class="section-tag" style="justify-content: center; margin-bottom: 2.5rem;">OUR SERVICES</div>
+        <div class="srv-grid">
+            <div class="srv-card gsap-fade-up">
+                <div class="srv-header">
+                    <div class="srv-icon"><i class="ri-line-chart-fill"></i></div>
+                    <h3 class="srv-title">Massive Follower & Engagement Growth</h3>
+                </div>
+                <ul class="srv-points">
+                    <li><i class="ri-check-double-line"></i> Organic & Paid Follower Injection (Any Volume)</li>
+                    <li><i class="ri-check-double-line"></i> Hyper-targeted Views, Likes & Comments scaling</li>
+                    <li><i class="ri-check-double-line"></i> Boosted Reel Saves & Shares to trigger Algorithm</li>
+                    <li><i class="ri-check-double-line"></i> Complete Social Proofing for New & Existing Brands</li>
+                </ul>
+            </div>
+            
+            <div class="srv-card gsap-fade-up">
+                <div class="srv-header">
+                    <div class="srv-icon"><i class="ri-camera-lens-fill"></i></div>
+                    <h3 class="srv-title">Premium Brand & Model Shoots</h3>
+                </div>
+                <ul class="srv-points">
+                    <li><i class="ri-check-double-line"></i> End-to-end Commercial Ad Production</li>
+                    <li><i class="ri-check-double-line"></i> Influencer & Professional Model coordination</li>
+                    <li><i class="ri-check-double-line"></i> High-end Product Videography & Photography</li>
+                    <li><i class="ri-check-double-line"></i> UGC-style Native Shoots for maximum trust</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- === PREMIUM SOFTWARE SUBSCRIPTIONS (TABLE FORMAT + 500 INR) === -->
+    <section class="services-section" style="padding-top: 2rem;">
+        <div class="section-tag" style="justify-content: center; margin-bottom: 2.5rem;">PREMIUM SOFTWARE DIRECTORY</div>
+        
+        <div class="table-container gsap-fade-up">
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th>Software & Plan</th>
+                        <th>Validity / Term</th>
+                        <th>Stock Status</th>
+                        <th class="price-col">Price (INR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <!-- ADOBE -->
+                    <tr class="cat-row"><td colspan="4"><i class="ri-quill-pen-fill"></i> Adobe Creative Cloud</td></tr>
+                    <tr><td>Adobe CC - K12 Enterprise (10K AI Credits)</td><td>12 Months</td><td class="status-os">Out of Stock</td><td class="price">₹4499</td></tr>
+                    <tr><td>Adobe CC - Pro Plus (4000 AI Credits)</td><td>4 Months</td><td class="status-av">Available</td><td class="price">₹2099</td></tr>
+                    <tr><td>Adobe CC - Pro Plus (4000 AI Credits)</td><td>1 Month</td><td class="status-av">Available</td><td class="price">₹1099</td></tr>
+                    <tr><td>Adobe Acrobat Pro DC 2019 (Win Key)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1799</td></tr>
+                    <tr><td>Adobe Acrobat Pro DC 2020 (Win Key)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1799</td></tr>
+
+                    <!-- VIDEO EDITING -->
+                    <tr class="cat-row"><td colspan="4"><i class="ri-video-chat-fill"></i> Video Editing & Assets</td></tr>
+                    <tr><td>CapCut Pro - with VPN</td><td>6 Months</td><td class="status-av">Available</td><td class="price">₹2999</td></tr>
+                    <tr><td>CapCut Pro - with VPN</td><td>1 Month</td><td class="status-av">Available</td><td class="price">₹999</td></tr>
+                    <tr><td>Filmora 14 - Perpetual (1000 AI Credits)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹999</td></tr>
+                    <tr><td>Filmora 14 - Perpetual (2000 AI Credits)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1099</td></tr>
+                    <tr><td>Filmora 14 - Perpetual (3000 AI Credits)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1199</td></tr>
+                    <tr><td>Filmora 14 - Perpetual (4000 AI Credits)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1299</td></tr>
+                    <tr><td>Filmora 15 - Perpetual (2000 AI Credits)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1399</td></tr>
+                    <tr><td>Filmora 15 - Perpetual (3000 AI Credits)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1499</td></tr>
+                    <tr><td>Filmora 15 AI Advance Plan (Win/Mac)</td><td>1 Year</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Invideo Studio - Premium (Not AI)</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2999</td></tr>
+                    <tr><td>Envato Elements (Shared Web Access)</td><td>28 Days</td><td class="status-av">Available</td><td class="price">₹999</td></tr>
+                    <tr><td>Envato Elements Downloader (Panel)</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹5499</td></tr>
+                    <tr><td>PNGTree - Lifetime Plan</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹2999</td></tr>
+
+                    <!-- CANVA -->
+                    <tr class="cat-row"><td colspan="4"><i class="ri-palette-fill"></i> Canva Pro & Panels</td></tr>
+                    <tr><td>Canva Edu Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹799</td></tr>
+                    <tr><td>Canva Pro Invite</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹1999</td></tr>
+                    <tr><td>Canva Edu Verified 500 Users Panel</td><td>1 Year</td><td class="status-av">Available</td><td class="price">₹3999</td></tr>
+
+                    <!-- AUTODESK & LUMION -->
+                    <tr class="cat-row"><td colspan="4"><i class="ri-tools-fill"></i> Autodesk & 3D Software</td></tr>
+                    <tr><td>Autodesk All Apps - Edu Plan</td><td>1 Year</td><td class="status-av">Available</td><td class="price">₹1499</td></tr>
+                    <tr><td>Autodesk Single App - Edu Plan</td><td>1 Year</td><td class="status-av">Available</td><td class="price">₹999</td></tr>
+                    <tr><td>Autodesk All Apps - Edu Plan</td><td>3 Years</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Autodesk Single App - Edu Plan</td><td>3 Years</td><td class="status-av">Available</td><td class="price">₹1299</td></tr>
+                    <tr><td>Autodesk 250 Users Panel (Edu Mail)</td><td>1 Year</td><td class="status-av">Available</td><td class="price">₹4499</td></tr>
+                    <tr><td>Autodesk 3000 Users Panel (Edu Mail)</td><td>3 Years</td><td class="status-av">Available</td><td class="price">₹7499</td></tr>
+                    <tr><td>Autodesk 250 Users Panel (Docs Verify)</td><td>1 Year</td><td class="status-av">Available</td><td class="price">₹7499</td></tr>
+                    <tr><td>Autodesk 3000 Users Panel (Docs Verify)</td><td>3 Years</td><td class="status-av">Available</td><td class="price">₹15499</td></tr>
+                    <tr><td>Lumion Edu Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹3499</td></tr>
+
+                    <!-- OFFICE & WINDOWS -->
+                    <tr class="cat-row"><td colspan="4"><i class="ri-mac-line"></i> Productivity & OS (Windows/Office)</td></tr>
+                    <tr><td>Windows 11 Pro (OEM Key)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1199</td></tr>
+                    <tr><td>Windows 10 Pro (OEM Key)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1099</td></tr>
+                    <tr><td>MS Office 2007-19 Pro Plus (Win)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹999</td></tr>
+                    <tr><td>MS Office 2021 Pro Plus (Win 10/11)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1099</td></tr>
+                    <tr><td>Office 2024 Pro Plus LTSC</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1199</td></tr>
+                    <tr><td>Office 365 Pro Plus (Private ID)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹999</td></tr>
+                    <tr><td>PowerBI Premium (Custom User)</td><td>2 Years</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Visio 2021 Professional</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>CorelDRAW 2017-24 (Non-Comm)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹1999</td></tr>
+                    <tr><td>CorelDRAW 2025 (Non-Comm)</td><td>Lifetime</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Grammarly Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹3999</td></tr>
+
+                    <!-- LINKEDIN & COURSERA -->
+                    <tr class="cat-row"><td colspan="4"><i class="ri-linkedin-fill"></i> LinkedIn & Learning</td></tr>
+                    <tr><td>Coursera Plus</td><td>12 Months</td><td class="status-os">Out of Stock</td><td class="price">₹1999</td></tr>
+                    <tr><td>LinkedIn Career Premium</td><td>3 Months</td><td class="status-av">Available</td><td class="price">₹1499</td></tr>
+                    <tr><td>LinkedIn Business Premium</td><td>3 Months</td><td class="status-av">Available</td><td class="price">₹1999</td></tr>
+                    <tr><td>LinkedIn Sales Navigator Core</td><td>2 Months</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>LinkedIn Sales Navigator Advanced</td><td>1 Month</td><td class="status-av">Available</td><td class="price">₹3499</td></tr>
+
+                    <!-- AI TOOLS & DEV AUTOMATION -->
+                    <tr class="cat-row"><td colspan="4"><i class="ri-robot-2-fill"></i> Next-Gen AI & Automation Tools</td></tr>
+                    <tr><td>Gemini AI Pro + 2TB (Invite 5)</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹1499</td></tr>
+                    <tr><td>Gemini AI Pro + 2TB (Invite 5)</td><td>18 Months</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>VEO3 - Google AI (Ultra Plan)</td><td>1 Month</td><td class="status-av">Available</td><td class="price">₹1999</td></tr>
+                    <tr><td>ChatGPT 5 - Plus Plan</td><td>1 Month</td><td class="status-os">Out of Stock</td><td class="price">₹1499</td></tr>
+                    <tr><td>Perplexity Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹1999</td></tr>
+                    <tr><td>ElevenLabs Creator Plan</td><td>3 Months</td><td class="status-av">Available</td><td class="price">₹2999</td></tr>
+                    <tr><td>Higgsfield.AI Pro</td><td>1 Month</td><td class="status-av">Available</td><td class="price">₹2199</td></tr>
+                    <tr><td>Higgsfield.AI Ultimate</td><td>1 Month</td><td class="status-av">Available</td><td class="price">₹3199</td></tr>
+                    <tr><td>Beautiful.ai Pro Plan (Edu)</td><td>1 Year</td><td class="status-av">Available</td><td class="price">₹999</td></tr>
+                    <tr><td>Make.com - Team Plan</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹3999</td></tr>
+                    <tr><td>Zapier - Professional Plan</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹5499</td></tr>
+                    <tr><td>Lovable Dev Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹5499</td></tr>
+                    <tr><td>Lovable Dev Pro</td><td>2-3 Months</td><td class="status-av">Available</td><td class="price">₹1499</td></tr>
+                    <tr><td>Replit Core</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹4499</td></tr>
+                    <tr><td>Devin AI Core</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹5499</td></tr>
+                    <tr><td>Bolt New Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹3499</td></tr>
+                    <tr><td>n8n Starter</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹4499</td></tr>
+                    <tr><td>Descript Creator</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹3499</td></tr>
+                    <tr><td>Warp Dev Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2999</td></tr>
+                    <tr><td>Gamma AI Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹3999</td></tr>
+                    <tr><td>Wispr Flow Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Magic Patterns Hobby</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2999</td></tr>
+                    <tr><td>Granola Business</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Linear Business</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>SuperHuman Starter</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Raycast Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>ChatPRD Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Mobbin Pro</td><td>12 Months</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Kling AI Pro / Standard</td><td>28 Days</td><td class="status-av">Available</td><td class="price">Ask DM</td></tr>
+                    <tr><td>Open Art AI Advance</td><td>28 Days</td><td class="status-av">Available</td><td class="price">₹2499</td></tr>
+                    <tr><td>Open Art Infinite</td><td>1 Month</td><td class="status-av">Available</td><td class="price">₹3499</td></tr>
+
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- === FOOTER (Original Let's Connect Restored) === -->
     <footer class="footer">
         <div class="footer-glow"></div>
         <div class="footer-content">
             <div class="footer-top">
                 <div class="contact-label">Initiate Transmission</div>
-                <div class="magnetic-wrap"><a href="https://wa.me/919764979543" target="_blank" class="huge-contact">LET'S CONNECT</a></div>
+                <div class="magnetic-wrap">
+                    <a href="https://wa.me/919764979543" target="_blank" class="huge-contact">LET'S CONNECT</a>
+                </div>
             </div>
             
             <div class="footer-middle">
@@ -690,7 +881,7 @@
         </div>
     </footer>
 
-    <!-- MODAL LOGIC -->
+    <!-- LOGIC SCRIPTS -->
     <script>
         const definitions = {
             'scripts': "I engineer highly-targeted, psychological hook-driven reel scripts that maximize viewer retention and directly engage the core demographic.",
@@ -699,7 +890,6 @@
             'strategy': "I build data-backed, end-to-end content pipelines and publishing calendars that guarantee consistent audience growth and brand visibility.",
             'storytelling': "I craft compelling, emotionally resonant narratives that transform casual viewers into loyal community members and brand advocates."
         };
-
         const modal = document.getElementById('def-modal');
         const modalWord = document.getElementById('def-word');
         const modalMeaning = document.getElementById('def-meaning');
@@ -710,136 +900,61 @@
             modalMeaning.innerText = definitions[wordKey];
             modal.classList.add('active');
         }
-
         modalClose.addEventListener('click', () => modal.classList.remove('active'));
         modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
     </script>
 
-    <!-- MULTI-PANEL LOADER LOGIC (Exactly 3 Seconds) -->
+    <!-- DYNAMIC 3-SECOND LOADER (Text Fixed) -->
     <script>
         const loaderWrapper = document.getElementById('loader-wrapper');
         const counterEl = document.getElementById('loader-percentage');
         const barEl = document.getElementById('loader-bar');
+        const loaderText = document.getElementById('dynamic-loader-text');
         const viewsEl = document.getElementById('loader-views');
         const likesEl = document.getElementById('loader-likes');
 
-        window.addEventListener('load', () => {
-            startLoadingSequence();
-        });
+        const phases = [
+            "<i class='ri-edit-circle-fill' style='animation: spin 2s linear infinite;'></i> <span style='color: var(--accent);'>RENDERING FINAL EDIT...</span>",
+            "<i class='ri-bar-chart-box-fill' style='color: var(--accent);'></i> <span style='color: var(--accent);'>SCALING SOCIAL VIEWS...</span>",
+            "<i class='ri-user-add-fill' style='color: #00e5ff;'></i> <span style='color: var(--accent);'>GENERATING QUALIFIED LEADS...</span>",
+            "<i class='ri-rocket-2-fill' style='color: #ff3040;'></i> <span style='color: var(--accent);'>VIRAL INFLUENCER STRATEGY ACTIVE!</span>"
+        ];
 
-        function startLoadingSequence() {
-            let count = 0;
-            let views = 0;
-            let likes = 0;
+        window.addEventListener('load', () => {
+            let count = 0; let views = 0; let likes = 0;
             
             let loaderInterval = setInterval(() => {
                 count += 1; 
+                
+                // Dynamic Text Updates
+                if(count === 1) loaderText.innerHTML = phases[0];
+                if(count === 25) loaderText.innerHTML = phases[1];
+                if(count === 55) loaderText.innerHTML = phases[2];
+                if(count === 80) loaderText.innerHTML = phases[3];
+
                 views += Math.floor(Math.random() * 25000) + 8000;
                 likes += Math.floor(Math.random() * 2500) + 500;
-                
                 viewsEl.innerText = (views / 1000).toFixed(1) + 'K';
                 likesEl.innerHTML = `<i class="ri-heart-3-fill"></i> ${(likes / 1000).toFixed(1)}K`;
 
-                if(count % 5 === 0) {
-                    document.getElementById('term-wt').innerText = (Math.random() * 60 + 30).toFixed(1) + '%';
-                    document.getElementById('term-ret').innerText = (Math.random() * 40 + 55).toFixed(1) + '%';
-                    document.getElementById('term-vel').innerText = (Math.random() * 8 + 1).toFixed(1) + 'x';
-                    
-                    const algos = ["Optimizing hashtags...", "A/B testing thumbnails...", "Bypassing shadowban...", "Pushing to Explore page...", "Algorithm synchronized.", "Distributing to feeds..."];
-                    const randomAlgo = algos[Math.floor(Math.random() * algos.length)];
-                    document.getElementById('term-algo').innerHTML += `<span style="color: #666; display:block;">> ${randomAlgo}</span>`;
-                    
-                    if(document.getElementById('term-algo').childElementCount > 5) {
-                        document.getElementById('term-algo').removeChild(document.getElementById('term-algo').firstChild);
-                    }
-                }
-
                 if(count >= 100) {
-                    count = 100;
-                    clearInterval(loaderInterval);
-                    
-                    viewsEl.innerText = "1.8M+";
-                    likesEl.innerHTML = `<i class="ri-heart-3-fill"></i> 145.2K`;
+                    count = 100; clearInterval(loaderInterval);
+                    viewsEl.innerText = "1.8M+"; likesEl.innerHTML = `<i class="ri-heart-3-fill"></i> 145.2K`;
                     document.getElementById('loader-leads').innerText = "MAXIMISED!";
                     document.getElementById('term-render').innerHTML += `<div class="term-row"><span>> reel_v2_final.mov</span><span class="t-green">PUBLISHED</span></div>`;
-
+                    
                     setTimeout(() => {
                         gsap.to(loaderWrapper, {
                             yPercent: -100, opacity: 0, duration: 0.8, ease: "power4.inOut",
-                            onComplete: () => {
-                                loaderWrapper.style.display = 'none';
-                                document.body.classList.remove('locked'); 
-                                ScrollTrigger.refresh(); 
-                            }
+                            onComplete: () => { loaderWrapper.style.display = 'none'; document.body.classList.remove('locked'); ScrollTrigger.refresh(); }
                         });
                     }, 400); 
                 }
-                
-                counterEl.innerText = count + '%';
-                barEl.style.width = count + '%';
+                counterEl.innerText = count + '%'; barEl.style.width = count + '%';
             }, 30);
-        }
-    </script>
-
-    <!-- NEON TRAIL EFFECTS CANVAS -->
-    <script>
-        const effectsCanvas = document.getElementById('effects-canvas');
-        const gCtx = effectsCanvas.getContext('2d');
-        effectsCanvas.width = window.innerWidth;
-        effectsCanvas.height = window.innerHeight;
-        
-        let neonTrail = [];
-
-        function handleCursorMovement(x, y) { neonTrail.push({ x: x, y: y, time: Date.now() }); }
-        window.addEventListener('mousemove', (e) => handleCursorMovement(e.clientX, e.clientY));
-        window.addEventListener('touchmove', (e) => { if(e.touches.length > 0) handleCursorMovement(e.touches[0].clientX, e.touches[0].clientY); });
-
-        function animateEffects() {
-            gCtx.clearRect(0, 0, effectsCanvas.width, effectsCanvas.height);
-            let currentTime = Date.now();
-            neonTrail = neonTrail.filter(p => currentTime - p.time < 1500); 
-            for (let i = 0; i < neonTrail.length - 1; i++) {
-                let p1 = neonTrail[i]; let p2 = neonTrail[i+1];
-                let age = currentTime - p1.time; let alpha = 1 - (age / 1500); if (alpha < 0) alpha = 0;
-                gCtx.beginPath(); gCtx.moveTo(p1.x, p1.y); gCtx.lineTo(p2.x, p2.y);
-                gCtx.strokeStyle = `rgba(255, 214, 0, ${alpha})`; gCtx.lineWidth = 3 + (alpha * 3); 
-                gCtx.shadowBlur = 15 * alpha; gCtx.shadowColor = '#ffd600'; gCtx.lineCap = 'round'; gCtx.lineJoin = 'round'; gCtx.stroke();
-            }
-            requestAnimationFrame(animateEffects);
-        }
-        window.addEventListener('resize', () => { effectsCanvas.width = window.innerWidth; effectsCanvas.height = window.innerHeight; });
-        animateEffects();
-    </script>
-
-    <!-- CURSOR OUTLINE ANIMATION -->
-    <script>
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX; const posY = e.clientY;
-            document.body.style.setProperty('--mx', posX + 'px');
-            document.body.style.setProperty('--my', posY + 'px');
-            if(cursorDot) { cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`; }
-            if(cursorOutline) { cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 300, fill: "forwards" }); }
-        });
-        const hoverElements = document.querySelectorAll('a, button, .magnetic-wrap, .app-card, .tag, .action-btn, .about-highlight, .portfolio-video, .cap-card');
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                if(window.innerWidth > 768) {
-                    cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
-                    cursorOutline.style.backgroundColor = 'rgba(255, 214, 0, 0.15)'; cursorOutline.style.borderColor = '#ffd600';
-                }
-            });
-            el.addEventListener('mouseleave', () => {
-                if(window.innerWidth > 768) {
-                    cursorOutline.style.width = '40px'; cursorOutline.style.height = '40px';
-                    cursorOutline.style.backgroundColor = 'transparent'; cursorOutline.style.borderColor = 'var(--accent)';
-                }
-            });
         });
     </script>
 
-    <!-- SMOKE BACKGROUND CANVAS -->
     <script>
         const smokeCanvas = document.getElementById('smoke-canvas');
         const sCtx = smokeCanvas.getContext('2d');
@@ -863,22 +978,15 @@
             }
         }
         function initSmoke() { smokeArray = []; for (let i = 0; i < 40; i++) { smokeArray.push(new SmokeParticle()); } }
-        function animateSmoke() {
-            sCtx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
-            for (let i = 0; i < smokeArray.length; i++) { smokeArray[i].update(); smokeArray[i].draw(); }
-            requestAnimationFrame(animateSmoke);
-        }
+        function animateSmoke() { sCtx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height); for (let i = 0; i < smokeArray.length; i++) { smokeArray[i].update(); smokeArray[i].draw(); } requestAnimationFrame(animateSmoke); }
         window.addEventListener('resize', () => { smokeCanvas.width = window.innerWidth; smokeCanvas.height = window.innerHeight; initSmoke(); });
         initSmoke(); animateSmoke();
     </script>
 
-    <!-- GSAP SCROLL ANIMATIONS -->
     <script>
         gsap.registerPlugin(ScrollTrigger);
         document.addEventListener("DOMContentLoaded", () => {
-            gsap.utils.toArray('.f-icon').forEach(icon => { gsap.to(icon, { y: "random(-50, 50)", x: "random(-50, 50)", rotation: "random(-30, 30)", duration: "random(2.5, 4.5)", repeat: -1, yoyo: true, ease: "sine.inOut" }); });
-            gsap.to(".gsap-welcome-photo", { y: -15, duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
-            gsap.to('.welcome-screen', { opacity: 0, scale: 1.5, filter: "blur(20px)", ease: "power2.inOut", scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 } });
+            gsap.to('.welcome-screen', { opacity: 0, scale: 1.2, ease: "power2.inOut", scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 } });
             gsap.from(".gsap-welcome-left", { x: -100, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.5 });
             gsap.from(".gsap-welcome-right", { x: 100, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.5 });
             gsap.from(".gsap-hero-img-box", { scale: 0.8, opacity: 0, duration: 1.5, ease: "power4.out", scrollTrigger: { trigger: '.scroll-spacer', start: 'top top', end: 'bottom top', scrub: 1 } });
@@ -886,7 +994,7 @@
             gsap.from(".gsap-title-right", { x: 150, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2 });
             gsap.from(".gsap-badge", { y: 50, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.6 });
             gsap.from(".gsap-resume-btn", { y: 50, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.8 });
-            gsap.to(".gsap-hero-img", { y: -20, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut" });
+            
             gsap.to(".gsap-title-left", { yPercent: -50, ease: "none", scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }});
             gsap.to(".gsap-title-right", { yPercent: 50, ease: "none", scrollTrigger: { trigger: "#hero-main", start: "top top", end: "bottom top", scrub: 1 }});
 
@@ -907,8 +1015,8 @@
             const horizontalWrapper = document.querySelector('.horizontal-wrapper');
             const panels = gsap.utils.toArray('.panel');
             gsap.to(panels, { xPercent: -100 * (panels.length - 1), ease: "none", scrollTrigger: { trigger: ".horizontal-section", pin: true, scrub: 1, snap: 1 / (panels.length - 1), end: () => "+=" + horizontalWrapper.offsetWidth } });
-            gsap.utils.toArray('.gsap-fade-up').forEach(box => { gsap.from(box, { y: 60, opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: box, start: "top 85%" } }); });
-
+            gsap.utils.toArray('.gsap-fade-up').forEach(box => { gsap.from(box, { y: 40, opacity: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: box, start: "top 85%" } }); });
+            
             const magnetics = document.querySelectorAll('.magnetic-wrap');
             magnetics.forEach((magnetic) => {
                 magnetic.addEventListener('mousemove', function(e) {
@@ -922,6 +1030,30 @@
                 magnetic.addEventListener('mouseleave', function() {
                     if (window.innerWidth > 768) { gsap.to(magnetic, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" }); }
                 });
+            });
+        });
+
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            if(window.innerWidth <= 768) return;
+            const posX = e.clientX; const posY = e.clientY;
+            if(cursorDot) { cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`; }
+            if(cursorOutline) { cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 300, fill: "forwards" }); }
+        });
+        const hoverElements = document.querySelectorAll('a, button, .app-card, .action-btn, .about-highlight, .box-anim, .srv-card');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                if(window.innerWidth > 768) {
+                    cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
+                    cursorOutline.style.backgroundColor = 'rgba(255, 214, 0, 0.15)'; cursorOutline.style.borderColor = '#ffd600';
+                }
+            });
+            el.addEventListener('mouseleave', () => {
+                if(window.innerWidth > 768) {
+                    cursorOutline.style.width = '40px'; cursorOutline.style.height = '40px';
+                    cursorOutline.style.backgroundColor = 'transparent'; cursorOutline.style.borderColor = 'var(--accent)';
+                }
             });
         });
     </script>
