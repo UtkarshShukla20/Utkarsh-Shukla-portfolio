@@ -26,7 +26,7 @@
             --box-border: rgba(255, 214, 0, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
             background-color: var(--bg);
@@ -386,6 +386,438 @@
         .srv-points li { display: flex; align-items: flex-start; gap: 10px; font-size: 1.05rem; color: #bbb; line-height: 1.5;}
         .srv-points li i { color: var(--accent); font-size: 1.2rem; margin-top: 2px;}
 
+        /* === INSTAGRAM REEL GROWTH PACKAGES & SERVICE RATE CARD === */
+        .ig-packages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 2rem;
+        }
+        .pkg-card, .pkg-card * {
+            box-sizing: border-box;
+        }
+        .pkg-card {
+            background: rgba(18, 18, 18, 0.92);
+            border: 1.5px solid var(--accent);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+        }
+        .pkg-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 45px rgba(255, 214, 0, 0.25);
+        }
+        .pkg-badge {
+            display: inline-block;
+            align-self: flex-start;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            padding: 6px 14px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .pkg-badge.single {
+            background: rgba(0, 229, 255, 0.14);
+            color: var(--cyan);
+            border: 1px solid var(--cyan);
+        }
+        .pkg-badge.split {
+            background: rgba(255, 214, 0, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+        .pkg-badge.mega {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--green);
+            border: 1px solid var(--green);
+        }
+        .pkg-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.4rem;
+        }
+        .pkg-price {
+            font-family: 'Anton', sans-serif;
+            font-size: 3rem;
+            color: var(--accent);
+            line-height: 1.1;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        .pkg-price span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            color: #999;
+            font-weight: 600;
+        }
+        .pkg-rule {
+            font-size: 0.92rem;
+            color: #ccc;
+            background: rgba(255, 255, 255, 0.04);
+            border-left: 3px solid var(--accent);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 1.4rem;
+        }
+        .pkg-metrics {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin-bottom: 1.8rem;
+            padding: 0;
+        }
+        .pkg-metrics li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            color: #ddd;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            padding-bottom: 8px;
+        }
+        .pkg-metrics li span.m-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #bbb;
+        }
+        .pkg-metrics li span.m-label i {
+            color: var(--accent);
+            font-size: 1.15rem;
+        }
+        .pkg-metrics li strong {
+            font-family: 'Space Grotesk', sans-serif;
+            color: #fff;
+            font-size: 1.08rem;
+        }
+        .pkg-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 13px 16px;
+            border-radius: 50px;
+            background: #25D366;
+            color: #000;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.25s ease;
+        }
+        .pkg-cta:hover {
+            background: #fff;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.6);
+        }
+        .rate-card-notes {
+            margin-top: 1.2rem;
+            background: rgba(14, 14, 14, 0.9);
+            border: 1px solid rgba(255, 214, 0, 0.25);
+            border-radius: 14px;
+            padding: 1.2rem 1.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .rate-card-notes p {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #ccc;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .rate-card-notes p i {
+            color: var(--green);
+            font-size: 1.15rem;
+            margin-top: 2px;
+        }
+
+        /* === CREATIVE WHITE INSTAGRAM BUDGET CALCULATOR === */
+        .white-calc-card {
+            background: #ffffff;
+            color: #09090b;
+            border: 2.5px solid var(--accent);
+            border-radius: 26px;
+            padding: 2.4rem;
+            margin-top: 2rem;
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 214, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .white-calc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 7px;
+            background: linear-gradient(90deg, #ffd600, #00e5ff, #ff3040, #00ff88);
+        }
+        .calc-top-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f1f4;
+        }
+        .calc-brand-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #09090b;
+            color: var(--accent);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 0.82rem;
+            letter-spacing: 1.5px;
+            padding: 6px 14px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+        .calc-heading {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: #09090b;
+            letter-spacing: 1px;
+            line-height: 1.05;
+            text-transform: uppercase;
+        }
+        .calc-sub {
+            color: #52525b;
+            font-size: 0.95rem;
+            margin-top: 0.35rem;
+            font-weight: 500;
+        }
+        .calc-presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .preset-pill {
+            background: #f4f4f6;
+            color: #09090b;
+            border: 1.5px solid #e4e4e7;
+            padding: 9px 14px;
+            border-radius: 50px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+        .preset-pill:hover {
+            background: #09090b;
+            color: var(--accent);
+            border-color: #09090b;
+            transform: translateY(-2px);
+        }
+        .preset-pill.reset-pill:hover {
+            background: #ff3040;
+            color: #fff;
+            border-color: #ff3040;
+        }
+        .calc-layout {
+            display: grid;
+            grid-template-columns: 1.35fr 0.85fr;
+            gap: 24px;
+            margin-top: 1.8rem;
+            align-items: start;
+        }
+        .calc-inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        .calc-field-box {
+            background: #fafafa;
+            border: 1.5px solid #e4e4e7;
+            border-radius: 16px;
+            padding: 1rem 1.15rem;
+            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .calc-field-box:focus-within {
+            border-color: #09090b;
+            background: #ffffff;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
+        }
+        .calc-field-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+        .calc-field-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #09090b;
+        }
+        .calc-field-title i {
+            color: #d97706;
+            font-size: 1.15rem;
+        }
+        .calc-rate-chip {
+            font-family: monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #18181b;
+            background: var(--accent);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+        .calc-input-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .calc-qty-input {
+            width: 120px;
+            background: #ffffff;
+            border: 1.5px solid #d4d4d8;
+            color: #09090b;
+            font-family: monospace;
+            font-size: 1.05rem;
+            font-weight: 800;
+            padding: 8px 10px;
+            border-radius: 10px;
+            outline: none;
+        }
+        .calc-qty-input:focus {
+            border-color: #09090b;
+            box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.35);
+        }
+        .calc-row-sub {
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #059669;
+            white-space: nowrap;
+        }
+        .calc-summary-panel {
+            background: #f8f8fa;
+            border: 2px solid #09090b;
+            border-radius: 20px;
+            padding: 1.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .calc-summary-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #09090b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .calc-total-box {
+            background: #09090b;
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 1.2rem 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .calc-total-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.82rem;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+        .calc-total-amount {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.5rem;
+            color: var(--accent);
+            line-height: 1;
+            letter-spacing: 1px;
+        }
+        .calc-breakdown-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 0;
+        }
+        .calc-breakdown-list li {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #27272a;
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .calc-empty-note {
+            font-size: 0.9rem;
+            color: #71717a;
+            text-align: center;
+            padding: 1rem 0.5rem;
+            background: #ffffff;
+            border: 1px dashed #d4d4d8;
+            border-radius: 12px;
+        }
+        .calc-wa-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 50px;
+            background: #25D366;
+            color: #000;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid #09090b;
+            transition: all 0.25s ease;
+        }
+        .calc-wa-btn:hover {
+            background: #09090b;
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
         /* === PREMIUM SOFTWARE LIST (SEARCH + FILTER + TABLE FORMAT) === */
         .store-controls {
             display: flex; flex-wrap: wrap; gap: 15px; justify-content: space-between; align-items: center;
@@ -466,6 +898,8 @@
         @media (max-width: 1024px) { 
             .capabilities-grid { grid-template-columns: repeat(2, 1fr); } 
             .srv-grid { grid-template-columns: 1fr; }
+            .ig-packages-grid { grid-template-columns: 1fr; }
+            .calc-layout { grid-template-columns: 1fr; }
             .box-video { grid-column: span 6; }
         }
         @media (max-width: 768px) {
@@ -480,6 +914,8 @@
             
             .capabilities-container, .bento-container, .services-section { padding: 4rem 5vw 2rem; } 
             .capabilities-grid { grid-template-columns: 1fr; gap: 20px; }
+            .calc-inputs-grid { grid-template-columns: 1fr; }
+            .white-calc-card { padding: 1.4rem; }
             
             .bento-grid { display: flex; flex-direction: column; gap: 15px; }
             .box-editing, .box-media, .box-code, .box-video { grid-column: span 12; }
@@ -958,6 +1394,235 @@
                     <li><i class="ri-checkbox-circle-fill"></i> Custom engagement distribution reports & performance tracking.</li>
                     <li><i class="ri-checkbox-circle-fill"></i> On-camera anchoring, news commentary, and brand storytelling.</li>
                 </ul>
+            </div>
+        </div>
+
+        <!-- INSTAGRAM ONE-TIME REEL GROWTH PACKAGES -->
+        <div class="section-tag" style="margin-top: 5rem;"><i class="ri-instagram-fill"></i> INSTAGRAM ONE-TIME REEL GROWTH PACKAGES</div>
+        <div class="ig-packages-grid">
+            <!-- Plan 1: 5 Thousand (1 Reel Only) -->
+            <div class="pkg-card">
+                <div>
+                    <span class="pkg-badge single">SINGLE REEL PLAN • 1 REEL ONLY</span>
+                    <div class="pkg-name">Starter Viral Booster</div>
+                    <div class="pkg-price">₹5,000 <span>/ 1 Reel Only</span></div>
+                    <div class="pkg-rule">⚡ Valid for <strong>1 Reel only</strong> — complete boost delivered on a single reel.</div>
+                    <ul class="pkg-metrics">
+                        <li><span class="m-label"><i class="ri-eye-fill"></i> Reel Views</span><strong>100K</strong></li>
+                        <li><span class="m-label"><i class="ri-heart-3-fill"></i> Likes</span><strong>3,000 (3K)</strong></li>
+                        <li><span class="m-label"><i class="ri-chat-3-fill"></i> Comments</span><strong>10</strong></li>
+                        <li><span class="m-label"><i class="ri-share-forward-fill"></i> Shares</span><strong>1,200</strong></li>
+                        <li><span class="m-label"><i class="ri-repeat-2-line"></i> Reposts</span><strong>55</strong></li>
+                        <li><span class="m-label"><i class="ri-bookmark-fill"></i> Saves</span><strong>350</strong></li>
+                    </ul>
+                </div>
+                <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20to%20book%20the%20%E2%82%B95%2C000%20Single%20Reel%20Package%20(100K%20Views)." target="_blank" class="pkg-cta">
+                    <i class="ri-whatsapp-fill"></i> Book ₹5,000 Plan
+                </a>
+            </div>
+
+            <!-- Plan 2: 25 Thousand (Split across any number of reels) -->
+            <div class="pkg-card">
+                <div>
+                    <span class="pkg-badge split">FLEXIBLE SPLIT • MULTI-REEL PACKAGE</span>
+                    <div class="pkg-name">1.4M Growth Package</div>
+                    <div class="pkg-price">₹25,000 <span>/ One-Time</span></div>
+                    <div class="pkg-rule">🔥 Split across <strong>any number of Reels</strong> as per your campaign schedule.</div>
+                    <ul class="pkg-metrics">
+                        <li><span class="m-label"><i class="ri-eye-fill"></i> Reel Views</span><strong>1.4M</strong></li>
+                        <li><span class="m-label"><i class="ri-heart-3-fill"></i> Likes</span><strong>20,000</strong></li>
+                        <li><span class="m-label"><i class="ri-chat-3-fill"></i> Comments</span><strong>250</strong></li>
+                        <li><span class="m-label"><i class="ri-share-forward-fill"></i> Shares</span><strong>10,000</strong></li>
+                        <li><span class="m-label"><i class="ri-repeat-2-line"></i> Reposts</span><strong>150</strong></li>
+                        <li><span class="m-label"><i class="ri-bookmark-fill"></i> Saves</span><strong>3,000</strong></li>
+                    </ul>
+                </div>
+                <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20to%20book%20the%20%E2%82%B925%2C000%20Multi-Reel%20Package%20(1.4M%20Views)." target="_blank" class="pkg-cta">
+                    <i class="ri-whatsapp-fill"></i> Book ₹25,000 Plan
+                </a>
+            </div>
+
+            <!-- Plan 3: 30 Thousand (Split across any number of reels) -->
+            <div class="pkg-card">
+                <div>
+                    <span class="pkg-badge mega">MAX REACH • MULTI-REEL PACKAGE</span>
+                    <div class="pkg-name">1.7M Mega Scale Package</div>
+                    <div class="pkg-price">₹30,000 <span>/ One-Time</span></div>
+                    <div class="pkg-rule">🚀 Split across <strong>any number of Reels</strong> for sustained viral momentum.</div>
+                    <ul class="pkg-metrics">
+                        <li><span class="m-label"><i class="ri-eye-fill"></i> Reel Views</span><strong>1.7M</strong></li>
+                        <li><span class="m-label"><i class="ri-heart-3-fill"></i> Likes</span><strong>25,000</strong></li>
+                        <li><span class="m-label"><i class="ri-chat-3-fill"></i> Comments</span><strong>300</strong></li>
+                        <li><span class="m-label"><i class="ri-share-forward-fill"></i> Shares</span><strong>11,000</strong></li>
+                        <li><span class="m-label"><i class="ri-repeat-2-line"></i> Reposts</span><strong>200</strong></li>
+                        <li><span class="m-label"><i class="ri-bookmark-fill"></i> Saves</span><strong>5,000</strong></li>
+                    </ul>
+                </div>
+                <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20to%20book%20the%20%E2%82%B930%2C000%20Multi-Reel%20Package%20(1.7M%20Views)." target="_blank" class="pkg-cta">
+                    <i class="ri-whatsapp-fill"></i> Book ₹30,000 Plan
+                </a>
+            </div>
+        </div>
+
+        <!-- INSTAGRAM SERVICE RATE CARD -->
+        <div class="section-tag" style="margin-top: 5rem;"><i class="ri-price-tag-3-fill"></i> OUR SERVICE RATE CARD — INSTAGRAM PRICING (@UTKARSHSHUKLA____)</div>
+        <div class="table-container">
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th>Instagram Service</th>
+                        <th>Unit / Delivery Basis</th>
+                        <th>Engagement Type</th>
+                        <th class="price-col">Rate (INR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="cat-row"><td colspan="4">★★★★ CLEAR PLATFORM-WISE RATES • ALL PRICES IN INR ★★★★</td></tr>
+                    <tr class="item-row">
+                        <td>👥 <strong>Followers</strong></td>
+                        <td>Per Follower • Active profile interaction on recent posts</td>
+                        <td><span class="status-av">✅ ORGANIC / NON-FAKE</span></td>
+                        <td class="price">₹50 <span style="font-size:0.8rem; color:#aaa; font-family:'Inter';">per follower</span> <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20to%20order%20Instagram%20Followers%20(%E2%82%B950%20per%20follower)." target="_blank" class="buy-wa-btn"><i class="ri-whatsapp-line"></i> Order</a></td>
+                    </tr>
+                    <tr class="item-row">
+                        <td>📤 <strong>Shares</strong></td>
+                        <td>Per 100 Shares</td>
+                        <td><span class="status-av">✅ ORGANIC / NON-FAKE</span></td>
+                        <td class="price">₹60 <span style="font-size:0.8rem; color:#aaa; font-family:'Inter';">per 100 shares</span> <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20to%20order%20Instagram%20Shares%20(%E2%82%B960%20per%20100%20shares)." target="_blank" class="buy-wa-btn"><i class="ri-whatsapp-line"></i> Order</a></td>
+                    </tr>
+                    <tr class="item-row">
+                        <td>👁️ <strong>Views</strong></td>
+                        <td>Per 1,000 Views</td>
+                        <td><span class="status-av">✅ ORGANIC / NON-FAKE</span></td>
+                        <td class="price">₹100 <span style="font-size:0.8rem; color:#aaa; font-family:'Inter';">per 1,000 views</span> <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20to%20order%20Instagram%20Views%20(%E2%82%B9100%20per%201%2C000%20views)." target="_blank" class="buy-wa-btn"><i class="ri-whatsapp-line"></i> Order</a></td>
+                    </tr>
+                    <tr class="item-row">
+                        <td>🔁 <strong>Reposts</strong></td>
+                        <td>Per Repost</td>
+                        <td><span class="status-av">✅ ORGANIC / NON-FAKE</span></td>
+                        <td class="price">₹20 <span style="font-size:0.8rem; color:#aaa; font-family:'Inter';">per repost</span> <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20to%20order%20Instagram%20Reposts%20(%E2%82%B920%20per%20repost)." target="_blank" class="buy-wa-btn"><i class="ri-whatsapp-line"></i> Order</a></td>
+                    </tr>
+                    <tr class="item-row">
+                        <td>💬 <strong>Comments</strong></td>
+                        <td>Per Comment</td>
+                        <td><span class="status-av">✅ ORGANIC / NON-FAKE</span></td>
+                        <td class="price">₹30 <span style="font-size:0.8rem; color:#aaa; font-family:'Inter';">per comment</span> <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20to%20order%20Instagram%20Comments%20(%E2%82%B930%20per%20comment)." target="_blank" class="buy-wa-btn"><i class="ri-whatsapp-line"></i> Order</a></td>
+                    </tr>
+                    <tr class="item-row">
+                        <td>❤️ <strong>Likes</strong></td>
+                        <td>Per 100 Likes</td>
+                        <td><span class="status-av">✅ ORGANIC / NON-FAKE</span></td>
+                        <td class="price">₹40 <span style="font-size:0.8rem; color:#aaa; font-family:'Inter';">per 100 likes</span> <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20to%20order%20Instagram%20Likes%20(%E2%82%B940%20per%20100%20likes)." target="_blank" class="buy-wa-btn"><i class="ri-whatsapp-line"></i> Order</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="rate-card-notes">
+            <p><i class="ri-checkbox-circle-fill"></i> <span><strong>Follower service:</strong> Profiles will actively interact with some of the recent posts.</span></p>
+            <p><i class="ri-checkbox-circle-fill"></i> <span>Instagram engagement services are offered as organic, non-fake engagement, as per the stated service delivery. Results are not guaranteed.</span></p>
+        </div>
+
+        <!-- CREATIVE WHITE INSTAGRAM BUDGET CALCULATOR -->
+        <div class="white-calc-card" id="ig-budget-calculator">
+            <div class="calc-top-bar">
+                <div>
+                    <span class="calc-brand-tag"><i class="ri-calculator-fill"></i> CUSTOM CAMPAIGN BUILDER • @UTKARSHSHUKLA____</span>
+                    <h3 class="calc-heading">INSTAGRAM BUDGET CALCULATOR</h3>
+                    <p class="calc-sub">Apne hisab se entries daalein — instant INR budget & WhatsApp summary tayar karein.</p>
+                </div>
+                <div class="calc-presets">
+                    <button type="button" class="preset-pill" id="preset-5k">₹5K (1 Reel)</button>
+                    <button type="button" class="preset-pill" id="preset-25k">₹25K (1.4M)</button>
+                    <button type="button" class="preset-pill" id="preset-30k">₹30K (1.7M)</button>
+                    <button type="button" class="preset-pill reset-pill" id="reset-calc"><i class="ri-refresh-line"></i> Reset</button>
+                </div>
+            </div>
+
+            <div class="calc-layout">
+                <div class="calc-inputs-grid">
+                    <div class="calc-field-box">
+                        <div class="calc-field-head">
+                            <span class="calc-field-title"><i class="ri-user-add-fill"></i> Followers</span>
+                            <span class="calc-rate-chip">₹50 / 1</span>
+                        </div>
+                        <div class="calc-input-row">
+                            <input type="number" min="0" step="1" value="0" class="calc-qty-input" data-rate="50" data-unit="1" data-label="Followers" id="calc-followers">
+                            <span class="calc-row-sub" id="sub-followers">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-field-box">
+                        <div class="calc-field-head">
+                            <span class="calc-field-title"><i class="ri-share-forward-fill"></i> Shares</span>
+                            <span class="calc-rate-chip">₹60 / 100</span>
+                        </div>
+                        <div class="calc-input-row">
+                            <input type="number" min="0" step="100" value="0" class="calc-qty-input" data-rate="60" data-unit="100" data-label="Shares" id="calc-shares">
+                            <span class="calc-row-sub" id="sub-shares">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-field-box">
+                        <div class="calc-field-head">
+                            <span class="calc-field-title"><i class="ri-eye-fill"></i> Views</span>
+                            <span class="calc-rate-chip">₹100 / 1,000</span>
+                        </div>
+                        <div class="calc-input-row">
+                            <input type="number" min="0" step="1000" value="0" class="calc-qty-input" data-rate="100" data-unit="1000" data-label="Views" id="calc-views">
+                            <span class="calc-row-sub" id="sub-views">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-field-box">
+                        <div class="calc-field-head">
+                            <span class="calc-field-title"><i class="ri-repeat-2-line"></i> Reposts</span>
+                            <span class="calc-rate-chip">₹20 / 1</span>
+                        </div>
+                        <div class="calc-input-row">
+                            <input type="number" min="0" step="1" value="0" class="calc-qty-input" data-rate="20" data-unit="1" data-label="Reposts" id="calc-reposts">
+                            <span class="calc-row-sub" id="sub-reposts">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-field-box">
+                        <div class="calc-field-head">
+                            <span class="calc-field-title"><i class="ri-chat-3-fill"></i> Comments</span>
+                            <span class="calc-rate-chip">₹30 / 1</span>
+                        </div>
+                        <div class="calc-input-row">
+                            <input type="number" min="0" step="1" value="0" class="calc-qty-input" data-rate="30" data-unit="1" data-label="Comments" id="calc-comments">
+                            <span class="calc-row-sub" id="sub-comments">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-field-box">
+                        <div class="calc-field-head">
+                            <span class="calc-field-title"><i class="ri-heart-3-fill"></i> Likes</span>
+                            <span class="calc-rate-chip">₹40 / 100</span>
+                        </div>
+                        <div class="calc-input-row">
+                            <input type="number" min="0" step="100" value="0" class="calc-qty-input" data-rate="40" data-unit="100" data-label="Likes" id="calc-likes">
+                            <span class="calc-row-sub" id="sub-likes">₹0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-summary-panel">
+                    <div class="calc-summary-title">
+                        <span>ESTIMATED BUDGET</span>
+                        <span id="calc-items-count" style="background:#ffd600; color:#09090b; padding:3px 10px; border-radius:20px; font-size:0.75rem;">0 ITEMS</span>
+                    </div>
+                    <div class="calc-total-box">
+                        <span class="calc-total-label">TOTAL (INR)</span>
+                        <span class="calc-total-amount" id="calc-grand-total">₹0</span>
+                    </div>
+                    <ul class="calc-breakdown-list" id="calc-breakdown-list">
+                        <li class="calc-empty-note">Koi bhi quantity daalein (e.g. 5000 Views, 500 Likes, 10 Followers) to budget yahan banega.</li>
+                    </ul>
+                    <a href="https://wa.me/919764979543?text=Hey%20Utkarsh!%20I%20want%20a%20custom%20Instagram%20campaign." target="_blank" class="calc-wa-btn" id="calc-wa-send">
+                        <i class="ri-whatsapp-fill"></i> Send Budget on WhatsApp
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -1533,7 +2198,91 @@
         gsap.registerPlugin(ScrollTrigger);
 
         // -----------------------------------------------------------------
-        // 0. AUTO-ADD WHATSAPP BUY BUTTONS (9764979543) & LIVE SEARCH FILTER
+        // 0A. INSTAGRAM CUSTOM BUDGET CALCULATOR LOGIC
+        // -----------------------------------------------------------------
+        const calcInputs = Array.from(document.querySelectorAll('.calc-qty-input'));
+        const calcGrandTotal = document.getElementById('calc-grand-total');
+        const calcItemsCount = document.getElementById('calc-items-count');
+        const calcBreakdownList = document.getElementById('calc-breakdown-list');
+        const calcWaSend = document.getElementById('calc-wa-send');
+
+        function formatINR(num) {
+            return '₹' + Math.round(num).toLocaleString('en-IN');
+        }
+
+        function recalculateBudget() {
+            let grandTotal = 0;
+            let activeItems = 0;
+            const breakdownHTML = [];
+            const waLines = [];
+
+            calcInputs.forEach(input => {
+                const rawQty = Math.max(0, Number(input.value) || 0);
+                const rate = Number(input.dataset.rate);
+                const unit = Number(input.dataset.unit);
+                const label = input.dataset.label;
+                const subEl = document.getElementById('sub-' + label.toLowerCase());
+
+                const cost = (rawQty / unit) * rate;
+                if (subEl) subEl.textContent = formatINR(cost);
+
+                if (rawQty > 0) {
+                    activeItems++;
+                    grandTotal += cost;
+                    breakdownHTML.push(
+                        `<li><span>${rawQty.toLocaleString('en-IN')} ${label}</span><strong>${formatINR(cost)}</strong></li>`
+                    );
+                    waLines.push(`• ${rawQty.toLocaleString('en-IN')} ${label}: ${formatINR(cost)}`);
+                }
+            });
+
+            if (calcGrandTotal) calcGrandTotal.textContent = formatINR(grandTotal);
+            if (calcItemsCount) calcItemsCount.textContent = `${activeItems} ${activeItems === 1 ? 'ITEM' : 'ITEMS'}`;
+
+            if (calcBreakdownList) {
+                if (breakdownHTML.length === 0) {
+                    calcBreakdownList.innerHTML = `<li class="calc-empty-note">Koi bhi quantity daalein (e.g. 5000 Views, 500 Likes, 10 Followers) to budget yahan banega.</li>`;
+                } else {
+                    calcBreakdownList.innerHTML = breakdownHTML.join('');
+                }
+            }
+
+            if (calcWaSend) {
+                const msg = waLines.length > 0
+                    ? `Hey Utkarsh (@utkarshshukla____)! Here is my custom Instagram budget:\n${waLines.join('\n')}\n*Estimated Total: ${formatINR(grandTotal)}*`
+                    : `Hey Utkarsh (@utkarshshukla____)! I want to create a custom Instagram growth campaign.`;
+                calcWaSend.href = `https://wa.me/919764979543?text=${encodeURIComponent(msg)}`;
+            }
+        }
+
+        function applyCalcPreset(valuesObj) {
+            document.getElementById('calc-followers').value = valuesObj.followers || 0;
+            document.getElementById('calc-shares').value = valuesObj.shares || 0;
+            document.getElementById('calc-views').value = valuesObj.views || 0;
+            document.getElementById('calc-reposts').value = valuesObj.reposts || 0;
+            document.getElementById('calc-comments').value = valuesObj.comments || 0;
+            document.getElementById('calc-likes').value = valuesObj.likes || 0;
+            recalculateBudget();
+        }
+
+        calcInputs.forEach(inp => {
+            inp.addEventListener('input', recalculateBudget);
+        });
+
+        const preset5k = document.getElementById('preset-5k');
+        const preset25k = document.getElementById('preset-25k');
+        const preset30k = document.getElementById('preset-30k');
+        const resetCalc = document.getElementById('reset-calc');
+
+        if (preset5k) preset5k.addEventListener('click', () => applyCalcPreset({ views: 100000, likes: 3000, comments: 10, shares: 1200, reposts: 55 }));
+        if (preset25k) preset25k.addEventListener('click', () => applyCalcPreset({ views: 1400000, likes: 20000, comments: 250, shares: 10000, reposts: 150 }));
+        if (preset30k) preset30k.addEventListener('click', () => applyCalcPreset({ views: 1700000, likes: 25000, comments: 300, shares: 11000, reposts: 200 }));
+        if (resetCalc) resetCalc.addEventListener('click', () => applyCalcPreset({}));
+
+        recalculateBudget();
+
+        // -----------------------------------------------------------------
+        // 0B. AUTO-ADD WHATSAPP BUY BUTTONS (9764979543) & LIVE SEARCH FILTER
         // -----------------------------------------------------------------
         document.querySelectorAll('#software-table tr.item-row').forEach(row => {
             const nameCell = row.cells[0];
@@ -1696,7 +2445,6 @@
                 hero.grappleTimer = 14;
             }
 
-            // If inside About section, light up stepped words
             const wIdx = wordPlatforms.indexOf(el);
             if (wIdx !== -1) {
                 wordPlatforms.forEach((w, i) => {
@@ -1707,9 +2455,8 @@
             }
         }
 
-        // Hover any interactive element across the ENTIRE page to make Stickman jump to it!
         const allInteractiveTargets = document.querySelectorAll(
-            '.about-text span, .hero-image-box, .hero-subtitle-badge, .whatsapp-btn-hero, .exp-card, .cap-card, .app-card, .tag, .code-tag, .box-video, .srv-card, .cat-row, .item-row, .huge-contact, .footer-action-btn'
+            '.about-text span, .hero-image-box, .hero-subtitle-badge, .whatsapp-btn-hero, .exp-card, .cap-card, .app-card, .tag, .code-tag, .box-video, .srv-card, .pkg-card, .white-calc-card, .cat-row, .item-row, .huge-contact, .footer-action-btn'
         );
         allInteractiveTargets.forEach(el => {
             el.addEventListener('mouseenter', () => {
@@ -1717,9 +2464,9 @@
             });
         });
 
-        // Spacebar triggers Super Flip anywhere on page
         window.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !document.body.classList.contains('locked') && document.activeElement !== searchInput) {
+            const isCalcInput = document.activeElement && document.activeElement.classList.contains('calc-qty-input');
+            if (e.code === 'Space' && !document.body.classList.contains('locked') && document.activeElement !== searchInput && !isCalcInput) {
                 e.preventDefault();
                 hero.superAura = true;
                 hero.auraTimer = 85;
@@ -1732,11 +2479,9 @@
             }
         });
 
-        // Automatically pick the best platform from Start to End as the user scrolls!
         function updateScrollPlatformTarget() {
             if (document.body.classList.contains('locked')) return;
 
-            // 1. Welcome Screen active at the very top
             const welcomeScreen = document.querySelector('.welcome-screen');
             if (window.scrollY < window.innerHeight * 0.45 && welcomeScreen) {
                 const wl = document.querySelector('.welcome-text-left');
@@ -1746,7 +2491,6 @@
                 return;
             }
 
-            // 2. About Section visible -> step word-by-word based on scroll progress
             const aboutSec = document.getElementById('about');
             if (aboutSec && wordPlatforms.length > 0) {
                 const r = aboutSec.getBoundingClientRect();
@@ -1758,9 +2502,8 @@
                 }
             }
 
-            // 3. Any other section (Hero, Experience Timeline, Capabilities, Bento, Services, Store Table, Footer)
             const candidates = document.querySelectorAll(
-                '.hero-image-box, .hero-subtitle-badge, .exp-card, .capabilities-heading, .cap-card, .bento-box, .srv-card, .store-controls, .cat-row, .item-row, .huge-contact, .footer-col'
+                '.hero-image-box, .hero-subtitle-badge, .exp-card, .capabilities-heading, .cap-card, .bento-box, .srv-card, .pkg-card, .white-calc-card, .store-controls, .cat-row, .item-row, .huge-contact, .footer-col'
             );
 
             let bestEl = null;
@@ -1769,7 +2512,6 @@
 
             candidates.forEach(el => {
                 const r = el.getBoundingClientRect();
-                // Must be reasonably visible in viewport horizontally & vertically
                 if (r.bottom > 80 && r.top < window.innerHeight - 60 && r.right > 60 && r.left < window.innerWidth - 60) {
                     const d = Math.abs(r.top - focalY);
                     if (d < bestDist) {
@@ -1780,7 +2522,6 @@
             });
 
             if (bestEl) {
-                // Vary horizontal landing spot on wide elements
                 const r = bestEl.getBoundingClientRect();
                 const ratio = r.width > 500 ? ((Math.floor(window.scrollY / 180) % 3) * 0.28 + 0.22) : 0.5;
                 jumpToElement(bestEl, ratio);
@@ -2102,7 +2843,7 @@
             }
         });
 
-        document.querySelectorAll('a, button, input, .about-highlight, .app-card, .tag, .box-video').forEach(el => {
+        document.querySelectorAll('a, button, input, .about-highlight, .app-card, .tag, .box-video, .pkg-card, .preset-pill').forEach(el => {
             el.addEventListener('mouseenter', () => {
                 if (cursorOutline) {
                     cursorOutline.style.width = '60px';
